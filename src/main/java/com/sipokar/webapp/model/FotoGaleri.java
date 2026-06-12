@@ -19,10 +19,10 @@ public class FotoGaleri {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "url", nullable = false)
+    @Column(name = "url", nullable = false, length = 1000)
     private String url;
 
-    @Column(name = "keterangan")
+    @Column(name = "keterangan", length = 1000)
     private String keterangan;
 
     @Column(name = "urutan")
