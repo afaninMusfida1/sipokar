@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Kelola UMKM</title></head>
+<body>
+<div th:replace="~{fragments/admin-layout :: layout('Kelola UMKM', ~{::section})}">
+    <section>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+                    <tr>
+                        <th class="px-6 py-3">Nama Usaha</th>
+                        <th class="px-6 py-3">Jenis Usaha</th>
+                        <th class="px-6 py-3">Pemilik</th>
+                        <th class="px-6 py-3">Telepon</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="umkm : ${daftarUmkm}" class="border-t border-gray-100">
+                        <td class="px-6 py-3 font-medium" th:text="${umkm.namaUsaha}">Nama Usaha</td>
+                        <td class="px-6 py-3" th:text="${umkm.jenisUsaha}">Jenis</td>
+                        <td class="px-6 py-3" th:text="${umkm.pemilik}">Pemilik</td>
+                        <td class="px-6 py-3" th:text="${umkm.telepon}">Telepon</td>
+                        <td class="px-6 py-3">
+                            <span th:switch="${umkm.status}">
+                                <span th:case="'VERIFIED'" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">Terverifikasi</span>
+                                <span th:case="'PENDING'" class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">Menunggu</span>
+                                <span th:case="'REJECTED'" class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">Ditolak</span>
+                            </span>
+                        </td>
+                        <td class="px-6 py-3 space-x-2 whitespace-nowrap">
+                            <a th:href="@{/admin/umkm/{id}(id=${umkm.id})}" class="text-blue-600 hover:underline">Detail</a>
+                            <form th:if="${umkm.status.name() != 'VERIFIED'}" th:action="@{/admin/umkm/{id}/verifikasi(id=${umkm.id})}" method="post" class="inline">
+                                <button type="submit" class="text-green-600 hover:underline">Setujui</button>
+                            </form>
+                            <form th:if="${umkm.status.name() != 'REJECTED'}" th:action="@{/admin/umkm/{id}/tolak(id=${umkm.id})}" method="post" class="inline">
+                                <button type="submit" class="text-red-600 hover:underline">Tolak</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(daftarUmkm)}">
+                        <td colspan="6" class="px-6 py-6 text-center text-gray-400">Belum ada UMKM terdaftar.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Catat Keuangan</title></head>
+<body>
+<div th:replace="~{fragments/umkm-layout :: layout('Catat Keuangan', ~{::section})}">
+    <section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500">Total Pemasukan</p>
+                <p class="text-2xl font-bold text-green-700 mt-2" th:text="'Rp ' + ${#numbers.formatDecimal(totalPemasukan, 0, 'POINT', 0, 'COMMA')}">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500">Total Pengeluaran</p>
+                <p class="text-2xl font-bold text-red-600 mt-2" th:text="'Rp ' + ${#numbers.formatDecimal(totalPengeluaran, 0, 'POINT', 0, 'COMMA')}">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500">Saldo</p>
+                <p class="text-2xl font-bold text-gray-900 mt-2" th:text="'Rp ' + ${#numbers.formatDecimal(saldo, 0, 'POINT', 0, 'COMMA')}">0</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h2 class="text-lg font-bold mb-4">Tambah Transaksi</h2>
+            <form th:action="@{/umkm/keuangan}" th:object="${keuangan}" method="post" class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+                    <input type="date" th:field="*{tanggal}" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipe</label>
+                    <select th:field="*{tipe}" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                        <option value="PEMASUKAN">Pemasukan</option>
+                        <option value="PENGELUARAN">Pengeluaran</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nominal</label>
+                    <input type="number" step="0.01" th:field="*{nominal}" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="0">
+                </div>
+                <div>
+                    <button type="submit" class="w-full bg-green-700 text-white p-3 rounded-lg font-bold hover:bg-green-800 transition">Simpan</button>
+                </div>
+                <div class="md:col-span-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Keterangan</label>
+                    <input type="text" th:field="*{keterangan}" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="Contoh: Penjualan harian, Beli bahan baku">
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+                    <tr>
+                        <th class="px-6 py-3">Tanggal</th>
+                        <th class="px-6 py-3">Keterangan</th>
+                        <th class="px-6 py-3">Tipe</th>
+                        <th class="px-6 py-3 text-right">Nominal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="k : ${riwayat}" class="border-t border-gray-100">
+                        <td class="px-6 py-3" th:text="${#temporals.format(k.tanggal, 'dd MMM yyyy')}">tanggal</td>
+                        <td class="px-6 py-3" th:text="${k.keterangan}">keterangan</td>
+                        <td class="px-6 py-3">
+                            <span th:if="${k.tipe.name() == 'PEMASUKAN'}" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">Pemasukan</span>
+                            <span th:if="${k.tipe.name() == 'PENGELUARAN'}" class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">Pengeluaran</span>
+                        </td>
+                        <td class="px-6 py-3 text-right font-medium" th:text="'Rp ' + ${#numbers.formatDecimal(k.nominal, 0, 'POINT', 0, 'COMMA')}">0</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(riwayat)}">
+                        <td colspan="4" class="px-6 py-6 text-center text-gray-400">Belum ada transaksi tercatat.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+</body>
+</html>

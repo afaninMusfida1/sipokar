@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Cek Feedback</title></head>
+<body>
+<div th:replace="~{fragments/admin-layout :: layout('Cek Feedback', ~{::section})}">
+    <section class="space-y-4">
+        <div th:each="fb : ${daftarFeedback}" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <p class="font-semibold" th:text="${fb.nama}">Nama</p>
+                    <p class="text-xs text-gray-400" th:text="${#temporals.format(fb.createdAt, 'dd MMM yyyy HH:mm')}">tanggal</p>
+                </div>
+                <span th:if="${fb.sudahDitindaklanjuti}" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">Sudah ditindaklanjuti</span>
+                <span th:unless="${fb.sudahDitindaklanjuti}" class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">Belum ditindaklanjuti</span>
+            </div>
+            <p class="text-gray-700 mb-4" th:text="${fb.isi}">Isi feedback</p>
+
+            <div th:if="${fb.catatanRespons}" class="bg-gray-50 p-3 rounded-lg mb-3">
+                <p class="text-xs text-gray-500 mb-1">Catatan Respons:</p>
+                <p class="text-sm text-gray-700" th:text="${fb.catatanRespons}">respons</p>
+            </div>
+
+            <form th:action="@{/admin/feedback/{id}/respons(id=${fb.id})}" method="post" class="flex gap-2">
+                <input type="text" name="catatanRespons" th:value="${fb.catatanRespons}" placeholder="Tulis catatan respons..." class="flex-1 p-2 border rounded-lg text-sm focus:ring-2 focus:ring-green-500 outline-none">
+                <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-800 transition">Simpan</button>
+            </form>
+        </div>
+
+        <div th:if="${#lists.isEmpty(daftarFeedback)}" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-400">
+            Belum ada feedback masuk.
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Dashboard</title></head>
+<body>
+<div th:replace="~{fragments/umkm-layout :: layout('Dashboard UMKM', ~{::section})}">
+    <section>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h2 class="text-lg font-bold mb-4">Status Pendaftaran</h2>
+            <div class="flex items-center gap-3">
+                <span th:switch="${umkm.status}">
+                    <span th:case="'VERIFIED'" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">Terverifikasi</span>
+                    <span th:case="'PENDING'" class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">Menunggu Verifikasi</span>
+                    <span th:case="'REJECTED'" class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">Ditolak</span>
+                </span>
+                <span class="font-medium" th:text="${umkm.namaUsaha}">Nama Usaha</span>
+            </div>
+            <p th:if="${umkm.status.name() == 'PENDING'}" class="text-sm text-gray-500 mt-3">
+                Pendaftaran Anda sedang ditinjau oleh admin. Fitur catat keuangan akan aktif setelah disetujui.
+            </p>
+            <p th:if="${umkm.status.name() == 'REJECTED'}" class="text-sm text-red-500 mt-3">
+                Pendaftaran Anda ditolak. Silakan hubungi admin Pokdarwis untuk informasi lebih lanjut.
+            </p>
+        </div>
+
+        <div th:if="${umkm.status.name() == 'VERIFIED'}" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500">Total Pemasukan</p>
+                <p class="text-2xl font-bold text-green-700 mt-2" th:text="'Rp ' + ${#numbers.formatDecimal(totalPemasukan, 0, 'POINT', 0, 'COMMA')}">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500">Total Pengeluaran</p>
+                <p class="text-2xl font-bold text-red-600 mt-2" th:text="'Rp ' + ${#numbers.formatDecimal(totalPengeluaran, 0, 'POINT', 0, 'COMMA')}">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500">Saldo</p>
+                <p class="text-2xl font-bold text-gray-900 mt-2" th:text="'Rp ' + ${#numbers.formatDecimal(saldo, 0, 'POINT', 0, 'COMMA')}">0</p>
+            </div>
+        </div>
+
+        <div th:if="${umkm.status.name() == 'VERIFIED'}" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <a th:href="@{/umkm/keuangan}" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                Catat Keuangan
+            </a>
+        </div>
+    </section>
+</div>
+</body>
+</html>

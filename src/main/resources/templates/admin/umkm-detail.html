@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Detail UMKM</title></head>
+<body>
+<div th:replace="~{fragments/admin-layout :: layout('Detail UMKM', ~{::section})}">
+    <section>
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 max-w-2xl space-y-4">
+            <div>
+                <p class="text-sm text-gray-500">Nama Usaha</p>
+                <p class="text-lg font-semibold" th:text="${umkm.namaUsaha}">-</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Jenis Usaha</p>
+                <p class="text-lg font-semibold" th:text="${umkm.jenisUsaha}">-</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Pemilik</p>
+                <p class="text-lg font-semibold" th:text="${umkm.pemilik}">-</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">No. Telepon</p>
+                <p class="text-lg font-semibold" th:text="${umkm.telepon}">-</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Alamat</p>
+                <p class="text-lg font-semibold" th:text="${umkm.alamat}">-</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Status</p>
+                <p class="text-lg font-semibold" th:text="${umkm.status}">-</p>
+            </div>
+
+            <div class="flex gap-3 pt-4">
+                <form th:if="${umkm.status.name() != 'VERIFIED'}" th:action="@{/admin/umkm/{id}/verifikasi(id=${umkm.id})}" method="post">
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Setujui</button>
+                </form>
+                <form th:if="${umkm.status.name() != 'REJECTED'}" th:action="@{/admin/umkm/{id}/tolak(id=${umkm.id})}" method="post">
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Tolak</button>
+                </form>
+                <a th:href="@{/admin/umkm}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Kembali</a>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

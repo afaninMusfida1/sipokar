@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokdarwis Medokan Ayu | Ekowisata Mangrove</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-green-700">Pokdarwis Medokan Ayu</h1>
+            <div>
+                <a href="/login" class="bg-green-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-700 transition">
+                    Login Admin/UMKM
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-green-800 text-white py-20 px-4 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-4">Kebun Raya Mangrove</h2>
+        <p class="text-lg md:text-xl text-green-100 max-w-2xl mx-auto" th:text="${info.deskripsi} ?: 'Destinasi wisata edukasi dan alam terbaik di Medokan Ayu. Rasakan ketenangan di tengah rimbunnya hutan mangrove.'">
+            Destinasi wisata edukasi dan alam terbaik di Medokan Ayu. Rasakan ketenangan di tengah rimbunnya hutan mangrove.
+        </p>
+    </header>
+
+    <div th:if="${param.feedback}" class="max-w-5xl mx-auto px-4 mt-6">
+        <div class="bg-green-100 border-l-4 border-green-600 text-green-800 p-4 rounded-lg text-center font-medium">
+            Terima kasih! Masukan Anda telah kami terima.
+        </div>
+    </div>
+
+    <section th:if="${not #lists.isEmpty(galeri)}" class="max-w-5xl mx-auto px-4 py-10">
+    <h3 class="text-2xl font-bold mb-6 text-gray-900 text-center">Galeri Foto</h3>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div th:each="f : ${galeri}" class="rounded-xl overflow-hidden shadow-sm border border-gray-100">
+            <img th:src="${f.url}" th:alt="${f.keterangan}" class="w-full h-40 object-cover">
+        </div>
+    </div>
+</section>
+
+    <main class="max-w-5xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
+        
+        <section class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold mb-6 text-gray-900">Info Operasional</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center">
+                    <span class="font-semibold w-32">Jam Buka</span>
+                    <span th:text="${info.jamBuka != null} ? (${info.jamBuka} + ' - ' + ${info.jamTutup}) : '08.00 - 17.00 WIB'">08.00 - 17.00 WIB</span>
+                </li>
+                <li class="flex items-center">
+                    <span class="font-semibold w-32">Harga Tiket</span>
+                    <span th:text="${info.hargaTiket} ?: 'Rp 5.000 / orang'">Rp 5.000 / orang</span>
+                </li>
+                <li class="flex items-center">
+                    <span class="font-semibold w-32">Info Parkir</span>
+                    <span th:text="${info.infoParkir} ?: 'Tersedia area parkir luas'">Tersedia area parkir luas</span>
+                </li>
+                <li class="flex items-center">
+                    <span class="font-semibold w-32">Kontak</span>
+                    <span th:text="${info.kontak} ?: '-'">-</span>
+                </li>
+                <li th:if="${info.mapsUrl}" class="block">
+    <span class="font-semibold block mb-2">Lokasi</span>
+    <iframe th:src="${info.mapsUrl}" class="w-full h-56 rounded-xl border-0" loading="lazy"></iframe>
+</li>
+            </ul>
+        </section>
+
+        <section th:if="${not #lists.isEmpty(fasilitas)}" class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 md:col-span-2">
+    <h3 class="text-2xl font-bold mb-6 text-gray-900">Fasilitas Tersedia</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div th:each="f : ${fasilitas}" class="flex flex-col items-center text-center p-4 bg-gray-50 rounded-xl">
+            <span class="text-3xl mb-2" th:text="${f.icon}">🚲</span>
+            <span class="text-sm font-medium" th:text="${f.nama}">Nama Fasilitas</span>
+        </div>
+    </div>
+</section>
+
+        <section class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold mb-6 text-gray-900">Saran & Feedback</h3>
+            <form th:action="@{/feedback}" method="post" class="space-y-4">
+                <input type="text" name="nama" placeholder="Nama Anda" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                <textarea name="pesan" rows="3" placeholder="Tulis masukan Anda..." class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"></textarea>
+                <button type="submit" class="w-full bg-gray-900 text-white p-3 rounded-lg hover:bg-gray-800 transition">
+                    Kirim Masukan
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 text-gray-500 text-sm">
+        &copy; 2026 Pokdarwis Medokan Ayu. All rights reserved.
+    </footer>
+</body>
+</html>

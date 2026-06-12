@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Fasilitas</title></head>
+<body>
+<div th:replace="~{fragments/admin-layout :: layout('Kelola Fasilitas', ~{::section})}">
+    <section>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6 max-w-md">
+            <h2 class="text-lg font-bold mb-4">Tambah Fasilitas</h2>
+            <form th:action="@{/admin/fasilitas}" th:object="${fasilitas}" method="post" class="flex gap-3">
+                <input type="text" th:field="*{icon}" placeholder="🚲" class="w-20 p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none text-center">
+                <input type="text" th:field="*{nama}" required placeholder="Nama fasilitas" class="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-800 transition">Tambah</button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y">
+            <div th:each="f : ${daftarFasilitas}" class="flex justify-between items-center px-6 py-3">
+                <span class="text-sm">
+                    <span th:text="${f.icon}">🚲</span>
+                    <span class="ml-2" th:text="${f.nama}">Nama Fasilitas</span>
+                </span>
+                <form th:action="@{/admin/fasilitas/{id}/hapus(id=${f.id})}" method="post">
+                    <button type="submit" class="text-red-600 text-sm hover:underline">Hapus</button>
+                </form>
+            </div>
+            <div th:if="${#lists.isEmpty(daftarFasilitas)}" class="px-6 py-6 text-center text-gray-400 text-sm">
+                Belum ada fasilitas.
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
