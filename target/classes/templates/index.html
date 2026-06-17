@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokdarwis Medokan Ayu | Ekowisata Mangrove</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -27,29 +27,126 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased selection:bg-green-200 selection:text-green-900">
 
-    <!-- Navbar with Glassmorphism -->
+    <!-- Navbar -->
     <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <h1 class="text-2xl font-heading font-bold text-green-700 tracking-tight">Pokdarwis<span class="text-gray-800"> Medokan Ayu</span></h1>
-            <div>
-                <a href="/login" class="bg-green-600 text-white px-6 py-2.5 rounded-full font-medium shadow-md shadow-green-500/30 hover:bg-green-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-                    Login Admin / UMKM
-                </a>
-            </div>
+            <a href="/login" class="bg-green-600 text-white px-6 py-2.5 rounded-full font-medium shadow-md shadow-green-500/30 hover:bg-green-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                Login Admin / UMKM
+            </a>
         </div>
     </nav>
 
-    <!-- Hero Section with Background Image & Gradient Overlay -->
-    <header class="relative bg-[url('https://images.unsplash.com/photo-1623831535496-03c00411a0ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center py-32 px-4 text-center">
-        <div class="absolute inset-0 bg-gradient-to-b from-green-900/80 to-gray-900/90 z-0"></div>
-        <div class="relative z-10 max-w-3xl mx-auto animate-fade-in-up">
-            <span class="inline-block py-1 px-3 rounded-full bg-green-500/20 border border-green-400/30 text-green-300 text-sm font-semibold tracking-wider mb-4">EKOWISATA SURABAYA</span>
-            <h2 class="text-4xl md:text-6xl font-heading font-bold mb-6 text-white leading-tight">Kebun Raya Mangrove</h2>
-            <p class="text-lg md:text-xl text-gray-200" th:text="${info.deskripsi} ?: 'Destinasi wisata edukasi dan alam terbaik di Medokan Ayu. Rasakan ketenangan di tengah rimbunnya hutan mangrove.'">
+    <!-- Hero Section: Image Slider -->
+    <header id="hero-slider" class="relative overflow-hidden h-[500px] md:h-[640px]">
+
+        <!-- Slides -->
+        <div class="hero-slide absolute inset-0 bg-[url('/images/hero/slide1.jpg')] bg-cover bg-center transition-opacity duration-1000 opacity-100"></div>
+        <div class="hero-slide absolute inset-0 bg-[url('/images/hero/slide2.jpg')] bg-cover bg-center transition-opacity duration-1000 opacity-0"></div>
+        <div class="hero-slide absolute inset-0 bg-[url('/images/hero/slide3.jpg')] bg-cover bg-center transition-opacity duration-1000 opacity-0"></div>
+        <div class="hero-slide absolute inset-0 bg-[url('/images/hero/slide4.jpg')] bg-cover bg-center transition-opacity duration-1000 opacity-0"></div>
+        <div class="hero-slide absolute inset-0 bg-[url('/images/hero/slide5.jpg')] bg-cover bg-center transition-opacity duration-1000 opacity-0"></div>
+
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-green-950/60 to-gray-950/85 z-10"></div>
+
+        <!-- Content -->
+        <div class="relative z-20 max-w-3xl mx-auto px-4 h-full flex flex-col items-center justify-center text-center">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-green-500/15 border border-green-400/60 text-green-300 text-xs font-semibold tracking-[0.15em] uppercase mb-6">
+                Ekowisata Surabaya
+            </span>
+
+            <h2 class="text-4xl md:text-6xl font-heading font-bold mb-5 text-white leading-[1.1] tracking-tight">
+                Kebun Raya Mangrove
+            </h2>
+
+            <p class="text-base md:text-lg text-gray-300 max-w-xl mx-auto mb-10 leading-relaxed"
+               th:text="${info.deskripsi} ?: 'Destinasi wisata edukasi dan alam terbaik di Medokan Ayu. Rasakan ketenangan di tengah rimbunnya hutan mangrove.'">
                 Destinasi wisata edukasi dan alam terbaik di Medokan Ayu. Rasakan ketenangan di tengah rimbunnya hutan mangrove.
             </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="#galeri" class="bg-green-600 text-white px-7 py-3 rounded-full font-medium shadow-lg shadow-green-900/30 hover:bg-green-500 transition-all duration-300">
+                    Lihat Galeri
+                </a>
+                <a href="#info" class="bg-white/10 text-white border border-white/30 px-7 py-3 rounded-full font-medium hover:bg-white/20 transition-all duration-300">
+                    Info Wisata
+                </a>
+            </div>
+        </div>
+
+        <!-- Arrow Controls -->
+        <button id="hero-prev" aria-label="Slide sebelumnya" class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 border border-white/30 text-white flex items-center justify-center transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button id="hero-next" aria-label="Slide berikutnya" class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 border border-white/30 text-white flex items-center justify-center transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+
+        <!-- Dots -->
+        <div id="hero-dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+            <button data-index="0" class="hero-dot w-2.5 h-2.5 rounded-full bg-white transition-all duration-300"></button>
+            <button data-index="1" class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-all duration-300"></button>
+            <button data-index="2" class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-all duration-300"></button>
+            <button data-index="3" class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-all duration-300"></button>
+            <button data-index="4" class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-all duration-300"></button>
         </div>
     </header>
+
+    <script>
+        (function () {
+            const slides = document.querySelectorAll('#hero-slider .hero-slide');
+            const dots = document.querySelectorAll('#hero-slider .hero-dot');
+            const prevBtn = document.getElementById('hero-prev');
+            const nextBtn = document.getElementById('hero-next');
+            let current = 0;
+            let timer = null;
+            const intervalMs = 5000;
+
+            function showSlide(index) {
+                slides.forEach((s, i) => s.classList.toggle('opacity-100', i === index));
+                slides.forEach((s, i) => s.classList.toggle('opacity-0', i !== index));
+                dots.forEach((d, i) => {
+                    d.classList.toggle('bg-white', i === index);
+                    d.classList.toggle('bg-white/40', i !== index);
+                });
+                current = index;
+            }
+
+            function nextSlide() {
+                showSlide((current + 1) % slides.length);
+            }
+
+            function prevSlide() {
+                showSlide((current - 1 + slides.length) % slides.length);
+            }
+
+            function resetTimer() {
+                if (timer) clearInterval(timer);
+                timer = setInterval(nextSlide, intervalMs);
+            }
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    showSlide(parseInt(dot.dataset.index, 10));
+                    resetTimer();
+                });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetTimer();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetTimer();
+            });
+
+            showSlide(0);
+            resetTimer();
+        })();
+    </script>
 
     <!-- Feedback Alert -->
     <div th:if="${param.feedback}" class="max-w-5xl mx-auto px-4 mt-8">
@@ -60,8 +157,8 @@
     </div>
 
     <!-- Gallery Section -->
-    <section th:if="${not #lists.isEmpty(galeri)}" class="max-w-6xl mx-auto px-4 py-12">
-        <div class="text-center mb-10">
+    <section id="galeri" th:if="${not #lists.isEmpty(galeri)}" class="max-w-6xl mx-auto px-4 py-20">
+        <div class="text-center mb-12">
             <h3 class="text-3xl font-heading font-bold text-gray-900">Galeri Foto</h3>
             <div class="h-1 w-20 bg-green-500 mx-auto mt-4 rounded-full"></div>
         </div>
@@ -76,11 +173,10 @@
     </section>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-8 mb-12">
-        
+    <main id="info" class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-8 mb-12">
+
         <!-- Left Column: Info & Form -->
         <div class="md:col-span-1 space-y-8">
-            <!-- Operational Info Card -->
             <section class="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300">
                 <h3 class="text-2xl font-heading font-bold mb-6 text-gray-900">Info Operasional</h3>
                 <ul class="space-y-5 text-gray-600">
@@ -115,16 +211,11 @@
                 </ul>
             </section>
 
-            <!-- Feedback Form Card -->
             <section class="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-                <h3 class="text-2xl font-heading font-bold mb-6 text-gray-900">Saran & Masukan</h3>
+                <h3 class="text-2xl font-heading font-bold mb-6 text-gray-900">Saran &amp; Masukan</h3>
                 <form th:action="@{/feedback}" method="post" class="space-y-4">
-                    <div>
-                        <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" required>
-                    </div>
-                    <div>
-                        <textarea name="pesan" rows="4" placeholder="Tulis masukan Anda di sini..." class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none resize-none" required></textarea>
-                    </div>
+                    <input type="text" name="nama" placeholder="Nama Lengkap" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none" required>
+                    <textarea name="pesan" rows="4" placeholder="Tulis masukan Anda di sini..." class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none resize-none" required></textarea>
                     <button type="submit" class="w-full bg-gray-900 text-white font-medium p-3.5 rounded-xl shadow-lg hover:bg-green-600 hover:shadow-green-500/30 transform hover:-translate-y-0.5 transition-all duration-300">
                         Kirim Masukan
                     </button>
@@ -132,14 +223,11 @@
             </section>
         </div>
 
-        <!-- Right Column: Maps & Facilities -->
+        <!-- Right Column: Facilities & Maps -->
         <div class="md:col-span-2 space-y-8">
-            
-            <!-- Facilities Card -->
+
             <section th:if="${not #lists.isEmpty(fasilitas)}" class="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-                <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-2xl font-heading font-bold text-gray-900">Fasilitas Tersedia</h3>
-                </div>
+                <h3 class="text-2xl font-heading font-bold mb-8 text-gray-900">Fasilitas Tersedia</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                     <div th:each="f : ${fasilitas}" class="group flex flex-col items-center text-center p-6 bg-gray-50/50 border border-gray-100 rounded-2xl hover:bg-green-50 hover:border-green-200 transition-all duration-300">
                         <span class="text-4xl mb-3 transform group-hover:scale-110 transition-transform duration-300" th:text="${f.icon}">🚲</span>
@@ -148,7 +236,6 @@
                 </div>
             </section>
 
-            <!-- Maps Section -->
             <section th:if="${info.mapsUrl}" class="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
                 <h3 class="text-2xl font-heading font-bold mb-6 text-gray-900">Lokasi Kami</h3>
                 <div class="rounded-2xl overflow-hidden shadow-inner border border-gray-200">
