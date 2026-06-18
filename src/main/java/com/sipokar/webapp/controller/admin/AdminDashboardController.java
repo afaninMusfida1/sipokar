@@ -26,14 +26,18 @@ public class AdminDashboardController {
         model.addAttribute("totalFeedback", dashboardService.totalFeedback());
         model.addAttribute("feedbackBelumDitindaklanjuti", dashboardService.feedbackBelumDitindaklanjuti());
         model.addAttribute("totalKunjunganWebsite", dashboardService.totalKunjunganWebsite());
+        model.addAttribute("totalPengunjung", dashboardService.totalPengunjung());
+        model.addAttribute("entriPengunjungHariIni", dashboardService.entriPengunjungHariIni());
+        model.addAttribute("pengunjungHariIni", dashboardService.pengunjungHariIni());
+        model.addAttribute("checkInTerbaru", dashboardService.checkInTerbaru());
 
         List<DataPengunjung> tren = dashboardService.trenPengunjung();
 
         List<String> labels = tren.stream()
-                .map(d -> d.getTanggal().toString())
+                .map(d -> d.getTanggalKunjungan().toString())
                 .collect(Collectors.toList());
         List<Integer> values = tren.stream()
-                .map(DataPengunjung::getJumlahPengunjung)
+                .map(DataPengunjung::getJumlahOrang)
                 .collect(Collectors.toList());
 
         // Serialize manual tanpa ObjectMapper — hindari dependency injection issue
