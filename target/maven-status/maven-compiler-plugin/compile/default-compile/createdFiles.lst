@@ -33,7 +33,9 @@ com\sipokar\webapp\service\AdminDashboardService.class
 com\sipokar\webapp\service\PageViewService.class
 com\sipokar\webapp\controller\umkm\UmkmKeuanganController.class
 com\sipokar\webapp\controller\umkm\UmkmDashboardController.class
+com\sipokar\webapp\service\CloudinaryService.class
 com\sipokar\webapp\controller\admin\AdminDashboardController.class
+com\sipokar\webapp\config\CloudinaryConfig.class
 com\sipokar\webapp\model\Umkm$Status.class
 com\sipokar\webapp\controller\admin\AdminGaleriController.class
 com\sipokar\webapp\model\Keuangan.class
