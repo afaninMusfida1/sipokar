@@ -173,6 +173,9 @@
                             <div th:if="${bukti == null}" class="text-gray-400 text-xs flex items-center gap-1">
                                 <i class="fas fa-image"></i> Tidak ada bukti
                             </div>
+                            <div th:if="${bukti == null}" class="text-gray-400 text-xs flex items-center gap-1">
+                                <i class="fas fa-image"></i> Tidak ada bukti
+                            </div>
 
                             <form th:if="${status != null and status.name() == 'PENDING'}" th:action="@{/admin/umkm/{id}/verifikasi-retribusi(id=${umkm.id})}" method="post">
                                 <button type="submit" class="btn-mangrove text-white text-xs px-4 py-1.5 rounded-lg flex items-center gap-1">

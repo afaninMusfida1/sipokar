@@ -1,28 +1,39 @@
 package com.sipokar.webapp.service;
 
+import java.util.Optional;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
 import com.sipokar.webapp.model.Umkm;
 import com.sipokar.webapp.model.User;
 import com.sipokar.webapp.repository.UmkmRepository;
 import com.sipokar.webapp.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UmkmService {
 
-    private final UserRepository userRepository;
     private final UmkmRepository umkmRepository;
+    private final UserRepository userRepository;  // pastikan ada
 
-    public User getCurrentUser(Authentication auth) {
-        return userRepository.findByUsername(auth.getName())
-                .orElseThrow(() -> new IllegalStateException("User tidak ditemukan"));
+    public Optional<Umkm> findById(Long id) {
+        return umkmRepository.findById(id);
     }
 
-    public Umkm getCurrentUmkm(Authentication auth) {
-        User user = getCurrentUser(auth);
-        return umkmRepository.findByUser_Id(user.getId())
-                .orElseThrow(() -> new IllegalStateException("Data UMKM belum didaftarkan"));
+    public Optional<Umkm> getCurrentUmkm(Authentication authentication) {
+        if (authentication == null) return Optional.empty();
+        String username = authentication.getName();
+        return userRepository.findByUsername(username)
+                .flatMap(user -> umkmRepository.findByUser_Id(user.getId()));
     }
+
+    public Optional<User> getCurrentUser(Authentication authentication) {
+        if (authentication == null) return Optional.empty();
+        String username = authentication.getName();
+        return userRepository.findByUsername(username);
+    }
+
 }

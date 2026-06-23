@@ -19,6 +19,7 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\FotoGaleri.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Keuangan.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\PageView.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Retribusi.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Umkm.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\User.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\WisataInfo.java
@@ -28,6 +29,7 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\FotoGaleriRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\KeuanganRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\PageViewRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\RetribusiRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\UmkmRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\UserRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\WisataInfoRepository.java
@@ -37,6 +39,7 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\PageViewService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\PengunjungService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\QrCodeService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\RetribusiService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\UmkmService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\UserDetailsServiceImpl.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\WebappApplication.java
