@@ -10,10 +10,12 @@ com\sipokar\webapp\WebappApplication.class
 com\sipokar\webapp\controller\admin\AdminFeedbackController.class
 com\sipokar\webapp\model\Fasilitas.class
 com\sipokar\webapp\repository\FeedbackRepository.class
+com\sipokar\webapp\model\Keuangan$Kategori.class
 com\sipokar\webapp\service\UserDetailsServiceImpl.class
 com\sipokar\webapp\model\User$Role.class
 com\sipokar\webapp\model\User.class
 com\sipokar\webapp\controller\admin\AdminFasilitasController.class
+com\sipokar\webapp\service\QrCodeService.class
 com\sipokar\webapp\repository\FotoGaleriRepository.class
 com\sipokar\webapp\controller\admin\AdminPengunjungController.class
 com\sipokar\webapp\repository\UserRepository.class
@@ -27,8 +29,10 @@ com\sipokar\webapp\model\Keuangan$Tipe.class
 com\sipokar\webapp\service\KeuanganService.class
 com\sipokar\webapp\model\DataPengunjung.class
 com\sipokar\webapp\repository\DataPengunjungRepository.class
+com\sipokar\webapp\controller\FormKunjunganController.class
 com\sipokar\webapp\model\PageView.class
 com\sipokar\webapp\repository\WisataInfoRepository.class
+com\sipokar\webapp\service\PengunjungService.class
 com\sipokar\webapp\service\AdminDashboardService.class
 com\sipokar\webapp\service\PageViewService.class
 com\sipokar\webapp\controller\umkm\UmkmKeuanganController.class
