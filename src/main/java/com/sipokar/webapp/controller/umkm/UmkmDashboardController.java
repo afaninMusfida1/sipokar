@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.sipokar.webapp.model.Umkm;
 import com.sipokar.webapp.service.KeuanganService;
@@ -15,7 +15,7 @@ import com.sipokar.webapp.service.UmkmService;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
+@Controller
 @RequestMapping("/umkm/dashboard")
 @RequiredArgsConstructor
 public class UmkmDashboardController {
