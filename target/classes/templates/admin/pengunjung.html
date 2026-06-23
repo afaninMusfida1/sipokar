@@ -4,59 +4,78 @@
 <body>
 <div th:replace="~{fragments/admin-layout :: layout('Data Pengunjung', ~{::section})}">
     <section>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                <p class="text-sm text-gray-500">Check-in Hari Ini</p>
-                <p class="text-2xl font-bold text-green-700 mt-1" th:text="${entriHariIni}">0</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-1">
+                <div class="flex justify-between items-center text-gray-500 mb-2">
+                    <p class="text-sm font-medium">Check-in Hari Ini</p>
+                    <svg class="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-3xl font-bold text-gray-900" th:text="${entriHariIni}">0</p>
+                <p class="text-xs text-gray-400 mt-1">Total grup/entri check-in</p>
             </div>
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                <p class="text-sm text-gray-500">Jumlah Orang Hari Ini</p>
-                <p class="text-2xl font-bold text-green-700 mt-1" th:text="${jumlahOrangHariIni}">0</p>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-1">
+                <div class="flex justify-between items-center text-gray-500 mb-2">
+                    <p class="text-sm font-medium">Jumlah Orang Hari Ini</p>
+                    <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <p class="text-3xl font-bold text-gray-900" th:text="${jumlahOrangHariIni}">0</p>
+                <p class="text-xs text-gray-400 mt-1">Total pengunjung fisik</p>
             </div>
+
         </div>
 
-        <div class="mb-6">
-            <a th:href="@{/admin/pengunjung/qr}"
-               class="inline-flex items-center gap-2 bg-green-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-green-800 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                Lihat & Cetak QR Code
-            </a>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100">
-                <h2 class="font-bold text-gray-900">Riwayat Kunjungan Terbaru</h2>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+            
+            <div class="px-6 py-5 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50">
+                <h2 class="text-base font-semibold text-gray-900">Riwayat Kunjungan Terbaru</h2>
+                
+                <a th:href="@{/admin/pengunjung/qr}"
+                   class="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                    Lihat & Cetak QR Code
+                </a>
             </div>
-            <table class="w-full text-sm text-left">
-                <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
-                    <tr>
-                        <th class="px-6 py-3">Waktu Check-in</th>
-                        <th class="px-6 py-3">Nama</th>
-                        <th class="px-6 py-3">Kota Asal</th>
-                        <th class="px-6 py-3">Tanggal Kunjungan</th>
-                        <th class="px-6 py-3">Jumlah Orang</th>
-                        <th class="px-6 py-3"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="tamu : ${daftarTamu}" class="border-t border-gray-100">
-                        <td class="px-6 py-3" th:text="${#temporals.format(tamu.waktuCheckIn, 'dd MMM yyyy HH:mm')}">waktu</td>
-                        <td class="px-6 py-3 font-medium" th:text="${tamu.nama}">nama</td>
-                        <td class="px-6 py-3" th:text="${tamu.kotaAsal}">kota</td>
-                        <td class="px-6 py-3" th:text="${#temporals.format(tamu.tanggalKunjungan, 'dd MMM yyyy')}">tanggal</td>
-                        <td class="px-6 py-3" th:text="${tamu.jumlahOrang}">1</td>
-                        <td class="px-6 py-3">
-                            <form th:action="@{/admin/pengunjung/{id}/hapus(id=${tamu.id})}" method="post">
-                                <button type="submit" class="text-red-600 hover:text-red-800 text-xs font-medium">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(daftarTamu)}">
-                        <td colspan="6" class="px-6 py-8 text-center text-gray-400">Belum ada data pengunjung.</td>
-                    </tr>
-                </tbody>
-            </table>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-white border-b border-gray-100 text-gray-500 font-medium">
+                        <tr>
+                            <th class="px-6 py-3 font-medium">Waktu Check-in</th>
+                            <th class="px-6 py-3 font-medium">Nama</th>
+                            <th class="px-6 py-3 font-medium">Kota Asal</th>
+                            <th class="px-6 py-3 font-medium">Tanggal Kunjungan</th>
+                            <th class="px-6 py-3 font-medium text-center">Jumlah Orang</th>
+                            <th class="px-6 py-3 font-medium text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr th:each="tamu : ${daftarTamu}" class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-3" th:text="${#temporals.format(tamu.waktuCheckIn, 'dd/MM/yyyy HH:mm')}">-</td>
+                            <td class="px-6 py-3 font-medium text-gray-900" th:text="${tamu.nama}">-</td>
+                            <td class="px-6 py-3" th:text="${tamu.kotaAsal}">-</td>
+                            <td class="px-6 py-3" th:text="${#temporals.format(tamu.tanggalKunjungan, 'dd MMM yyyy')}">-</td>
+                            <td class="px-6 py-3 text-center">
+                                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-50 text-green-700 font-medium text-xs" th:text="${tamu.jumlahOrang}">0</span>
+                            </td>
+                            <td class="px-6 py-3 text-center">
+                                <form th:action="@{/admin/pengunjung/{id}/hapus(id=${tamu.id})}" method="post" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                    <button type="submit" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 hover:text-red-700 transition-colors">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(daftarTamu)}">
+                            <td colspan="6" class="px-6 py-8 text-center text-gray-400">Belum ada data pengunjung.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        
     </section>
 </div>
 </body>
