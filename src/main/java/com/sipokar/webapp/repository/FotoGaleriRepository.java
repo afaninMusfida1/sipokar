@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FotoGaleriRepository extends JpaRepository<FotoGaleri, Long> {
-    List<FotoGaleri> findAllByOrderByUrutanAsc();
+    List<FotoGaleri> findAllByOrderByIdDesc();
 }

@@ -30,7 +30,7 @@ public class PublicController {
                 .orElseGet(WisataInfo::new);
 
         model.addAttribute("info", info);
-        model.addAttribute("galeri", fotoGaleriRepository.findAllByOrderByUrutanAsc());
+        model.addAttribute("galeri", fotoGaleriRepository.findAllByOrderByIdDesc());
         model.addAttribute("fasilitas", fasilitasRepository.findAll());
 
         pageViewService.recordVisit();

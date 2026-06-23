@@ -19,15 +19,9 @@ public class AdminGaleriController {
 
     @GetMapping
     public String daftar(Model model) {
-
-        model.addAttribute(
-                "daftarFoto",
-                fotoGaleriRepository.findAllByOrderByUrutanAsc());
-
-        model.addAttribute(
-                "foto",
-                new FotoGaleri());
-
+        // Mengurutkan dari yang terbaru (ID terbesar)
+        model.addAttribute("daftarFoto", fotoGaleriRepository.findAllByOrderByIdDesc());
+        model.addAttribute("foto", new FotoGaleri());
         return "admin/galeri";
     }
 
