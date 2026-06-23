@@ -10,6 +10,7 @@ com\sipokar\webapp\WebappApplication.class
 com\sipokar\webapp\controller\admin\AdminFeedbackController.class
 com\sipokar\webapp\model\Fasilitas.class
 com\sipokar\webapp\repository\FeedbackRepository.class
+com\sipokar\webapp\model\Keuangan$Kategori.class
 com\sipokar\webapp\service\UserDetailsServiceImpl.class
 com\sipokar\webapp\model\User$Role.class
 com\sipokar\webapp\model\User.class
