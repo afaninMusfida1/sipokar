@@ -8,6 +8,7 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminPengunjungController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminUmkmController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\AuthController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\FormKunjunganController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\PublicController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\umkm\UmkmDashboardController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\umkm\UmkmKeuanganController.java
@@ -34,6 +35,8 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\CloudinaryService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\KeuanganService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\PageViewService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\PengunjungService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\QrCodeService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\UmkmService.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\UserDetailsServiceImpl.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\WebappApplication.java

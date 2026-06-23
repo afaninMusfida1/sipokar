@@ -30,4 +30,10 @@ public class PageViewService {
         Long total = pageViewRepository.totalKunjungan();
         return total == null ? 0L : total;
     }
+
+    public long kunjunganHariIni() {
+        return pageViewRepository.findByTanggal(LocalDate.now())
+                .map(PageView::getJumlah)
+                .orElse(0L);
+    }
 }
