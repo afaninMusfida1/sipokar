@@ -17,10 +17,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "keuangan")
+@Table(name = "retribusi")
 @Data
 @NoArgsConstructor
-public class Keuangan {
+public class Retribusi {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,25 +31,26 @@ public class Keuangan {
     private Umkm umkm;
 
     @Column(nullable = false)
+    private String jenis;               // "Pajak", "Iuran Sampah", "Lainnya"
+
+    @Column(nullable = false)
+    private BigDecimal nominal;
+
+    @Column(nullable = false)
     private LocalDate tanggal;
 
     private String keterangan;
 
+    @Column(name = "bukti_path")
+    private String buktiPath;           
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Tipe tipe;
+    private StatusRetribusi status = StatusRetribusi.BELUM_BAYAR;
 
-    @Enumerated(EnumType.STRING)
-    private Kategori kategori;  // opsional, bisa null
-
-    @Column(nullable = false, precision = 15, scale = 2)
-    private BigDecimal nominal;
-
-    public enum Tipe {
-        PEMASUKAN, PENGELUARAN
-    }
-
-    public enum Kategori {
-        SEWA, OPERASIONAL, RETRIBUSI, LAINNYA
+    public enum StatusRetribusi {
+        BELUM_BAYAR,
+        MENUNGGU_VERIFIKASI,
+        LUNAS
     }
 }
