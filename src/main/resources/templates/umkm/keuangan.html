@@ -1,542 +1,1209 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sipokar · Keuangan Pokdarwis</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <style>
-    body { background: #f5f7f2; font-family: 'Inter', system-ui, sans-serif; }
-    .card-shadow { box-shadow: 0 8px 24px rgba(0,30,10,0.04), 0 2px 6px rgba(0,20,0,0.02); }
-    .mangrove-gradient { background: linear-gradient(145deg, #f8fbf6 0%, #edf3e8 100%); }
-    .btn-mangrove { background: #1e3a2f; transition: all 0.2s ease; }
-    .btn-mangrove:hover { background: #143026; transform: translateY(-1px); box-shadow: 0 8px 18px -6px rgba(30,58,47,0.3); }
-    .badge-income { background: #e4f3e4; color: #0f4f2e; }
-    .badge-expense { background: #fce8e8; color: #ac2c2c; }
-    .badge-tax { background: #fff3d6; color: #8a6d2b; }
-    .badge-clean { background: #d6ecff; color: #1a5a8c; }
-    .badge-rental { background: #e0eef9; color: #1b5e7a; }
-    .stat-card { transition: 0.2s; border: 1px solid #e8ede4; background: #fffffffa; }
-    .stat-card:hover { border-color: #bcd0b4; box-shadow: 0 10px 24px -10px rgba(30,58,40,0.08); }
-    .table-row-hover:hover { background: #fafff8; }
-    input:focus, select:focus { border-color: #2b5e3b; ring: 2px solid rgba(43,94,59,0.2); }
-
-    /* === KEWAJIBAN & UPLOAD === */
-    .kw-card { background: #fff; border: 1px solid #e3ece0; border-radius: 16px; padding: 14px; position: relative; transition: 0.2s; }
-    .kw-card:hover { border-color: #b5cfae; box-shadow: 0 6px 18px -8px rgba(30,58,40,0.1); }
-    .kw-progress { height: 5px; border-radius: 3px; background: #eaf1e6; margin-top: 8px; overflow: hidden; }
-    .kw-progress-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
-    .badge-lunas { background: #e4f3e4; color: #0f4f2e; }
-    .badge-belum { background: #fce8e8; color: #ac2c2c; }
-    .badge-proses { background: #fff3d6; color: #8a6d2b; }
-    .badge-file { background: #e0eef9; color: #1b5e7a; cursor: pointer; }
-    .badge-file:hover { background: #c9dfef; }
-    .upload-zone {
-      border: 2px dashed #c5d9be; border-radius: 14px; padding: 22px 16px;
-      text-align: center; cursor: pointer; position: relative;
-      transition: border-color 0.15s, background 0.15s; background: #f8fbf6;
-    }
-    .upload-zone:hover, .upload-zone.dragover { border-color: #2b5e3b; background: #f0f8eb; }
-    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .file-preview { display: none; align-items: center; gap: 10px; background: #e0eef9; border-radius: 10px; padding: 10px 14px; margin-top: 8px; }
-    .file-preview.show { display: flex; }
-    .kw-history-table { width: 100%; font-size: 13px; border-collapse: collapse; }
-    .kw-history-table th { text-align: left; font-size: 11px; font-weight: 600; color: #2a4d36; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 16px; background: #f2f8ef; }
-    .kw-history-table td { padding: 11px 16px; border-top: 1px solid #eef5ea; vertical-align: middle; }
-    .kw-history-table tr:hover td { background: #fafff8; }
-    .toast-kw { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #1e3a2f; color: #fff; padding: 10px 18px; border-radius: 12px; font-size: 13px; display: flex; align-items: center; gap: 8px; opacity: 0; transform: translateY(8px); transition: all 0.25s; z-index: 999; pointer-events: none; }
-    .toast-kw.show { opacity: 1; transform: translateY(0); }
-    .kw-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; align-items: center; justify-content: center; }
-    .kw-modal-overlay.show { display: flex; }
-    .kw-modal { background: #fff; border-radius: 20px; padding: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sipokar · Keuangan Pokdarwis</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <style>
+        body {
+            background: #f5f7f2;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .card-shadow {
+            box-shadow: 0 8px 24px rgba(0, 30, 10, 0.04), 0 2px 6px rgba(0, 20, 0, 0.02);
+        }
+        .mangrove-gradient {
+            background: linear-gradient(145deg, #f8fbf6 0%, #edf3e8 100%);
+        }
+        .btn-mangrove {
+            background: #1e3a2f;
+            transition: all 0.2s ease;
+        }
+        .btn-mangrove:hover {
+            background: #143026;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px -6px rgba(30, 58, 47, 0.3);
+        }
+        .btn-outline-mangrove {
+            border: 1.5px solid #1e3a2f;
+            color: #1e3a2f;
+            transition: all 0.2s ease;
+        }
+        .btn-outline-mangrove:hover {
+            background: #1e3a2f;
+            color: #fff;
+        }
+        .badge-income {
+            background: #e4f3e4;
+            color: #0f4f2e;
+        }
+        .badge-expense {
+            background: #fce8e8;
+            color: #ac2c2c;
+        }
+        .badge-tax {
+            background: #fff3d6;
+            color: #8a6d2b;
+        }
+        .badge-clean {
+            background: #d6ecff;
+            color: #1a5a8c;
+        }
+        .stat-card {
+            transition: 0.2s;
+            border: 1px solid #e8ede4;
+            background: #fffffffa;
+        }
+        .stat-card:hover {
+            border-color: #bcd0b4;
+            box-shadow: 0 10px 24px -10px rgba(30, 58, 40, 0.08);
+        }
+        .table-row-hover:hover {
+            background: #fafff8;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2b5e3b;
+            outline: 2px solid rgba(43, 94, 59, 0.15);
+            outline-offset: 0;
+        }
+        .kw-card {
+            background: #fff;
+            border: 1px solid #e3ece0;
+            border-radius: 16px;
+            padding: 14px;
+            position: relative;
+            transition: 0.2s;
+        }
+        .kw-card:hover {
+            border-color: #b5cfae;
+            box-shadow: 0 6px 18px -8px rgba(30, 58, 40, 0.1);
+        }
+        .kw-progress {
+            height: 5px;
+            border-radius: 3px;
+            background: #eaf1e6;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .kw-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s;
+        }
+        .badge-lunas {
+            background: #e4f3e4;
+            color: #0f4f2e;
+        }
+        .badge-belum {
+            background: #fce8e8;
+            color: #ac2c2c;
+        }
+        .badge-proses {
+            background: #fff3d6;
+            color: #8a6d2b;
+        }
+        .badge-file {
+            background: #e0eef9;
+            color: #1b5e7a;
+            cursor: pointer;
+        }
+        .badge-file:hover {
+            background: #c9dfef;
+        }
+        .upload-zone {
+            border: 2px dashed #c5d9be;
+            border-radius: 14px;
+            padding: 22px 16px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: border-color 0.15s, background 0.15s;
+            background: #f8fbf6;
+        }
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: #2b5e3b;
+            background: #f0f8eb;
+        }
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .file-preview {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: #e0eef9;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: 8px;
+        }
+        .file-preview.show {
+            display: flex;
+        }
+        .kw-history-table {
+            width: 100%;
+            font-size: 13px;
+            border-collapse: collapse;
+        }
+        .kw-history-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: #2a4d36;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 10px 16px;
+            background: #f2f8ef;
+        }
+        .kw-history-table td {
+            padding: 11px 16px;
+            border-top: 1px solid #eef5ea;
+            vertical-align: middle;
+        }
+        .kw-history-table tr:hover td {
+            background: #fafff8;
+        }
+        .toast-kw {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: #1e3a2f;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.25s;
+            z-index: 999;
+            pointer-events: none;
+        }
+        .toast-kw.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .kw-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .kw-modal-overlay.show {
+            display: flex;
+        }
+        .kw-modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 32px 16px;
+            color: #6d8a73;
+        }
+        .empty-state i {
+            font-size: 42px;
+            color: #bcd0b4;
+            margin-bottom: 12px;
+        }
+        .empty-state p {
+            font-size: 14px;
+        }
+        .empty-state .sub {
+            font-size: 12px;
+            color: #8aaa8a;
+        }
+        .export-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .export-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #fff;
+            min-width: 150px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e3ece0;
+            z-index: 50;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .export-dropdown-content.show {
+            display: block;
+        }
+        .export-dropdown-content a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: #1e3a2f;
+            text-decoration: none;
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+        .export-dropdown-content a:hover {
+            background: #f2f8ef;
+        }
+        .print-only {
+            display: none;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: #fff !important;
+                padding: 20px !important;
+            }
+            .card-shadow {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+            .stat-card {
+                border: 1px solid #ddd !important;
+            }
+        }
+        .month-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 4px 12px 4px 16px;
+            border-radius: 30px;
+            border: 1px solid #dce6d6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .month-nav button {
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            color: #2b5e3b;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 20px;
+            transition: background 0.15s;
+        }
+        .month-nav button:hover {
+            background: #eaf1e6;
+        }
+        .month-nav span {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e3a2f;
+            min-width: 100px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body class="antialiased text-gray-800 p-4 md:p-6 mangrove-gradient min-h-screen">
-<div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto">
 
-  <!-- HEADER -->
-  <div class="flex items-center justify-between mb-8 flex-wrap gap-3">
-    <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 bg-[#1e3a2f] rounded-2xl flex items-center justify-center text-white shadow-sm">
-        <i class="fas fa-tree text-lg"></i>
-      </div>
-      <div>
-        <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-[#1a3329] flex items-center gap-2">
-          <span>Sipokar</span>
-          <span class="text-sm font-normal text-[#3b5e4a] bg-white/50 px-3 py-1 rounded-full text-xs border border-[#dbe4d5]">
-            <i class="fas fa-leaf mr-1"></i> Pokdarwis
-          </span>
-        </h1>
-        <p class="text-sm text-[#456b53] flex items-center gap-2">
-          <i class="fas fa-water"></i> Kas · Kebun Raya Mangrove Medokan Ayu
-        </p>
-      </div>
-    </div>
-    <div class="flex items-center gap-2 text-sm bg-white/70 px-4 py-2 rounded-full shadow-sm border border-[#dce6d6]">
-      <i class="fas fa-coins text-[#2b5e3b]"></i>
-      <span class="font-medium text-[#1e3a2f]">Bulan Ini</span>
-      <span class="w-px h-4 bg-[#cbdcc2] mx-1"></span>
-      <i class="far fa-calendar-alt text-[#4d6b53]"></i>
-      <span class="text-[#3a5a43]" id="currentDate"></span>
-    </div>
-  </div>
+        <!-- TOAST -->
+        <div class="toast-kw" id="kwToast"></div>
 
-  <!-- STATISTIK KAS POKDARWIS -->
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-    <div class="stat-card p-4 rounded-2xl flex items-start gap-3">
-      <div class="w-10 h-10 rounded-2xl bg-green-100/70 flex items-center justify-center text-green-800"><i class="fas fa-arrow-down"></i></div>
-      <div><p class="text-xs text-[#4b6b53] font-medium">Total Pemasukan</p><p class="text-xl font-bold text-[#1f5437]">Rp 14.750.000</p></div>
-    </div>
-    <div class="stat-card p-4 rounded-2xl flex items-start gap-3">
-      <div class="w-10 h-10 rounded-2xl bg-red-100/70 flex items-center justify-center text-red-700"><i class="fas fa-arrow-up"></i></div>
-      <div><p class="text-xs text-[#4b6b53] font-medium">Total Pengeluaran</p><p class="text-xl font-bold text-[#973333]">Rp 7.280.000</p></div>
-    </div>
-    <div class="stat-card p-4 rounded-2xl flex items-start gap-3 bg-[#fef9ea] border-[#f0e5c6]">
-      <div class="w-10 h-10 rounded-2xl bg-amber-100/70 flex items-center justify-center text-amber-700"><i class="fas fa-file-invoice-dollar"></i></div>
-      <div><p class="text-xs text-[#7a6a3d] font-medium">Estimasi Pajak</p><p class="text-xl font-bold text-[#826b32]">Rp 675.000</p></div>
-    </div>
-    <div class="stat-card p-4 rounded-2xl flex items-start gap-3 bg-[#e6f2fc] border-[#c5dcec]">
-      <div class="w-10 h-10 rounded-2xl bg-blue-100/70 flex items-center justify-center text-blue-700"><i class="fas fa-broom"></i></div>
-      <div><p class="text-xs text-[#2f5a7a] font-medium">Kebersihan</p><p class="text-xl font-bold text-[#1f5a7a]">Rp 240.000</p></div>
-    </div>
-    <div class="stat-card p-4 rounded-2xl flex items-start gap-3 bg-[#e7f5e7] border-[#b8d9b8]">
-      <div class="w-10 h-10 rounded-2xl bg-[#1e3a2f]/10 flex items-center justify-center text-[#1e3a2f]"><i class="fas fa-hand-holding-usd"></i></div>
-      <div><p class="text-xs text-[#3a6b3a] font-medium">Saldo Kas</p><p class="text-xl font-bold text-[#1a4a1a]">Rp 7.470.000</p></div>
-    </div>
-  </div>
-
-  <!-- GRAFIK + RINGKASAN KEWAJIBAN -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-    <div class="lg:col-span-2 bg-white/90 p-5 rounded-2xl card-shadow border border-[#e3ece0]">
-      <h4 class="text-sm font-bold text-[#1e3a2f] flex items-center gap-2 mb-3"><i class="fas fa-chart-pie text-[#2b5e3b]"></i> Komposisi Pengeluaran</h4>
-      <div class="h-48 relative">
-        <canvas id="expenseChart" class="w-full h-full"></canvas>
-      </div>
-      <div class="flex flex-wrap gap-4 text-xs mt-3 text-[#3a5a43]">
-        <span><span class="inline-block w-3 h-3 rounded-full bg-[#3b7a4b] mr-1"></span> Perawatan</span>
-        <span><span class="inline-block w-3 h-3 rounded-full bg-[#b68b40] mr-1"></span> Pajak</span>
-        <span><span class="inline-block w-3 h-3 rounded-full bg-[#3f7a9e] mr-1"></span> Kebersihan</span>
-        <span><span class="inline-block w-3 h-3 rounded-full bg-[#b34a4a] mr-1"></span> Gaji & Lainnya</span>
-      </div>
-    </div>
-    <div class="bg-white/90 p-5 rounded-2xl card-shadow border border-[#e3ece0] flex flex-col justify-between">
-      <div>
-        <h4 class="text-sm font-bold text-[#1e3a2f] flex items-center gap-2 mb-3"><i class="fas fa-calculator text-[#2b5e3b]"></i> Kewajiban Bulanan</h4>
-        <div class="space-y-3">
-          <div class="flex justify-between items-center border-b border-[#eaf1e6] pb-2">
-            <span class="text-sm flex items-center gap-1"><i class="fas fa-file-invoice text-amber-600"></i> Pajak (11% dari laba)</span>
-            <span class="font-bold text-[#826b32]">Rp 675.000</span>
-          </div>
-          <div class="flex justify-between items-center border-b border-[#eaf1e6] pb-2">
-            <span class="text-sm flex items-center gap-1"><i class="fas fa-broom text-blue-600"></i> Iuran Kebersihan</span>
-            <span class="font-bold text-[#1f5a7a]">Rp 240.000</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm flex items-center gap-1"><i class="fas fa-hand-holding-water text-teal-700"></i> Total Kewajiban</span>
-            <span class="font-bold text-[#1e3a2f]">Rp 915.000</span>
-          </div>
+        <!-- HEADER -->
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-3 no-print">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-[#1e3a2f] rounded-2xl flex items-center justify-center text-white shadow-sm">
+                    <i class="fas fa-tree text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-[#1a3329] flex items-center gap-2">
+                        <span>Sipokar</span>
+                        <span class="text-sm font-normal text-[#3b5e4a] bg-white/50 px-3 py-1 rounded-full text-xs border border-[#dbe4d5]">
+                            <i class="fas fa-leaf mr-1"></i> Pokdarwis
+                        </span>
+                    </h1>
+                </div>
+            </div>
+            <!-- Navigator Bulan -->
+            <div class="month-nav no-print" id="monthNav">
+                <button onclick="changeMonth(-1)" title="Bulan sebelumnya"><i class="fas fa-chevron-left"></i></button>
+                <span id="monthLabel">Juni 2026</span>
+                <button onclick="changeMonth(1)" title="Bulan berikutnya"><i class="fas fa-chevron-right"></i></button>
+            </div>
         </div>
-      </div>
-      <div class="mt-3 text-xs text-[#4f6f57] bg-[#f2f8ef] p-2 rounded-xl flex items-center gap-2">
-        <i class="fas fa-info-circle text-[#2b5e3b]"></i> Pajak dihitung 11% dari laba kotor (setelah pengeluaran operasional)
-      </div>
-    </div>
-  </div>
 
-  <!-- FORM TAMBAH TRANSAKSI (KATEGORI SEWA + TIKET) -->
-  <div class="bg-white/90 backdrop-blur-sm p-5 md:p-6 rounded-2xl card-shadow border border-[#e3ece0] mb-6">
-    <div class="flex items-center gap-3 mb-4">
-      <div class="w-8 h-8 rounded-xl bg-[#1e3a2f] text-white flex items-center justify-center text-sm"><i class="fas fa-plus-circle"></i></div>
-      <h2 class="text-lg font-bold text-[#1e3a2f]">Tambah Transaksi Kas</h2>
-      <span class="text-xs text-[#5e7d66] bg-[#eaf1e6] px-3 py-1 rounded-full ml-auto"><i class="far fa-clock mr-1"></i> hari ini</span>
-    </div>
-    <form class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-      <div>
-        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="far fa-calendar mr-1"></i> Tanggal</label>
-        <input type="date" value="2026-06-19" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-tag mr-1"></i> Kategori</label>
-        <select class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
-          <!-- Pemasukan (Masuk Kas) -->
-          <optgroup label="PEMASUKAN">
-            <option value="TIKET">🎟️ Tiket Masuk</option>
-            <option value="SEWA_BECAK" selected>🚲 Sewa Becak Air</option>
-            <option value="SEWA_PERAHU">⛵ Sewa Perahu</option>
-            <option value="SEWA_GAZEBO">🏠 Sewa Gazebo</option>
-            <option value="DONASI">🤝 Donasi / Sponsor</option>
-          </optgroup>
-          <!-- Pengeluaran (Keluar Kas) -->
-          <optgroup label="PENGELUARAN">
-            <option value="PERAWATAN">🌿 Perawatan Mangrove</option>
-            <option value="KEBERSIHAN">🧹 Kebersihan</option>
-            <option value="PAJAK">📄 Pajak</option>
-            <option value="GAJI">👨‍🌾 Gaji Petugas</option>
-            <option value="RETRIBUSI">🏢 Retribusi / Iuran Lain</option>
-          </optgroup>
-        </select>
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-rupiah-sign mr-1"></i> Nominal</label>
-        <input type="number" step="0.01" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" placeholder="0">
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-exchange-alt mr-1"></i> Tipe</label>
-        <select class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
-          <option value="PEMASUKAN">✅ Pemasukan</option>
-          <option value="PENGELUARAN">❌ Pengeluaran</option>
-        </select>
-      </div>
-      <div>
-        <button type="submit" class="w-full btn-mangrove text-white p-3 rounded-xl font-bold text-sm shadow-sm flex items-center justify-center gap-2">
-          <i class="fas fa-save"></i> Simpan
-        </button>
-      </div>
-      <div class="md:col-span-5">
-        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-pen mr-1"></i> Keterangan</label>
-        <input type="text" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" placeholder="Contoh: Sewa becak air Minggu, Pembelian bibit mangrove">
-      </div>
-    </form>
-  </div>
-
-  <!-- ===== PANEL KEWAJIBAN PEMBAYARAN ===== -->
-  <div class="bg-white/90 backdrop-blur-sm rounded-2xl card-shadow border border-[#e3ece0] overflow-hidden mb-6">
-
-    <!-- Header panel -->
-    <div class="flex items-center justify-between px-6 py-4 border-b border-[#eaf1e6] flex-wrap gap-2">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
-          <i class="fas fa-file-invoice-dollar text-amber-600 text-sm"></i>
+        <!-- STATISTIK KAS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="stat-card p-4 rounded-2xl flex items-start gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-green-100/70 flex items-center justify-center text-green-800"><i class="fas fa-arrow-down"></i></div>
+                <div>
+                    <p class="text-xs text-[#4b6b53] font-medium">Total Pemasukan</p>
+                    <p class="text-xl font-bold text-[#1f5437]" id="totalPemasukan">Rp 0</p>
+                </div>
+            </div>
+            <div class="stat-card p-4 rounded-2xl flex items-start gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-red-100/70 flex items-center justify-center text-red-700"><i class="fas fa-arrow-up"></i></div>
+                <div>
+                    <p class="text-xs text-[#4b6b53] font-medium">Total Pengeluaran</p>
+                    <p class="text-xl font-bold text-[#973333]" id="totalPengeluaran">Rp 0</p>
+                </div>
+            </div>
+            <div class="stat-card p-4 rounded-2xl flex items-start gap-3 bg-[#e7f5e7] border-[#b8d9b8]">
+                <div class="w-10 h-10 rounded-2xl bg-[#1e3a2f]/10 flex items-center justify-center text-[#1e3a2f]"><i class="fas fa-hand-holding-usd"></i></div>
+                <div>
+                    <p class="text-xs text-[#3a6b3a] font-medium">Saldo Kas</p>
+                    <p class="text-xl font-bold text-[#1a4a1a]" id="saldoKas">Rp 0</p>
+                </div>
+            </div>
         </div>
-        <div>
-          <h3 class="font-bold text-[#1e3a2f] text-sm">Kewajiban Pembayaran</h3>
-          <p class="text-xs text-[#4f6f57]">Catat & upload bukti bayar — dikirim ke admin untuk verifikasi</p>
+
+        <!-- GRAFIK + RETRIBUSI -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div class="lg:col-span-2 bg-white/90 p-5 rounded-2xl card-shadow border border-[#e3ece0]">
+                <h4 class="text-sm font-bold text-[#1e3a2f] flex items-center gap-2 mb-3"><i class="fas fa-chart-pie text-[#2b5e3b]"></i> Komposisi Pengeluaran</h4>
+                <div class="h-48 relative">
+                    <canvas id="expenseChart" class="w-full h-full"></canvas>
+                </div>
+                <div class="flex flex-wrap gap-4 text-xs mt-3 text-[#3a5a43]" id="chartLegend"></div>
+                <div id="chartEmpty" class="empty-state hidden">
+                    <i class="fas fa-chart-pie"></i>
+                    <p>Belum ada data pengeluaran</p>
+                    <p class="sub">Tambahkan catatan keuangan untuk mulai melihat grafik</p>
+                </div>
+            </div>
+
+            <!-- RETRIBUSI -->
+            <div class="bg-white/90 p-5 rounded-2xl card-shadow border border-[#e3ece0] flex flex-col">
+                <div>
+                    <h4 class="text-sm font-bold text-[#1e3a2f] flex items-center gap-2 mb-3">
+                        <i class="fas fa-hand-holding-usd text-[#2b5e3b]"></i> Retribusi
+                    </h4>
+                    <div class="space-y-3" id="retribusiContainer">
+                        <div class="flex justify-between items-center border-b border-[#eaf1e6] pb-2">
+                            <span class="text-sm flex items-center gap-1"><i class="fas fa-file-invoice text-amber-600"></i> Pajak <span class="text-xs text-[#6d8a73]">(PPN 11% Sewa + PPh Final 0,5%)</span></span>
+                            <span class="font-bold text-[#826b32]" id="pajakNominal">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-[#eaf1e6] pb-2">
+                            <span class="text-sm flex items-center gap-1"><i class="fas fa-trash-alt text-blue-600"></i> Iuran Sampah</span>
+                            <span class="font-bold text-[#1f5a7a]" id="sampahNominal">Rp 100.000</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-1">
+                            <span class="text-sm flex items-center gap-1"><i class="fas fa-hand-holding-water text-teal-700"></i> Total Retribusi</span>
+                            <span class="font-bold text-[#1e3a2f]" id="totalRetribusi">Rp 100.000</span>
+                        </div>
+                    </div>
+                    <div id="retribusiEmpty" class="hidden empty-state py-4">
+                        <i class="fas fa-file-invoice-dollar text-3xl"></i>
+                        <p class="text-sm">Belum ada data retribusi</p>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-[#4f6f57] bg-[#f2f8ef] p-2 rounded-xl flex items-center gap-2">
+                    <i class="fas fa-info-circle text-[#2b5e3b] flex-shrink-0"></i>
+                    <span>PPN 11% dikenakan atas <strong>Sewa Tempat</strong> (dibayar ke Pemkot). PPh Final UMKM 0,5% dari omzet kotor.</span>
+                </div>
+            </div>
         </div>
-      </div>
-      <button onclick="document.getElementById('formKewajiban').classList.toggle('hidden')" class="text-xs bg-[#1e3a2f] text-white px-4 py-1.5 rounded-full flex items-center gap-1 hover:bg-[#143026] transition-colors">
-        <i class="fas fa-plus text-xs"></i> Tambah
-      </button>
+
+        <!-- PANEL RETRIBUSI + BUKTI PEMBAYARAN -->
+        <div class="bg-white/90 backdrop-blur-sm rounded-2xl card-shadow border border-[#e3ece0] overflow-hidden mb-6 no-print">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#eaf1e6] flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                        <i class="fas fa-receipt text-amber-600 text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-[#1e3a2f] text-sm">Bukti Pembayaran Retribusi</h3>
+                        <p class="text-xs text-[#4f6f57]">Upload bukti bayar — dikirim ke admin untuk verifikasi</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('formRetribusi').classList.toggle('hidden')" class="text-xs bg-[#1e3a2f] text-white px-4 py-1.5 rounded-full flex items-center gap-1 hover:bg-[#143026] transition-colors">
+                    <i class="fas fa-plus text-xs"></i> Tambah
+                </button>
+            </div>
+
+            <!-- Kartu Status Retribusi -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 border-b border-[#eaf1e6]" id="statusRetribusiCards">
+                <div class="kw-card" id="cardPajak">
+                    <div class="flex items-start justify-between mb-1">
+                        <div class="text-xs text-[#7a6a3d] font-semibold flex items-center gap-1.5"><i class="fas fa-file-invoice text-amber-500"></i> Pajak</div>
+                        <span class="badge-belum text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1" id="statusPajak"><i class="fas fa-circle text-xs"></i> Belum bayar</span>
+                    </div>
+                    <div class="text-lg font-bold text-[#826b32] mt-1" id="cardPajakNominal">Rp 0</div>
+                    <div class="text-xs text-[#9a7a50] mt-0.5" id="cardPajakTempo">Jatuh tempo: —</div>
+                    <div class="kw-progress"><div class="kw-progress-fill bg-amber-400" id="progressPajak" style="width:0%"></div></div>
+                </div>
+                <div class="kw-card" id="cardSampah">
+                    <div class="flex items-start justify-between mb-1">
+                        <div class="text-xs text-[#2f5a7a] font-semibold flex items-center gap-1.5"><i class="fas fa-trash-alt text-blue-500"></i> Iuran Sampah</div>
+                        <span class="badge-belum text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1" id="statusSampah"><i class="fas fa-circle text-xs"></i> Belum bayar</span>
+                    </div>
+                    <div class="text-lg font-bold text-[#1f5a7a] mt-1">Rp 100.000</div>
+                    <div class="text-xs text-[#4f7a7a] mt-0.5" id="cardSampahTempo">Jatuh tempo: —</div>
+                    <div class="kw-progress"><div class="kw-progress-fill bg-green-500" id="progressSampah" style="width:0%"></div></div>
+                </div>
+            </div>
+
+            <!-- Form Tambah Retribusi -->
+            <div id="formRetribusi" class="hidden p-5 border-b border-[#eaf1e6] bg-[#fafff8]">
+                <p class="text-sm font-bold text-[#1e3a2f] mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-[#2b5e3b]"></i> Catat Pembayaran Retribusi</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Jenis</label>
+                        <select id="rbJenis" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
+                            <option value="Pajak">📄 Pajak (PPN 11% Sewa + PPh Final 0,5%)</option>
+                            <option value="Iuran Sampah">🧹 Iuran Sampah</option>
+                            <option value="Lainnya">📋 Retribusi Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Nominal Dibayar</label>
+                        <input type="number" id="rbNominal" min="0" step="1000" placeholder="0" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Tanggal Bayar</label>
+                        <input type="date" id="rbTanggal" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" />
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Keterangan (opsional)</label>
+                    <input type="text" id="rbKeterangan" placeholder="Contoh: Pajak bulan Juni 2026 via transfer" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Bukti Pembayaran <span class="text-red-400">*</span></label>
+                    <div class="upload-zone" id="rbUploadZone">
+                        <input type="file" id="rbFileInput" accept="image/*,.pdf" onchange="rbHandleFile(this)" />
+                        <div id="rbUzContent">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-[#8aab8a] mb-2 block"></i>
+                            <div class="text-sm text-[#4f6f57] font-medium">Klik atau seret file bukti</div>
+                            <div class="text-xs text-[#7a9a7a] mt-1">JPG, PNG, atau PDF · Maks. 5 MB</div>
+                        </div>
+                    </div>
+                    <div class="file-preview" id="rbFilePreview">
+                        <i class="fas fa-file-alt text-[#1b5e7a] text-xl flex-shrink-0"></i>
+                        <span class="text-sm text-[#1b5e7a] font-medium flex-1 truncate" id="rbFpName">—</span>
+                        <span class="text-xs text-[#4a7a9a]" id="rbFpSize"></span>
+                        <button onclick="rbRemoveFile()" class="ml-2 text-[#1b5e7a] hover:text-red-500 transition-colors"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-[#4f6f57] bg-[#f0f8ea] border border-[#d0e8c8] rounded-xl p-3 mb-4">
+                    <i class="fas fa-info-circle text-[#2b5e3b] flex-shrink-0"></i>
+                    <span>Bukti yang diunggah dikirim ke admin. Status menjadi <strong>Lunas</strong> setelah diverifikasi.</span>
+                </div>
+                <button onclick="rbSimpan()" class="btn-mangrove text-white px-6 py-3 rounded-xl font-bold text-sm shadow-sm flex items-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Kirim ke Admin
+                </button>
+            </div>
+
+            <!-- Riwayat Retribusi -->
+            <div class="overflow-x-auto">
+                <table class="kw-history-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Jenis</th>
+                            <th>Keterangan</th>
+                            <th>Bukti</th>
+                            <th>Status</th>
+                            <th class="text-right">Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rbHistoryBody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-[#f6fbf3] px-5 py-3 text-xs text-[#4f6f57] border-t border-[#dce8d6] flex justify-between items-center flex-wrap gap-2">
+                <span id="rbCount"><i class="fas fa-history mr-1"></i> 0 transaksi retribusi</span>
+                <span class="text-[#8aaa8a]">* status berubah setelah verifikasi admin</span>
+            </div>
+        </div>
+
+        <!-- CATATAN KEUANGAN -->
+        <div class="bg-white/90 backdrop-blur-sm p-5 md:p-6 rounded-2xl card-shadow border border-[#e3ece0] mb-6 no-print">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-xl bg-[#1e3a2f] text-white flex items-center justify-center text-sm"><i class="fas fa-pen-fancy"></i></div>
+                <h2 class="text-lg font-bold text-[#1e3a2f]">Catatan Keuangan</h2>
+                <span class="text-xs text-[#5e7d66] bg-[#eaf1e6] px-3 py-1 rounded-full ml-auto"><i class="far fa-clock mr-1"></i> hari ini</span>
+            </div>
+            <form id="formCatatan" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="far fa-calendar mr-1"></i> Tanggal</label>
+                    <input type="date" id="catTanggal" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" />
+                </div>
+                <div class="md:col-span-1">
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-pen mr-1"></i> Keterangan</label>
+                    <input type="text" id="catKeterangan" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" placeholder="Contoh: Sewa becak air" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-tag mr-1"></i> Kategori</label>
+                    <select id="catKategori" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
+                        <option value="PEMASUKAN">✅ Pemasukan</option>
+                        <option value="PENGELUARAN">❌ Pengeluaran</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-rupiah-sign mr-1"></i> Nominal</label>
+                    <input type="number" id="catNominal" step="0.01" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" placeholder="0" />
+                </div>
+                <div class="md:col-span-4 flex justify-end">
+                    <button type="submit" class="btn-mangrove text-white px-6 py-3 rounded-xl font-bold text-sm shadow-sm flex items-center gap-2">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- RIWAYAT TRANSAKSI -->
+        <div class="bg-white/95 rounded-2xl card-shadow border border-[#e3ece0] overflow-hidden no-print">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#eaf1e6] flex-wrap gap-2">
+                <h3 class="font-bold text-[#1e3a2f] flex items-center gap-2">
+                    <i class="fas fa-list-ul text-[#2b5e3b]"></i> Riwayat Transaksi
+                    <span class="ml-2 text-xs bg-[#eaf1e6] px-2.5 py-0.5 rounded-full text-[#2b5e3b]" id="riwayatCount">0</span>
+                </h3>
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-600"></span> pemasukan</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500"></span> pengeluaran</span>
+                    <div class="relative">
+                        <input type="text" id="searchRiwayat" placeholder="Cari transaksi..." class="pl-8 pr-3 py-1.5 border border-[#d3e0cd] rounded-xl text-xs focus:ring-1 focus:ring-[#2b5e3b] outline-none w-36" />
+                        <i class="fas fa-search absolute left-2.5 top-2 text-[#6d8a73] text-xs"></i>
+                    </div>
+                    <button onclick="hapusSemuaData()" class="text-xs text-red-500 hover:text-red-700 transition-colors flex items-center gap-1">
+                        <i class="fas fa-trash-alt"></i> Hapus Semua
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-[#f2f8ef] text-[#2a4d36] text-xs uppercase tracking-wider">
+                        <tr>
+                            <th class="px-6 py-3.5 text-left"><i class="far fa-calendar-alt mr-1"></i> Tanggal</th>
+                            <th class="px-6 py-3.5 text-left">Keterangan</th>
+                            <th class="px-6 py-3.5 text-left">Kategori</th>
+                            <th class="px-6 py-3.5 text-right">Nominal</th>
+                            <th class="px-6 py-3.5 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riwayatBody">
+                    </tbody>
+                </table>
+            </div>
+            <div id="riwayatEmpty" class="empty-state py-8">
+                <i class="fas fa-inbox"></i>
+                <p>Belum ada catatan keuangan untuk bulan ini</p>
+                <p class="sub">Tambahkan transaksi pertama melalui formulir di atas</p>
+            </div>
+            <div class="bg-[#f6fbf3] px-6 py-3 text-xs text-[#4f6f57] border-t border-[#dce8d6] flex justify-between items-center flex-wrap gap-2" id="riwayatFooter">
+                <span id="riwayatInfo"><i class="fas fa-chevron-left mr-2"></i> 0 transaksi</span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm border-t border-[#d4e2ce] pt-6 no-print">
+            <div class="flex items-center gap-4 text-[#2b5e3b]">
+                <span class="flex items-center gap-1"><i class="fas fa-file-export"></i> Ekspor Laporan</span>
+                <div class="export-dropdown">
+                    <button onclick="toggleExport()" class="btn-outline-mangrove px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 hover:bg-[#1e3a2f] hover:text-white transition-colors">
+                        <i class="fas fa-download"></i> Unduh
+                    </button>
+                    <div class="export-dropdown-content" id="exportDropdown">
+                        <a onclick="exportPDF()"><i class="fas fa-file-pdf text-red-500"></i> PDF</a>
+                        <a onclick="exportWord()"><i class="fas fa-file-word text-blue-600"></i> Word</a>
+                        <a onclick="exportExcel()"><i class="fas fa-file-excel text-green-600"></i> Excel</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-[#466a4e]"><i class="fas fa-map-pin mr-1"></i> Medokan Ayu</div>
+        </div>
+
+        <!-- MODAL PREVIEW BUKTI -->
+        <div class="kw-modal-overlay" id="rbModal" onclick="if(event.target===this)this.classList.remove('show')">
+            <div class="kw-modal">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-[#1e3a2f] flex items-center gap-2"><i class="fas fa-file-image text-[#2b5e3b]"></i> Pratinjau Bukti</h4>
+                    <button onclick="document.getElementById('rbModal').classList.remove('show')" class="text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="bg-[#f2f8ef] rounded-xl p-8 text-center mb-4">
+                    <i class="fas fa-file-alt text-5xl text-[#2b5e3b] mb-3 block"></i>
+                    <p class="font-semibold text-[#1e3a2f]" id="rbModalFileName">—</p>
+                    <p class="text-xs text-[#4f6f57] mt-1">File bukti pembayaran</p>
+                </div>
+                <p class="text-xs text-[#4f6f57] text-center bg-amber-50 border border-amber-200 rounded-xl p-2">
+                    <i class="fas fa-info-circle text-amber-500 mr-1"></i> Pratinjau file hanya tersedia di versi produksi dengan backend
+                </p>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Kartu Status Kewajiban -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 border-b border-[#eaf1e6]">
-      <div class="kw-card">
-        <div class="flex items-start justify-between mb-1">
-          <div class="text-xs text-[#7a6a3d] font-semibold flex items-center gap-1.5"><i class="fas fa-file-invoice text-amber-500"></i> Pajak (11%)</div>
-          <span class="badge-belum text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1"><i class="fas fa-circle text-xs"></i> Belum bayar</span>
-        </div>
-        <div class="text-lg font-bold text-[#826b32] mt-1">Rp 675.000</div>
-        <div class="text-xs text-[#9a7a50] mt-0.5">Jatuh tempo: 30 Jun 2026</div>
-        <div class="kw-progress"><div class="kw-progress-fill bg-amber-400" style="width:0%"></div></div>
-      </div>
-      <div class="kw-card">
-        <div class="flex items-start justify-between mb-1">
-          <div class="text-xs text-[#2f5a7a] font-semibold flex items-center gap-1.5"><i class="fas fa-broom text-blue-500"></i> Iuran Kebersihan</div>
-          <span class="badge-lunas text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1"><i class="fas fa-check-circle text-xs"></i> Lunas</span>
-        </div>
-        <div class="text-lg font-bold text-[#1f5a7a] mt-1">Rp 240.000</div>
-        <div class="text-xs text-[#4f7a7a] mt-0.5">Dibayar: 18 Jun 2026</div>
-        <div class="kw-progress"><div class="kw-progress-fill bg-green-500" style="width:100%"></div></div>
-      </div>
-      <div class="kw-card">
-        <div class="flex items-start justify-between mb-1">
-          <div class="text-xs text-[#4a5a3a] font-semibold flex items-center gap-1.5"><i class="fas fa-building text-gray-500"></i> Retribusi Dinas</div>
-          <span class="badge-proses text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1"><i class="fas fa-clock text-xs"></i> Menunggu verifikasi</span>
-        </div>
-        <div class="text-lg font-bold text-[#4a4a1a] mt-1">Rp 500.000</div>
-        <div class="text-xs text-[#7a7a4a] mt-0.5">Dikirim: 17 Jun 2026</div>
-        <div class="kw-progress"><div class="kw-progress-fill bg-amber-300" style="width:60%"></div></div>
-      </div>
-    </div>
+    <script>
+        // ============================================================
+        // DATA LAYER (localStorage) & STATE BULAN
+        // ============================================================
+        const STORAGE_KEY = 'sipokar_data';
 
-    <!-- Form Tambah Kewajiban (tersembunyi default) -->
-    <div id="formKewajiban" class="hidden p-5 border-b border-[#eaf1e6] bg-[#fafff8]">
-      <p class="text-sm font-bold text-[#1e3a2f] mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-[#2b5e3b]"></i> Catat Pembayaran Kewajiban</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <div>
-          <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Jenis Kewajiban</label>
-          <select id="kwJenis" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
-            <option value="Pajak (11%)">📄 Pajak (11% dari laba)</option>
-            <option value="Iuran Kebersihan">🧹 Iuran Kebersihan</option>
-            <option value="Retribusi Dinas">🏢 Retribusi Dinas</option>
-            <option value="Iuran Lainnya">📋 Kewajiban Lainnya</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Nominal Dibayar</label>
-          <input type="number" id="kwNominal" min="0" step="1000" placeholder="0" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Tanggal Bayar</label>
-          <input type="date" id="kwTanggal" value="2026-06-22" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Keterangan (opsional)</label>
-        <input type="text" id="kwKeterangan" placeholder="Contoh: Pajak bulan Juni 2026 via transfer BRI" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
-      </div>
-      <div class="mb-4">
-        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Bukti Pembayaran <span class="text-red-400">*</span></label>
-        <div class="upload-zone" id="kwUploadZone">
-          <input type="file" id="kwFileInput" accept="image/*,.pdf" onchange="kwHandleFile(this)">
-          <div id="kwUzContent">
-            <i class="fas fa-cloud-upload-alt text-3xl text-[#8aab8a] mb-2 block"></i>
-            <div class="text-sm text-[#4f6f57] font-medium">Klik atau seret file bukti pembayaran</div>
-            <div class="text-xs text-[#7a9a7a] mt-1">JPG, PNG, atau PDF · Maks. 5 MB</div>
-          </div>
-        </div>
-        <div class="file-preview" id="kwFilePreview">
-          <i class="fas fa-file-alt text-[#1b5e7a] text-xl flex-shrink-0"></i>
-          <span class="text-sm text-[#1b5e7a] font-medium flex-1 truncate" id="kwFpName">—</span>
-          <span class="text-xs text-[#4a7a9a]" id="kwFpSize"></span>
-          <button onclick="kwRemoveFile()" class="ml-2 text-[#1b5e7a] hover:text-red-500 transition-colors" title="Hapus file"><i class="fas fa-times"></i></button>
-        </div>
-      </div>
-      <div class="flex items-center gap-3 text-xs text-[#4f6f57] bg-[#f0f8ea] border border-[#d0e8c8] rounded-xl p-3 mb-4">
-        <i class="fas fa-info-circle text-[#2b5e3b] flex-shrink-0"></i>
-        <span>Bukti yang diunggah dikirim ke admin. Status berubah menjadi <strong>Lunas</strong> setelah admin mengkonfirmasi.</span>
-      </div>
-      <button onclick="kwSimpan()" class="btn-mangrove text-white px-6 py-3 rounded-xl font-bold text-sm shadow-sm flex items-center gap-2">
-        <i class="fas fa-paper-plane"></i> Kirim ke Admin
-      </button>
-    </div>
+        function getDefaultData() {
+            return { transactions: [], retribusi: [] };
+        }
 
-    <!-- Riwayat Kewajiban -->
-    <div class="overflow-x-auto">
-      <table class="kw-history-table">
-        <thead>
-          <tr>
-            <th>Tanggal</th>
-            <th>Jenis</th>
-            <th>Keterangan</th>
-            <th>Bukti</th>
-            <th>Status</th>
-            <th class="text-right">Nominal</th>
-          </tr>
-        </thead>
-        <tbody id="kwHistoryBody">
-          <tr>
-            <td class="font-medium text-[#2d4d36]">18 Jun 2026</td>
-            <td>Iuran Kebersihan</td>
-            <td class="text-[#4f6f57]">Transfer BCA Juni</td>
-            <td><span class="badge-file text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1" onclick="kwPreviewBukti('bukti_kebersihan_jun.jpg')"><i class="fas fa-paperclip"></i> Lihat</span></td>
-            <td><span class="badge-lunas text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas fa-check-circle"></i> Lunas</span></td>
-            <td class="text-right font-bold text-[#973333]">Rp 240.000</td>
-          </tr>
-          <tr>
-            <td class="font-medium text-[#2d4d36]">17 Jun 2026</td>
-            <td>Retribusi Dinas</td>
-            <td class="text-[#4f6f57]">Retribusi Mei–Jun</td>
-            <td><span class="badge-file text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1" onclick="kwPreviewBukti('retribusi_jun.pdf')"><i class="fas fa-paperclip"></i> Lihat</span></td>
-            <td><span class="badge-proses text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas fa-clock"></i> Menunggu verifikasi</span></td>
-            <td class="text-right font-bold text-[#973333]">Rp 500.000</td>
-          </tr>
-          <tr>
-            <td class="font-medium text-[#2d4d36]">01 Jun 2026</td>
-            <td>Pajak (11%)</td>
-            <td class="text-[#4f6f57]">Pajak Mei 2026</td>
-            <td><span class="badge-file text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1" onclick="kwPreviewBukti('pajak_mei.pdf')"><i class="fas fa-paperclip"></i> Lihat</span></td>
-            <td><span class="badge-lunas text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas fa-check-circle"></i> Lunas</span></td>
-            <td class="text-right font-bold text-[#973333]">Rp 620.000</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="bg-[#f6fbf3] px-5 py-3 text-xs text-[#4f6f57] border-t border-[#dce8d6]">
-      <i class="fas fa-history mr-1"></i> 3 transaksi kewajiban tercatat
-    </div>
-  </div>
+        function loadData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    if (!data.transactions) data.transactions = [];
+                    if (!data.retribusi) data.retribusi = [];
+                    return data;
+                }
+            } catch (e) { console.warn('Load data error', e); }
+            return getDefaultData();
+        }
 
-  <!-- Modal preview bukti -->
-  <div class="kw-modal-overlay" id="kwModal" onclick="if(event.target===this)this.classList.remove('show')">
-    <div class="kw-modal">
-      <div class="flex items-center justify-between mb-4">
-        <h4 class="font-bold text-[#1e3a2f] flex items-center gap-2"><i class="fas fa-file-image text-[#2b5e3b]"></i> Pratinjau Bukti</h4>
-        <button onclick="document.getElementById('kwModal').classList.remove('show')" class="text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="bg-[#f2f8ef] rounded-xl p-8 text-center mb-4">
-        <i class="fas fa-file-alt text-5xl text-[#2b5e3b] mb-3 block"></i>
-        <p class="font-semibold text-[#1e3a2f]" id="kwModalFileName">—</p>
-        <p class="text-xs text-[#4f6f57] mt-1">File bukti pembayaran</p>
-      </div>
-      <p class="text-xs text-[#4f6f57] text-center bg-amber-50 border border-amber-200 rounded-xl p-2">
-        <i class="fas fa-info-circle text-amber-500 mr-1"></i> Pratinjau file hanya tersedia di versi produksi dengan backend
-      </p>
-    </div>
-  </div>
+        function saveData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
 
-  <!-- Toast notifikasi -->
-  <div class="toast-kw" id="kwToast"></div>
+        // State bulan yang sedang dilihat (YYYY-MM)
+        let currentMonth = '2026-06';
+        let appData = loadData();
+        let rbSelectedFile = null;
+        let chartInstance = null;
 
-  <!-- TABEL RIWAYAT (dengan contoh sewa) -->
-  <div class="bg-white/95 rounded-2xl card-shadow border border-[#e3ece0] overflow-hidden">
-    <div class="flex items-center justify-between px-6 py-4 border-b border-[#eaf1e6] flex-wrap gap-2">
-      <h3 class="font-bold text-[#1e3a2f] flex items-center gap-2">
-        <i class="fas fa-list-ul text-[#2b5e3b]"></i> Riwayat Transaksi
-        <span class="ml-2 text-xs bg-[#eaf1e6] px-2.5 py-0.5 rounded-full text-[#2b5e3b]">14</span>
-      </h3>
-      <div class="flex flex-wrap items-center gap-3 text-xs">
-        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-600"></span> pemasukan</span>
-        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500"></span> pengeluaran</span>
-        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span> pajak</span>
-        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span> kebersihan</span>
-        <div class="relative">
-          <input type="text" placeholder="Cari transaksi..." class="pl-8 pr-3 py-1.5 border border-[#d3e0cd] rounded-xl text-xs focus:ring-1 focus:ring-[#2b5e3b] outline-none w-36">
-          <i class="fas fa-search absolute left-2.5 top-2 text-[#6d8a73] text-xs"></i>
-        </div>
-      </div>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead class="bg-[#f2f8ef] text-[#2a4d36] text-xs uppercase tracking-wider">
-          <tr><th class="px-6 py-3.5 text-left"><i class="far fa-calendar-alt mr-1"></i> Tanggal</th>
-              <th class="px-6 py-3.5 text-left">Keterangan</th>
-              <th class="px-6 py-3.5 text-left">Kategori</th>
-              <th class="px-6 py-3.5 text-left">Tipe</th>
-              <th class="px-6 py-3.5 text-right">Nominal</th></tr>
-        </thead>
-        <tbody>
-          <!-- DATA BARU dengan SEWA -->
-          <tr class="table-row-hover border-t border-[#eef5ea]"><td class="px-6 py-3.5 font-medium text-[#2d4d36]">19 Jun 2026</td><td>Sewa Becak Air (5 unit)</td><td><span class="bg-[#d4e9f7] text-[#136a8a] px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-bicycle mr-1"></i> Sewa Becak</span></td><td><span class="badge-income px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-chevron-circle-down mr-1"></i> Pemasukan</span></td><td class="text-right font-bold text-[#1f5437]">Rp 1.500.000</td></tr>
-          <tr class="table-row-hover border-t border-[#eef5ea]"><td class="px-6 py-3.5 font-medium text-[#2d4d36]">19 Jun 2026</td><td>Sewa Perahu Keliling</td><td><span class="bg-[#d4e9f7] text-[#136a8a] px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-ship mr-1"></i> Sewa Perahu</span></td><td><span class="badge-income px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-chevron-circle-down mr-1"></i> Pemasukan</span></td><td class="text-right font-bold text-[#1f5437]">Rp 850.000</td></tr>
-          <tr class="table-row-hover border-t border-[#eef5ea]"><td class="px-6 py-3.5 font-medium text-[#2d4d36]">18 Jun 2026</td><td>Penjualan Tiket Masuk</td><td><span class="badge-income px-3 py-1 rounded-full text-xs font-bold">Tiket</span></td><td><span class="badge-income px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-chevron-circle-down mr-1"></i> Pemasukan</span></td><td class="text-right font-bold text-[#1f5437]">Rp 2.100.000</td></tr>
-          <tr class="table-row-hover border-t border-[#eef5ea]"><td class="px-6 py-3.5 font-medium text-[#2d4d36]">18 Jun 2026</td><td>Bibit mangrove & pupuk</td><td><span class="badge-expense px-3 py-1 rounded-full text-xs font-bold">Perawatan</span></td><td><span class="badge-expense px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-chevron-circle-up mr-1"></i> Pengeluaran</span></td><td class="text-right font-bold text-[#973333]">Rp 1.200.000</td></tr>
-          <tr class="table-row-hover border-t border-[#eef5ea]"><td class="px-6 py-3.5 font-medium text-[#2d4d36]">18 Jun 2026</td><td>Iuran kebersihan lingkungan</td><td><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">Kebersihan</span></td><td><span class="badge-expense px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-chevron-circle-up mr-1"></i> Pengeluaran</span></td><td class="text-right font-bold text-[#1f5a7a]">Rp 240.000</td></tr>
-          <tr class="table-row-hover border-t border-[#eef5ea]"><td class="px-6 py-3.5 font-medium text-[#2d4d36]">17 Jun 2026</td><td>Estimasi pajak periode ini</td><td><span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">Pajak</span></td><td><span class="badge-expense px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-chevron-circle-up mr-1"></i> Pengeluaran</span></td><td class="text-right font-bold text-[#826b32]">Rp 675.000</td></tr>
-          <tr class="table-row-hover border-t border-[#eef5ea]"><td class="px-6 py-3.5 font-medium text-[#2d4d36]">16 Jun 2026</td><td>Sewa Gazebo (3 unit)</td><td><span class="bg-[#d4e9f7] text-[#136a8a] px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-umbrella mr-1"></i> Sewa Gazebo</span></td><td><span class="badge-income px-3 py-1 rounded-full text-xs font-bold"><i class="fas fa-chevron-circle-down mr-1"></i> Pemasukan</span></td><td class="text-right font-bold text-[#1f5437]">Rp 450.000</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="bg-[#f6fbf3] px-6 py-3 text-xs text-[#4f6f57] border-t border-[#dce8d6] flex justify-between items-center flex-wrap gap-2">
-      <span><i class="fas fa-chevron-left mr-2"></i> 1-7 dari 14 transaksi</span>
-      <div class="flex gap-2"><span class="px-3 py-1 bg-white rounded-lg border border-[#d3e0cd]"><i class="fas fa-arrow-left"></i></span><span class="px-3 py-1 bg-[#1e3a2f] text-white rounded-lg">1</span><span class="px-3 py-1 bg-white rounded-lg border border-[#d3e0cd]">2</span><span class="px-3 py-1 bg-white rounded-lg border border-[#d3e0cd]">3</span><span class="px-3 py-1 bg-white rounded-lg border border-[#d3e0cd]"><i class="fas fa-arrow-right"></i></span></div>
-    </div>
-  </div>
+        // DOM refs
+        const $ = id => document.getElementById(id);
+        const totalPemasukan = $('totalPemasukan');
+        const totalPengeluaran = $('totalPengeluaran');
+        const saldoKas = $('saldoKas');
+        const pajakNominal = $('pajakNominal');
+        const sampahNominal = $('sampahNominal');
+        const totalRetribusi = $('totalRetribusi');
+        const riwayatBody = $('riwayatBody');
+        const riwayatEmpty = $('riwayatEmpty');
+        const riwayatCount = $('riwayatCount');
+        const riwayatInfo = $('riwayatInfo');
+        const rbHistoryBody = $('rbHistoryBody');
+        const rbCount = $('rbCount');
+        const monthLabel = $('monthLabel');
 
-  <!-- FOOTER -->
-  <div class="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm border-t border-[#d4e2ce] pt-6">
-    <div class="flex items-center gap-4 text-[#2b5e3b]">
-      <span class="flex items-center gap-1"><i class="fas fa-images"></i> Lihat Galeri</span>
-      <span class="w-px h-4 bg-[#c0d4b8]"></span>
-      <span class="flex items-center gap-1"><i class="fas fa-info-circle"></i> Info Wisata</span>
-      <span class="w-px h-4 bg-[#c0d4b8]"></span>
-      <span class="flex items-center gap-1"><i class="fas fa-file-export"></i> Export Laporan</span>
-    </div>
-    <div class="text-[#466a4e]"><i class="fas fa-map-pin mr-1"></i> Medokan Ayu · Kebun Raya Mangrove</div>
-  </div>
+        // ============================================================
+        // NAVIGASI BULAN
+        // ============================================================
+        function changeMonth(delta) {
+            const [year, month] = currentMonth.split('-').map(Number);
+            let newMonth = month + delta;
+            let newYear = year;
+            if (newMonth > 12) { newMonth = 1;
+                newYear += 1; }
+            if (newMonth < 1) { newMonth = 12;
+                newYear -= 1; }
+            currentMonth = `${newYear}-${String(newMonth).padStart(2,'0')}`;
+            updateMonthLabel();
+            renderAll();
+        }
 
-</div>
+        function updateMonthLabel() {
+            const [y, m] = currentMonth.split('-').map(Number);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+            monthLabel.textContent = `${months[m-1]} ${y}`;
+        }
 
-<script>
-  document.getElementById('currentDate').textContent = new Date().toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+        // ============================================================
+        // FILTER DATA PER BULAN
+        // ============================================================
+        function getFilteredData() {
+            const targetMonth = currentMonth; // "YYYY-MM"
+            const filteredTx = appData.transactions.filter(t => {
+                if (!t.date) return false;
+                return t.date.startsWith(targetMonth);
+            });
+            const filteredRb = appData.retribusi.filter(r => {
+                if (!r.tanggal) return false;
+                return r.tanggal.startsWith(targetMonth);
+            });
+            return { transactions: filteredTx, retribusi: filteredRb };
+        }
 
-  const ctx = document.getElementById('expenseChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Perawatan', 'Pajak', 'Kebersihan', 'Gaji & Lainnya'],
-      datasets: [{
-        data: [2500000, 675000, 240000, 3865000],
-        backgroundColor: ['#3b7a4b', '#b68b40', '#3f7a9e', '#b34a4a'],
-        borderColor: '#ffffff',
-        borderWidth: 2,
-        hoverOffset: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      cutout: '70%'
-    }
-  });
-</script>
+        // ============================================================
+        // RENDER FUNCTIONS (semua menggunakan filtered data)
+        // ============================================================
+        function renderAll() {
+            const filtered = getFilteredData();
+            renderStats(filtered.transactions);
+            renderRetribusi(filtered.transactions, filtered.retribusi);
+            renderRiwayat(filtered.transactions);
+            renderRiwayatRetribusi(filtered.retribusi);
+            renderChart(filtered.transactions);
+            updateStatusCards(filtered.retribusi);
+        }
 
-<script>
-  // ===== KEWAJIBAN: Upload & Form Logic =====
-  let kwSelectedFile = null;
+        function renderStats(transactions) {
+            const income = transactions.filter(t => t.type === 'PEMASUKAN').reduce((s, t) => s + Number(t.amount), 0);
+            const expense = transactions.filter(t => t.type === 'PENGELUARAN').reduce((s, t) => s + Number(t.amount), 0);
+            totalPemasukan.textContent = 'Rp ' + income.toLocaleString('id-ID');
+            totalPengeluaran.textContent = 'Rp ' + expense.toLocaleString('id-ID');
+            saldoKas.textContent = 'Rp ' + (income - expense).toLocaleString('id-ID');
+        }
 
-  function kwHandleFile(input) {
-    const file = input.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { kwShowToast('File terlalu besar. Maks. 5 MB.', 'fas fa-exclamation-triangle'); return; }
-    kwSelectedFile = file;
-    document.getElementById('kwFpName').textContent = file.name;
-    document.getElementById('kwFpSize').textContent = (file.size / 1024).toFixed(0) + ' KB';
-    document.getElementById('kwFilePreview').classList.add('show');
-    document.getElementById('kwUzContent').style.opacity = '0.35';
-  }
+        function renderRetribusi(transactions, retribusi) {
+            const totalOmzet = transactions.filter(t => t.type === 'PEMASUKAN').reduce((s, t) => s + Number(t.amount), 0);
+            const rentalIncome = totalOmzet * 0.6;
+            const ppn = Math.round(rentalIncome * 0.11);
+            const pphFinal = Math.round(totalOmzet * 0.005);
+            const totalPajak = ppn + pphFinal;
+            const iuranSampah = 100000;
 
-  function kwRemoveFile() {
-    kwSelectedFile = null;
-    document.getElementById('kwFileInput').value = '';
-    document.getElementById('kwFilePreview').classList.remove('show');
-    document.getElementById('kwUzContent').style.opacity = '1';
-  }
+            pajakNominal.textContent = 'Rp ' + totalPajak.toLocaleString('id-ID');
+            sampahNominal.textContent = 'Rp ' + iuranSampah.toLocaleString('id-ID');
+            totalRetribusi.textContent = 'Rp ' + (totalPajak + iuranSampah).toLocaleString('id-ID');
+            $('cardPajakNominal').textContent = 'Rp ' + totalPajak.toLocaleString('id-ID');
 
-  const kwZone = document.getElementById('kwUploadZone');
-  if (kwZone) {
-    kwZone.addEventListener('dragover', (e) => { e.preventDefault(); kwZone.classList.add('dragover'); });
-    kwZone.addEventListener('dragleave', () => kwZone.classList.remove('dragover'));
-    kwZone.addEventListener('drop', (e) => {
-      e.preventDefault(); kwZone.classList.remove('dragover');
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        const dt = new DataTransfer(); dt.items.add(file);
-        document.getElementById('kwFileInput').files = dt.files;
-        kwHandleFile(document.getElementById('kwFileInput'));
-      }
-    });
-  }
+            const pajakPaid = retribusi.filter(r => r.jenis === 'Pajak' && r.status === 'Lunas');
+            const sampahPaid = retribusi.filter(r => r.jenis === 'Iuran Sampah' && r.status === 'Lunas');
 
-  function kwSimpan() {
-    const jenis = document.getElementById('kwJenis');
-    const nominal = document.getElementById('kwNominal').value;
-    const tgl = document.getElementById('kwTanggal').value;
-    const ket = document.getElementById('kwKeterangan').value;
+            const pajakStatus = $('statusPajak');
+            const sampahStatus = $('statusSampah');
+            const progPajak = $('progressPajak');
+            const progSampah = $('progressSampah');
 
-    if (!nominal || parseInt(nominal) <= 0) { kwShowToast('Isi nominal terlebih dahulu.', 'fas fa-exclamation-circle'); return; }
-    if (!tgl) { kwShowToast('Pilih tanggal bayar.', 'fas fa-calendar'); return; }
-    if (!kwSelectedFile) { kwShowToast('Lampirkan bukti pembayaran.', 'fas fa-paperclip'); return; }
+            if (pajakPaid.length > 0) {
+                pajakStatus.className = 'badge-lunas text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1';
+                pajakStatus.innerHTML = '<i class="fas fa-check-circle text-xs"></i> Lunas';
+                progPajak.style.width = '100%';
+                progPajak.className = 'kw-progress-fill bg-green-500';
+                $('cardPajakTempo').textContent = 'Dibayar: ' + pajakPaid[pajakPaid.length - 1].tanggal;
+            } else {
+                pajakStatus.className = 'badge-belum text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1';
+                pajakStatus.innerHTML = '<i class="fas fa-circle text-xs"></i> Belum bayar';
+                progPajak.style.width = '0%';
+                progPajak.className = 'kw-progress-fill bg-amber-400';
+                $('cardPajakTempo').textContent = 'Jatuh tempo: akhir bulan ini';
+            }
 
-    const tbody = document.getElementById('kwHistoryBody');
-    const d = new Date(tgl);
-    const tglFmt = d.toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
-    const nomFmt = 'Rp ' + parseInt(nominal).toLocaleString('id-ID');
-    const jenisText = jenis.options[jenis.selectedIndex].text.replace(/^.{2}\s/, '');
-    const namaFile = kwSelectedFile.name;
+            if (sampahPaid.length > 0) {
+                sampahStatus.className = 'badge-lunas text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1';
+                sampahStatus.innerHTML = '<i class="fas fa-check-circle text-xs"></i> Lunas';
+                progSampah.style.width = '100%';
+                progSampah.className = 'kw-progress-fill bg-green-500';
+                $('cardSampahTempo').textContent = 'Dibayar: ' + sampahPaid[sampahPaid.length - 1].tanggal;
+            } else {
+                sampahStatus.className = 'badge-belum text-xs px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1';
+                sampahStatus.innerHTML = '<i class="fas fa-circle text-xs"></i> Belum bayar';
+                progSampah.style.width = '0%';
+                progSampah.className = 'kw-progress-fill bg-amber-400';
+                $('cardSampahTempo').textContent = 'Jatuh tempo: akhir bulan ini';
+            }
+        }
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="font-medium text-[#2d4d36]">${tglFmt}</td>
-      <td>${jenisText}</td>
-      <td class="text-[#4f6f57]">${ket || '—'}</td>
-      <td><span class="badge-file text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1 cursor-pointer" onclick="kwPreviewBukti('${namaFile}')"><i class="fas fa-paperclip"></i> ${namaFile.length > 16 ? namaFile.substring(0,14)+'…' : namaFile}</span></td>
-      <td><span class="badge-proses text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas fa-clock"></i> Menunggu verifikasi</span></td>
-      <td class="text-right font-bold text-[#973333]">${nomFmt}</td>
-    `;
-    tbody.prepend(tr);
+        function renderRiwayat(transactions) {
+            riwayatBody.innerHTML = '';
+            if (transactions.length === 0) {
+                riwayatEmpty.style.display = 'block';
+                riwayatCount.textContent = '0';
+                riwayatInfo.innerHTML = '<i class="fas fa-chevron-left mr-2"></i> 0 transaksi';
+                return;
+            }
+            riwayatEmpty.style.display = 'none';
+            riwayatCount.textContent = transactions.length;
+            riwayatInfo.innerHTML = `<i class="fas fa-chevron-left mr-2"></i> ${transactions.length} transaksi`;
 
-    document.getElementById('kwNominal').value = '';
-    document.getElementById('kwKeterangan').value = '';
-    kwRemoveFile();
-    document.getElementById('formKewajiban').classList.add('hidden');
-    kwShowToast('Bukti berhasil dikirim ke admin!', 'fas fa-paper-plane');
-  }
+            const sorted = [...transactions].reverse();
+            sorted.forEach((t, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row-hover border-t border-[#eef5ea]';
+                const isIncome = t.type === 'PEMASUKAN';
+                const badgeClass = isIncome ? 'badge-income' : 'badge-expense';
+                const color = isIncome ? 'text-[#1f5437]' : 'text-[#973333]';
+                const tgl = t.date ? new Date(t.date + 'T00:00:00') : new Date();
+                const tglFmt = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                tr.innerHTML = `
+                        <td class="px-6 py-3.5 font-medium text-[#2d4d36]">${tglFmt}</td>
+                        <td class="px-6 py-3.5">${t.description || '-'}</td>
+                        <td class="px-6 py-3.5"><span class="${badgeClass} px-3 py-1 rounded-full text-xs font-bold">${t.type}</span></td>
+                        <td class="px-6 py-3.5 text-right font-bold ${color}">Rp ${Number(t.amount).toLocaleString('id-ID')}</td>
+                        <td class="px-6 py-3.5 text-center">
+                            <button onclick="hapusTransaksi(${idx})" class="text-red-400 hover:text-red-600 transition-colors text-sm" title="Hapus">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        </td>
+                    `;
+                riwayatBody.appendChild(tr);
+            });
+        }
 
-  function kwPreviewBukti(nama) {
-    document.getElementById('kwModalFileName').textContent = nama;
-    document.getElementById('kwModal').classList.add('show');
-  }
+        function renderRiwayatRetribusi(retribusi) {
+            rbHistoryBody.innerHTML = '';
+            if (retribusi.length === 0) {
+                rbCount.innerHTML = '<i class="fas fa-history mr-1"></i> 0 transaksi retribusi';
+                return;
+            }
+            rbCount.innerHTML = `<i class="fas fa-history mr-1"></i> ${retribusi.length} transaksi retribusi`;
+            const sorted = [...retribusi].reverse();
+            sorted.forEach((r) => {
+                const tr = document.createElement('tr');
+                const statusMap = { 'Belum bayar': 'badge-belum', 'Menunggu verifikasi': 'badge-proses', 'Lunas': 'badge-lunas' };
+                const cls = statusMap[r.status] || 'badge-belum';
+                const iconMap = { 'Belum bayar': 'fa-circle', 'Menunggu verifikasi': 'fa-clock', 'Lunas': 'fa-check-circle' };
+                const icon = iconMap[r.status] || 'fa-circle';
+                const tgl = r.tanggal ? new Date(r.tanggal + 'T00:00:00') : new Date();
+                const tglFmt = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                const fileName = r.bukti || '—';
+                const fileDisplay = fileName !== '—' ?
+                    `<span class="badge-file text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1 cursor-pointer" onclick="previewBuktiRetribusi('${fileName}')"><i class="fas fa-paperclip"></i> ${fileName.length > 16 ? fileName.substring(0,14)+'…' : fileName}</span>` :
+                    '<span class="text-xs text-[#8aaa8a]">—</span>';
+                tr.innerHTML = `
+                        <td class="font-medium text-[#2d4d36]">${tglFmt}</td>
+                        <td>${r.jenis}</td>
+                        <td class="text-[#4f6f57]">${r.keterangan || '—'}</td>
+                        <td>${fileDisplay}</td>
+                        <td><span class="${cls} text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas ${icon} text-xs"></i> ${r.status}</span></td>
+                        <td class="text-right font-bold text-[#973333]">Rp ${Number(r.nominal).toLocaleString('id-ID')}</td>
+                    `;
+                rbHistoryBody.appendChild(tr);
+            });
+        }
 
-  function kwShowToast(msg, icon) {
-    const t = document.getElementById('kwToast');
-    t.innerHTML = `<i class="${icon}"></i> ${msg}`;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
-</script>
+        function renderChart(transactions) {
+            const expenses = transactions.filter(t => t.type === 'PENGELUARAN');
+            const totalExp = expenses.reduce((s, t) => s + Number(t.amount), 0);
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            const chartEmpty = document.getElementById('chartEmpty');
+            const chartLegend = document.getElementById('chartLegend');
+
+            if (totalExp === 0) {
+                chartEmpty.classList.remove('hidden');
+                chartLegend.style.display = 'none';
+                if (chartInstance) { chartInstance.destroy();
+                    chartInstance = null; }
+                return;
+            }
+            chartEmpty.classList.add('hidden');
+            chartLegend.style.display = 'flex';
+
+            const catMap = {};
+            expenses.forEach(t => {
+                const cat = t.description || 'Pengeluaran';
+                catMap[cat] = (catMap[cat] || 0) + Number(t.amount);
+            });
+            const labels = Object.keys(catMap);
+            const data = Object.values(catMap);
+            const colors = ['#3b7a4b', '#b68b40', '#3f7a9e', '#b34a4a', '#8a6d2b', '#6d8a73'];
+
+            if (chartInstance) { chartInstance.destroy(); }
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '70%'
+                }
+            });
+
+            const legendContainer = chartLegend;
+            legendContainer.innerHTML = '';
+            labels.forEach((label, i) => {
+                const span = document.createElement('span');
+                span.innerHTML =
+                    `<span class="inline-block w-3 h-3 rounded-full mr-1" style="background:${colors[i % colors.length]}"></span> ${label}`;
+                legendContainer.appendChild(span);
+            });
+        }
+
+        function updateStatusCards(retribusi) {
+            renderRetribusi(getFilteredData().transactions, retribusi);
+        }
+
+        // ============================================================
+        // RETRIBUSI FORM
+        // ============================================================
+        function rbHandleFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { showToast('File terlalu besar. Maks. 5 MB.', 'fas fa-exclamation-triangle');
+                return; }
+            rbSelectedFile = file;
+            document.getElementById('rbFpName').textContent = file.name;
+            document.getElementById('rbFpSize').textContent = (file.size / 1024).toFixed(0) + ' KB';
+            document.getElementById('rbFilePreview').classList.add('show');
+            document.getElementById('rbUzContent').style.opacity = '0.35';
+        }
+
+        function rbRemoveFile() {
+            rbSelectedFile = null;
+            document.getElementById('rbFileInput').value = '';
+            document.getElementById('rbFilePreview').classList.remove('show');
+            document.getElementById('rbUzContent').style.opacity = '1';
+        }
+
+        const rbZone = document.getElementById('rbUploadZone');
+        if (rbZone) {
+            rbZone.addEventListener('dragover', (e) => { e.preventDefault();
+                rbZone.classList.add('dragover'); });
+            rbZone.addEventListener('dragleave', () => rbZone.classList.remove('dragover'));
+            rbZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                rbZone.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    document.getElementById('rbFileInput').files = dt.files;
+                    rbHandleFile(document.getElementById('rbFileInput'));
+                }
+            });
+        }
+
+        function rbSimpan() {
+            const jenis = document.getElementById('rbJenis').value;
+            const nominal = document.getElementById('rbNominal').value;
+            const tgl = document.getElementById('rbTanggal').value;
+            const ket = document.getElementById('rbKeterangan').value;
+
+            if (!nominal || parseInt(nominal) <= 0) { showToast('Isi nominal terlebih dahulu.', 'fas fa-exclamation-circle');
+                return; }
+            if (!tgl) { showToast('Pilih tanggal bayar.', 'fas fa-calendar'); return; }
+            if (!rbSelectedFile) { showToast('Lampirkan bukti pembayaran.', 'fas fa-paperclip'); return; }
+
+            const entry = {
+                id: Date.now(),
+                jenis: jenis,
+                nominal: parseInt(nominal),
+                tanggal: tgl,
+                keterangan: ket || '',
+                bukti: rbSelectedFile.name,
+                status: 'Menunggu verifikasi'
+            };
+
+            appData.retribusi.push(entry);
+            saveData(appData);
+            rbRemoveFile();
+            document.getElementById('rbNominal').value = '';
+            document.getElementById('rbKeterangan').value = '';
+            document.getElementById('formRetribusi').classList.add('hidden');
+            renderAll();
+            showToast('Bukti retribusi berhasil dikirim!', 'fas fa-paper-plane');
+        }
+
+        function previewBuktiRetribusi(nama) {
+            document.getElementById('rbModalFileName').textContent = nama;
+            document.getElementById('rbModal').classList.add('show');
+        }
+
+        // ============================================================
+        // CATATAN KEUANGAN FORM
+        // ============================================================
+        document.getElementById('formCatatan').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const tanggal = document.getElementById('catTanggal').value;
+            const keterangan = document.getElementById('catKeterangan').value;
+            const kategori = document.getElementById('catKategori').value;
+            const nominal = document.getElementById('catNominal').value;
+
+            if (!tanggal) { showToast('Pilih tanggal transaksi.', 'fas fa-calendar'); return; }
+            if (!nominal || parseFloat(nominal) <= 0) { showToast('Isi nominal dengan benar.', 'fas fa-exclamation-circle');
+                return; }
+
+            const entry = {
+                id: Date.now(),
+                date: tanggal,
+                description: keterangan || '',
+                category: kategori,
+                type: kategori,
+                amount: parseFloat(nominal)
+            };
+
+            appData.transactions.push(entry);
+            saveData(appData);
+            document.getElementById('catNominal').value = '';
+            document.getElementById('catKeterangan').value = '';
+            renderAll();
+            showToast('Catatan keuangan berhasil ditambahkan!', 'fas fa-check-circle');
+        });
+
+        // ============================================================
+        // HAPUS TRANSAKSI
+        // ============================================================
+        function hapusTransaksi(index) {
+            const filtered = getFilteredData().transactions;
+            if (index < 0 || index >= filtered.length) return;
+            const realId = filtered[index].id;
+            const realIndex = appData.transactions.findIndex(t => t.id === realId);
+            if (realIndex === -1) return;
+            if (confirm('Hapus transaksi ini?')) {
+                appData.transactions.splice(realIndex, 1);
+                saveData(appData);
+                renderAll();
+                showToast('Transaksi dihapus.', 'fas fa-trash-alt');
+            }
+        }
+
+        function hapusSemuaData() {
+            if (appData.transactions.length === 0 && appData.retribusi.length === 0) {
+                showToast('Tidak ada data untuk dihapus.', 'fas fa-info-circle');
+                return;
+            }
+            if (confirm('Hapus semua data keuangan? Tindakan ini tidak dapat dibatalkan.')) {
+                appData.transactions = [];
+                appData.retribusi = [];
+                saveData(appData);
+                renderAll();
+                showToast('Semua data telah dihapus.', 'fas fa-trash-alt');
+            }
+        }
+
+        // ============================================================
+        // EXPORT FUNCTIONS
+        // ============================================================
+        function toggleExport() {
+            document.getElementById('exportDropdown').classList.toggle('show');
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.export-dropdown')) {
+                document.getElementById('exportDropdown').classList.remove('show');
+            }
+        });
+
+        function getExportData() {
+            const rows = getFilteredData().transactions;
+            let html = `
+                    <html><head><meta charset="UTF-8"><title>Laporan Keuangan Sipokar</title>
+                    <style>body{font-family:Arial,sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;margin-top:16px;}th,td{border:1px solid #ccc;padding:8px 12px;text-align:left;}th{background:#f2f8ef;}</style>
+                    </head><body>
+                    <h2>Sipokar · Laporan Keuangan</h2>
+                    <p>Periode: ${monthLabel.textContent}</p>
+                    <table>
+                        <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Nominal</th></tr></thead>
+                        <tbody>
+                `;
+            const sorted = [...rows].reverse();
+            sorted.forEach(t => {
+                const tgl = t.date ? new Date(t.date + 'T00:00:00') : new Date();
+                const tglFmt = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                html +=
+                    `<tr><td>${tglFmt}</td><td>${t.description||'-'}</td><td>${t.category||'-'}</td><td>Rp ${Number(t.amount).toLocaleString('id-ID')}</td></tr>`;
+            });
+            const income = rows.filter(t => t.type === 'PEMASUKAN').reduce((s, t) => s + Number(t.amount), 0);
+            const expense = rows.filter(t => t.type === 'PENGELUARAN').reduce((s, t) => s + Number(t.amount), 0);
+            html += `
+                        </tbody>
+                    </table>
+                    <p style="margin-top:16px;color:#666;font-size:13px;">Total Pemasukan: Rp ${income.toLocaleString('id-ID')}</p>
+                    <p style="color:#666;font-size:13px;">Total Pengeluaran: Rp ${expense.toLocaleString('id-ID')}</p>
+                    <p style="color:#666;font-size:13px;">Saldo: Rp ${(income - expense).toLocaleString('id-ID')}</p>
+                    </body></html>
+                `;
+            return html;
+        }
+
+        function exportPDF() {
+            const win = window.open('', '_blank');
+            if (!win) { showToast('Izinkan pop-up untuk ekspor PDF.', 'fas fa-exclamation-triangle'); return; }
+            const html = getExportData();
+            win.document.write(html);
+            win.document.close();
+            win.print();
+        }
+
+        function exportWord() {
+            const html = getExportData();
+            const blob = new Blob([html], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Laporan_${monthLabel.textContent}_Sipokar.doc`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('File Word berhasil diunduh!', 'fas fa-file-word');
+        }
+
+        function exportExcel() {
+            const rows = getFilteredData().transactions;
+            if (rows.length === 0) { showToast('Tidak ada data untuk diekspor.', 'fas fa-info-circle'); return; }
+
+            let csv = 'Tanggal,Keterangan,Kategori,Nominal\n';
+            const sorted = [...rows].reverse();
+            sorted.forEach(t => {
+                const tgl = t.date ? new Date(t.date + 'T00:00:00') : new Date();
+                const tglFmt = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                const desc = (t.description || '-').replace(/,/g, ' ');
+                const cat = (t.category || '-').replace(/,/g, ' ');
+                csv += `${tglFmt},${desc},${cat},${Number(t.amount).toLocaleString('id-ID')}\n`;
+            });
+
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Laporan_${monthLabel.textContent}_Sipokar.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('File Excel (CSV) berhasil diunduh!', 'fas fa-file-excel');
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg, icon) {
+            const t = document.getElementById('kwToast');
+            t.innerHTML = `<i class="${icon}"></i> ${msg}`;
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 3200);
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const y = today.getFullYear();
+            const m = String(today.getMonth() + 1).padStart(2, '0');
+            currentMonth = `${y}-${m}`;
+            updateMonthLabel();
+
+            const todayStr = today.toISOString().split('T')[0];
+            document.getElementById('catTanggal').value = todayStr;
+            document.getElementById('rbTanggal').value = todayStr;
+
+            renderAll();
+
+            document.getElementById('searchRiwayat').addEventListener('input', function() {
+                const q = this.value.toLowerCase();
+                const rows = riwayatBody.querySelectorAll('tr');
+                rows.forEach(tr => {
+                    const text = tr.textContent.toLowerCase();
+                    tr.style.display = text.includes(q) ? '' : 'none';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
