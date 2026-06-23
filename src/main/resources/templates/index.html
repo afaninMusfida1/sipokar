@@ -227,48 +227,24 @@
             <h3 class="text-3xl font-heading font-bold text-gray-900">Galeri Foto</h3>
             <div class="h-1 w-20 bg-green-500 mx-auto mt-4 rounded-full"></div>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
 
-            <div class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-500 cursor-pointer">
-                <img src="/images/galeri/foto1.jpg" alt="Galeri 1" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+        <div th:if="${galeri != null and not #lists.isEmpty(galeri)}" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+
+            <div th:each="g : ${galeri}" class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                <img th:src="${g.url}" th:alt="${g.keterangan} ?: 'Galeri Foto'" src="/images/galeri/placeholder.jpg" alt="Galeri Foto"
+                     class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-green-950/90 via-green-900/30 to-transparent opacity-60 group-hover:opacity-95 transition-opacity duration-500"></div>
                 <div class="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-green-400/70 transition-all duration-500"></div>
-                <div class="absolute inset-x-0 bottom-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <span class="block text-white text-sm font-semibold leading-snug">Keterangan Foto 1</span>
+                <div th:if="${g.keterangan != null and not #strings.isEmpty(g.keterangan)}" class="absolute inset-x-0 bottom-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <span class="block text-white text-sm font-semibold leading-snug" th:text="${g.keterangan}">Keterangan Foto</span>
                     <span class="block w-8 h-0.5 bg-green-400 mt-2 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></span>
                 </div>
             </div>
 
-            <div class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-500 cursor-pointer">
-                <img src="/images/galeri/foto2.jpg" alt="Galeri 2" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-green-950/90 via-green-900/30 to-transparent opacity-60 group-hover:opacity-95 transition-opacity duration-500"></div>
-                <div class="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-green-400/70 transition-all duration-500"></div>
-                <div class="absolute inset-x-0 bottom-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <span class="block text-white text-sm font-semibold leading-snug">Keterangan Foto 2</span>
-                    <span class="block w-8 h-0.5 bg-green-400 mt-2 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></span>
-                </div>
-            </div>
+        </div>
 
-            <div class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-500 cursor-pointer">
-                <img src="/images/galeri/foto3.jpg" alt="Galeri 3" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-green-950/90 via-green-900/30 to-transparent opacity-60 group-hover:opacity-95 transition-opacity duration-500"></div>
-                <div class="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-green-400/70 transition-all duration-500"></div>
-                <div class="absolute inset-x-0 bottom-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <span class="block text-white text-sm font-semibold leading-snug">Keterangan Foto 3</span>
-                    <span class="block w-8 h-0.5 bg-green-400 mt-2 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></span>
-                </div>
-            </div>
-
-            <div class="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-500 cursor-pointer">
-                <img src="/images/galeri/foto4.jpg" alt="Galeri 4" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-green-950/90 via-green-900/30 to-transparent opacity-60 group-hover:opacity-95 transition-opacity duration-500"></div>
-                <div class="absolute inset-0 rounded-2xl ring-2 ring-transparent group-hover:ring-green-400/70 transition-all duration-500"></div>
-                <div class="absolute inset-x-0 bottom-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <span class="block text-white text-sm font-semibold leading-snug">Keterangan Foto 4</span>
-                    <span class="block w-8 h-0.5 bg-green-400 mt-2 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></span>
-                </div>
-            </div>
-
+        <div th:if="${galeri == null or #lists.isEmpty(galeri)}" class="text-center text-gray-400 py-10">
+            Belum ada foto galeri.
         </div>
     </section>
 
