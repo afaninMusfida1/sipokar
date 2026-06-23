@@ -2,6 +2,7 @@ package com.sipokar.webapp.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,14 +18,27 @@ public class KeuanganService {
 
     private final KeuanganRepository keuanganRepository;
 
-    public List<Keuangan> findByUmkmAndTanggalBetween(Long umkmId, LocalDate start, LocalDate end) {
-        return keuanganRepository.findByUmkmIdAndTanggalBetween(umkmId, start, end);
+    // === Overload untuk bulan berjalan ===
+    public BigDecimal totalPemasukan(Long umkmId) {
+        YearMonth now = YearMonth.now();
+        return totalPemasukan(umkmId, now.getYear(), now.getMonthValue());
     }
 
+    public BigDecimal totalPengeluaran(Long umkmId) {
+        YearMonth now = YearMonth.now();
+        return totalPengeluaran(umkmId, now.getYear(), now.getMonthValue());
+    }
+
+    public BigDecimal saldo(Long umkmId) {
+        YearMonth now = YearMonth.now();
+        return saldo(umkmId, now.getYear(), now.getMonthValue());
+    }
+
+    // === Method dengan parameter bulan ===
     public List<Keuangan> riwayat(Long umkmId, int year, int month) {
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
-        return findByUmkmAndTanggalBetween(umkmId, start, end);
+        return keuanganRepository.findByUmkmIdAndTanggalBetween(umkmId, start, end);
     }
 
     public BigDecimal totalPemasukan(Long umkmId, int year, int month) {
@@ -44,6 +58,11 @@ public class KeuanganService {
     public BigDecimal saldo(Long umkmId, int year, int month) {
         return totalPemasukan(umkmId, year, month)
                 .subtract(totalPengeluaran(umkmId, year, month));
+    }
+
+    // === Method untuk controller (find by date range) ===
+    public List<Keuangan> findByUmkmAndTanggalBetween(Long umkmId, LocalDate start, LocalDate end) {
+        return keuanganRepository.findByUmkmIdAndTanggalBetween(umkmId, start, end);
     }
 
     public Keuangan simpan(Keuangan keuangan) {
