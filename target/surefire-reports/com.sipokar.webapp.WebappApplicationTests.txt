@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.sipokar.webapp.WebappApplicationTests
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.27 s -- in com.sipokar.webapp.WebappApplicationTests
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.33 s -- in com.sipokar.webapp.WebappApplicationTests
+>>>>>>> ba43c2d33c15980d58e024055dafb61f8e8ada8e

@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
           .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/css/**", "/images/**",
-                             "/feedback", "/login", "/register").permitAll()
+                             "/feedback", "/data-pengunjung", "/form-kunjungan", "/login", "/register").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/umkm/**").hasRole("UMKM")
             .anyRequest().authenticated()
