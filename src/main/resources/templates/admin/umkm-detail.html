@@ -1,44 +1,198 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Detail UMKM</title></head>
-<body>
+<head>
+    <title>Detail UMKM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { background: #f5f7f2; font-family: 'Inter', system-ui, sans-serif; }
+        .card-shadow { box-shadow: 0 8px 24px rgba(0,30,10,0.04), 0 2px 6px rgba(0,20,0,0.02); }
+        .badge-lunas { background: #e4f3e4; color: #0f4f2e; }
+        .badge-belum { background: #fce8e8; color: #ac2c2c; }
+        .badge-proses { background: #fff3d6; color: #8a6d2b; }
+        .badge-verified { background: #e4f3e4; color: #0f4f2e; }
+        .badge-pending { background: #fff3d6; color: #8a6d2b; }
+        .btn-mangrove { background: #1e3a2f; transition: all 0.2s ease; }
+        .btn-mangrove:hover { background: #143026; transform: translateY(-1px); box-shadow: 0 8px 18px -6px rgba(30,58,47,0.3); }
+        .btn-danger { background: #ac2c2c; }
+        .btn-danger:hover { background: #8a2222; }
+        .border-expired { border-color: #f8d7da !important; background-color: #fff5f5; }
+        .border-pending { border-color: #ffeeba !important; background-color: #fffcf0; }
+        .border-verified { border-color: #d4edda !important; background-color: #f2faf2; }
+        .thumbnail { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 1px solid #ddd; }
+        .thumbnail:hover { opacity: 0.8; }
+    </style>
+</head>
+<body class="antialiased text-gray-800 p-4 md:p-6 mangrove-gradient min-h-screen">
 <div th:replace="~{fragments/admin-layout :: layout('Detail UMKM', ~{::section})}">
     <section>
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 max-w-2xl space-y-4">
-            <div>
-                <p class="text-sm text-gray-500">Nama Usaha</p>
-                <p class="text-lg font-semibold" th:text="${umkm.namaUsaha}">-</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">Jenis Usaha</p>
-                <p class="text-lg font-semibold" th:text="${umkm.jenisUsaha}">-</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">Pemilik</p>
-                <p class="text-lg font-semibold" th:text="${umkm.pemilik}">-</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">No. Telepon</p>
-                <p class="text-lg font-semibold" th:text="${umkm.telepon}">-</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">Alamat</p>
-                <p class="text-lg font-semibold" th:text="${umkm.alamat}">-</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">Status</p>
-                <p class="text-lg font-semibold" th:text="${umkm.status}">-</p>
+        <div class="max-w-4xl mx-auto space-y-6">
+
+            <!-- Kartu Detail UMKM -->
+            <div class="bg-white p-8 rounded-2xl card-shadow border border-gray-100 space-y-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-xl font-bold text-[#1e3a2f] flex items-center gap-2">
+                        <i class="fas fa-store text-[#2b5e3b]"></i> Detail Usaha
+                    </h2>
+                    <span th:if="${umkm.status.name() == 'VERIFIED'}" class="badge-lunas px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                        <i class="fas fa-check-circle"></i> Terverifikasi
+                    </span>
+                    <span th:if="${umkm.status.name() == 'REJECTED'}" class="badge-belum px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                        <i class="fas fa-times-circle"></i> Ditolak
+                    </span>
+                    <span th:if="${umkm.status.name() == 'PENDING'}" class="badge-proses px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+                        <i class="fas fa-clock"></i> Pending
+                    </span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><p class="text-sm text-gray-500">Nama Usaha</p><p class="text-lg font-semibold" th:text="${umkm.namaUsaha}">-</p></div>
+                    <div><p class="text-sm text-gray-500">Jenis Usaha</p><p class="text-lg font-semibold" th:text="${umkm.jenisUsaha}">-</p></div>
+                    <div><p class="text-sm text-gray-500">Pemilik</p><p class="text-lg font-semibold" th:text="${umkm.pemilik}">-</p></div>
+                    <div><p class="text-sm text-gray-500">No. Telepon</p><p class="text-lg font-semibold" th:text="${umkm.telepon}">-</p></div>
+                    <div class="md:col-span-2"><p class="text-sm text-gray-500">Alamat</p><p class="text-lg font-semibold" th:text="${umkm.alamat}">-</p></div>
+                </div>
+                <!-- Tombol aksi utama -->
+                <div class="flex gap-3 pt-4 border-t border-gray-100">
+                    <form th:if="${umkm.status.name() != 'VERIFIED'}" th:action="@{/admin/umkm/{id}/verifikasi(id=${umkm.id})}" method="post">
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                            <i class="fas fa-check"></i> Setujui UMKM
+                        </button>
+                    </form>
+                    <form th:if="${umkm.status.name() != 'REJECTED'}" th:action="@{/admin/umkm/{id}/tolak(id=${umkm.id})}" method="post">
+                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center gap-2">
+                            <i class="fas fa-times"></i> Tolak UMKM
+                        </button>
+                    </form>
+                    <a th:href="@{/admin/umkm}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition flex items-center gap-2">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+                </div>
             </div>
 
-            <div class="flex gap-3 pt-4">
-                <form th:if="${umkm.status.name() != 'VERIFIED'}" th:action="@{/admin/umkm/{id}/verifikasi(id=${umkm.id})}" method="post">
-                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Setujui</button>
-                </form>
-                <form th:if="${umkm.status.name() != 'REJECTED'}" th:action="@{/admin/umkm/{id}/tolak(id=${umkm.id})}" method="post">
-                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Tolak</button>
-                </form>
-                <a th:href="@{/admin/umkm}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Kembali</a>
+            <!-- ===== KEWAJIBAN PEMBAYARAN (tanpa badge status) ===== -->
+            <div class="bg-white p-6 rounded-2xl card-shadow border border-gray-100">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                        <i class="fas fa-file-invoice-dollar text-amber-600 text-sm"></i>
+                    </div>
+                    <h3 class="font-bold text-[#1e3a2f] text-sm">Kewajiban Pembayaran</h3>
+                    <span class="text-xs text-[#5e7d66] bg-[#eaf1e6] px-3 py-1 rounded-full ml-auto">
+                        <i class="far fa-clock mr-1"></i> Verifikasi bukti
+                    </span>
+                </div>
+
+                <!-- Daftar kewajiban (stacked vertical) -->
+                <div class="space-y-4">
+
+                    <!-- ===== PAJAK ===== -->
+                    <div th:with="status=${umkm.pajakStatus}, kirim=${umkm.pajakTanggalKirim}, bukti=${umkm.pajakBuktiPath}, jatuh=${umkm.pajakJatuhTempo}, expired=${umkm.pajakExpired}"
+                         th:classappend="${status != null and status.name() == 'VERIFIED'} ? 'border-verified' : (expired ? 'border-expired' : (status != null and status.name() == 'PENDING' ? 'border-pending' : ''))"
+                         class="border rounded-xl p-4 card-shadow transition flex flex-wrap items-center justify-between gap-3">
+
+                        <div class="flex items-center gap-4 flex-1 min-w-[200px]">
+                            <i class="fas fa-file-invoice text-amber-500 text-xl"></i>
+                            <div>
+                                <p class="font-bold text-[#1e3a2f] text-sm">Pajak (11%)</p>
+                                <p class="text-lg font-bold text-[#826b32]">Rp 675.000</p>
+                                <p class="text-xs text-[#9a7a50]" th:text="'Jatuh tempo: ' + ${jatuh}">Jatuh tempo: 30 Jun 2026</p>
+                                <p th:if="${kirim != null}" class="text-xs text-[#4f7a7a]" th:text="'Dikirim: ' + ${#temporals.format(kirim, 'dd MMM yyyy')}">Dikirim: 18 Jun 2026</p>
+                                <p th:if="${kirim == null}" class="text-xs text-red-500 font-semibold">Belum dikirim</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <!-- Thumbnail bukti -->
+                            <div th:if="${bukti != null}" class="flex-shrink-0">
+                                <img th:src="@{${bukti}}" alt="Bukti Pajak" class="thumbnail" onclick="window.open(this.src)" title="Klik untuk memperbesar">
+                            </div>
+                            <div th:if="${bukti == null}" class="text-gray-400 text-xs flex items-center gap-1">
+                                <i class="fas fa-image"></i> Tidak ada bukti
+                            </div>
+
+                            <!-- Tombol Verifikasi (hanya jika status PENDING) -->
+                            <form th:if="${status != null and status.name() == 'PENDING'}" th:action="@{/admin/umkm/{id}/verifikasi-pajak(id=${umkm.id})}" method="post">
+                                <button type="submit" class="btn-mangrove text-white text-xs px-4 py-1.5 rounded-lg flex items-center gap-1">
+                                    <i class="fas fa-check"></i> Verifikasi
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ===== IURAN KEBERSIHAN ===== -->
+                    <div th:with="status=${umkm.iuranKebersihanStatus}, kirim=${umkm.iuranTanggalKirim}, bukti=${umkm.iuranBuktiPath}, jatuh=${umkm.iuranJatuhTempo}, expired=${umkm.iuranExpired}"
+                         th:classappend="${status != null and status.name() == 'VERIFIED'} ? 'border-verified' : (expired ? 'border-expired' : (status != null and status.name() == 'PENDING' ? 'border-pending' : ''))"
+                         class="border rounded-xl p-4 card-shadow transition flex flex-wrap items-center justify-between gap-3">
+
+                        <div class="flex items-center gap-4 flex-1 min-w-[200px]">
+                            <i class="fas fa-broom text-blue-500 text-xl"></i>
+                            <div>
+                                <p class="font-bold text-[#1e3a2f] text-sm">Iuran Kebersihan</p>
+                                <p class="text-lg font-bold text-[#1f5a7a]">Rp 240.000</p>
+                                <p class="text-xs text-[#4f7a7a]" th:text="'Jatuh tempo: ' + ${jatuh}">Jatuh tempo: 30 Jun 2026</p>
+                                <p th:if="${kirim != null}" class="text-xs text-[#4f7a7a]" th:text="'Dikirim: ' + ${#temporals.format(kirim, 'dd MMM yyyy')}">Dikirim: 18 Jun 2026</p>
+                                <p th:if="${kirim == null}" class="text-xs text-red-500 font-semibold">Belum dikirim</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <div th:if="${bukti != null}">
+                                <img th:src="@{${bukti}}" alt="Bukti Iuran" class="thumbnail" onclick="window.open(this.src)" title="Klik untuk memperbesar">
+                            </div>
+                            <div th:if="${bukti == null}" class="text-gray-400 text-xs flex items-center gap-1">
+                                <i class="fas fa-image"></i> Tidak ada bukti
+                            </div>
+
+                            <form th:if="${status != null and status.name() == 'PENDING'}" th:action="@{/admin/umkm/{id}/verifikasi-iuran(id=${umkm.id})}" method="post">
+                                <button type="submit" class="btn-mangrove text-white text-xs px-4 py-1.5 rounded-lg flex items-center gap-1">
+                                    <i class="fas fa-check"></i> Verifikasi
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ===== RETRIBUSI DINAS ===== -->
+                    <div th:with="status=${umkm.retribusiStatus}, kirim=${umkm.retribusiTanggalKirim}, bukti=${umkm.retribusiBuktiPath}, jatuh=${umkm.retribusiJatuhTempo}, expired=${umkm.retribusiExpired}"
+                         th:classappend="${status != null and status.name() == 'VERIFIED'} ? 'border-verified' : (expired ? 'border-expired' : (status != null and status.name() == 'PENDING' ? 'border-pending' : ''))"
+                         class="border rounded-xl p-4 card-shadow transition flex flex-wrap items-center justify-between gap-3">
+
+                        <div class="flex items-center gap-4 flex-1 min-w-[200px]">
+                            <i class="fas fa-building text-gray-500 text-xl"></i>
+                            <div>
+                                <p class="font-bold text-[#1e3a2f] text-sm">Retribusi Dinas</p>
+                                <p class="text-lg font-bold text-[#4a4a1a]">Rp 500.000</p>
+                                <p class="text-xs text-[#7a7a4a]" th:text="'Jatuh tempo: ' + ${jatuh}">Jatuh tempo: 30 Jun 2026</p>
+                                <p th:if="${kirim != null}" class="text-xs text-[#4f7a7a]" th:text="'Dikirim: ' + ${#temporals.format(kirim, 'dd MMM yyyy')}">Dikirim: 17 Jun 2026</p>
+                                <p th:if="${kirim == null}" class="text-xs text-red-500 font-semibold">Belum dikirim</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <div th:if="${bukti != null}">
+                                <img th:src="@{${bukti}}" alt="Bukti Retribusi" class="thumbnail" onclick="window.open(this.src)" title="Klik untuk memperbesar">
+                            </div>
+                            <div th:if="${bukti == null}" class="text-gray-400 text-xs flex items-center gap-1">
+                                <i class="fas fa-image"></i> Tidak ada bukti
+                            </div>
+
+                            <form th:if="${status != null and status.name() == 'PENDING'}" th:action="@{/admin/umkm/{id}/verifikasi-retribusi(id=${umkm.id})}" method="post">
+                                <button type="submit" class="btn-mangrove text-white text-xs px-4 py-1.5 rounded-lg flex items-center gap-1">
+                                    <i class="fas fa-check"></i> Verifikasi
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Pesan jika semua sudah lunas / tidak ada yang pending -->
+                    <div th:if="${(umkm.pajakStatus == null or umkm.pajakStatus.name() == 'VERIFIED' or umkm.pajakStatus.name() == 'REJECTED') and (umkm.iuranKebersihanStatus == null or umkm.iuranKebersihanStatus.name() == 'VERIFIED' or umkm.iuranKebersihanStatus.name() == 'REJECTED') and (umkm.retribusiStatus == null or umkm.retribusiStatus.name() == 'VERIFIED' or umkm.retribusiStatus.name() == 'REJECTED')}"
+                         class="text-center py-6 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                        <i class="fas fa-check-circle text-2xl block mb-2 text-green-500"></i>
+                        <p class="text-sm font-medium">Semua kewajiban sudah lunas atau tidak ada ajuan</p>
+                        <p class="text-xs">Tidak ada yang perlu diverifikasi saat ini.</p>
+                    </div>
+
+                </div>
             </div>
+
         </div>
     </section>
 </div>
