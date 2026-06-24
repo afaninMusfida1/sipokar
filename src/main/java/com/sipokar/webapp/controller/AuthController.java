@@ -4,6 +4,8 @@ import com.sipokar.webapp.model.User;
 import com.sipokar.webapp.repository.UmkmRepository;
 import com.sipokar.webapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ public class AuthController {
     private final UserRepository userRepository;
     private final UmkmRepository umkmRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -31,21 +34,46 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username,
-                            @RequestParam String password,
-                            Model model) {
+    public String register(@RequestParam String email,
+                           @RequestParam String username,
+                           @RequestParam String password,
+                           Model model) {
         if (userRepository.findByUsername(username).isPresent()) {
             model.addAttribute("error", "Username sudah digunakan, silakan pilih username lain.");
             return "register";
         }
 
         User user = new User();
+        user.setEmail(email);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(User.Role.UMKM);
         userRepository.save(user);
 
         return "redirect:/login?registered=true";
+    }
+
+    @GetMapping("/reset-password")
+    public String resetPasswordPage() {
+        return "reset-password";
+    }
+
+    @PostMapping("/reset-password")
+    public String processResetPassword(@RequestParam String email) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("Reset Password Akun Sipokar");
+            message.setText("Halo,\n\nAnda menerima email ini karena ada permintaan untuk mereset password.\n" +
+                            "Silakan klik tautan berikut untuk membuat password baru:\n" +
+                            "http://localhost:8080/update-password?email=" + email);
+            mailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/reset-password?error=true";
+        }
+
+        return "redirect:/reset-password?success=true";
     }
 
     @GetMapping("/dashboard")
@@ -66,4 +94,28 @@ public class AuthController {
             ? "redirect:/umkm/dashboard"
             : "redirect:/umkm/daftar";
     }
+
+    @GetMapping("/update-password")
+public String updatePasswordPage(@RequestParam String email, Model model) {
+    model.addAttribute("email", email);
+    return "update-password";
+}
+
+@PostMapping("/update-password")
+public String processUpdatePassword(@RequestParam String email,
+                                    @RequestParam String password,
+                                    Model model) {
+    var userOpt = userRepository.findByEmail(email);
+    if (userOpt.isEmpty()) {
+        model.addAttribute("error", "Email tidak ditemukan.");
+        model.addAttribute("email", email);
+        return "update-password";
+    }
+
+    User user = userOpt.get();
+    user.setPassword(passwordEncoder.encode(password));
+    userRepository.save(user);
+
+    return "redirect:/login?passwordUpdated=true";
+}
 }
