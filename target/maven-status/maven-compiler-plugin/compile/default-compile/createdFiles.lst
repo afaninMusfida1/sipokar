@@ -1,6 +1,7 @@
 com\sipokar\webapp\repository\PageViewRepository.class
 com\sipokar\webapp\model\Retribusi$StatusRetribusi.class
 com\sipokar\webapp\repository\FasilitasRepository.class
+com\sipokar\webapp\config\WebConfig.class
 com\sipokar\webapp\repository\KeuanganRepository.class
 com\sipokar\webapp\controller\umkm\UmkmRegisterController.class
 com\sipokar\webapp\config\SecurityConfig.class
@@ -47,4 +48,5 @@ com\sipokar\webapp\config\CloudinaryConfig.class
 com\sipokar\webapp\model\Umkm$Status.class
 com\sipokar\webapp\controller\admin\AdminGaleriController.class
 com\sipokar\webapp\model\Keuangan.class
+com\sipokar\webapp\controller\umkm\UmkmController.class
 com\sipokar\webapp\model\Feedback.class

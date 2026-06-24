@@ -22,6 +22,7 @@ public class SecurityConfig {
                              "/feedback", "/data-pengunjung", "/form-kunjungan", "/login", "/register").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/umkm/**").hasRole("UMKM")
+            .requestMatchers("/uploads/**").permitAll()
             .anyRequest().authenticated()
           )
           .formLogin(form -> form

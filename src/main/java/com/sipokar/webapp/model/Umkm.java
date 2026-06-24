@@ -30,11 +30,17 @@ public class Umkm {
     @Column(nullable = false)
     private Status status = Status.PENDING;
 
+    @Column(name = "berkas_pendukung_path")
+    private String berkasPendukungPath;
+
+    @Column(name = "catatan_review", columnDefinition = "TEXT")
+    private String catatanReview;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     public enum Status {
-        PENDING, VERIFIED, REJECTED
+        PENDING, VERIFIED, REVISION, REJECTED
     }
 }

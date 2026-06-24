@@ -36,4 +36,8 @@ public class UmkmService {
         return userRepository.findByUsername(username);
     }
 
+    public Umkm save(Umkm umkm) {
+    return umkmRepository.save(umkm); 
+}
+
 }

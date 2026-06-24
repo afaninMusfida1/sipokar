@@ -16,6 +16,7 @@ import com.sipokar.webapp.model.Keuangan;
 import com.sipokar.webapp.model.Umkm;
 import com.sipokar.webapp.repository.KeuanganRepository;
 import com.sipokar.webapp.repository.UmkmRepository;
+import com.sipokar.webapp.service.UmkmService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class AdminUmkmController {
 
     private final UmkmRepository umkmRepository;
-    private final KeuanganRepository keuanganRepository; // tambahan
+    private final KeuanganRepository keuanganRepository; 
+    private final UmkmService umkmService;
 
     // method yang sudah ada
     @GetMapping
@@ -58,6 +60,39 @@ public class AdminUmkmController {
         umkm.setStatus(Umkm.Status.REJECTED);
         umkmRepository.save(umkm);
         return "redirect:/admin/umkm";
+    }
+
+    @PostMapping("/{id}/review")
+    public String prosesReviewUmkm(
+            @PathVariable Long id, 
+            @RequestParam String action, 
+            @RequestParam(required = false) String catatanReview) {
+        
+        // 1. Cari UMKM berdasarkan ID dari URL
+        Umkm umkm = umkmRepository.findById(id) // Diseragamkan pakai umkmRepository
+                .orElseThrow(() -> new IllegalArgumentException("UMKM tidak ditemukan"));
+        
+        // 2. Cek tombol apa yang diklik admin (VERIFY, REVISION, atau REJECT)
+        switch (action) {
+            case "VERIFY":
+                umkm.setStatus(Umkm.Status.VERIFIED);
+                umkm.setCatatanReview(null); // Bersihkan catatan kalau disetujui
+                break;
+            case "REVISION":
+                umkm.setStatus(Umkm.Status.REVISION);
+                umkm.setCatatanReview(catatanReview); // Simpan pesan revisi dari admin
+                break;
+            case "REJECT":
+                umkm.setStatus(Umkm.Status.REJECTED);
+                umkm.setCatatanReview(catatanReview); // Simpan alasan penolakan
+                break;
+        }
+        
+        // 3. Simpan perubahan ke database
+        umkmRepository.save(umkm); // Diseragamkan pakai umkmRepository
+        
+        // 4. Redirect kembali ke halaman detail UMKM
+        return "redirect:/admin/umkm/" + id;
     }
 
     // ==================== TAMBAHAN UNTUK KEUANGAN ====================
