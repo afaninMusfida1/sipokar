@@ -4,8 +4,11 @@ import com.sipokar.webapp.model.User;
 import com.sipokar.webapp.repository.UmkmRepository;
 import com.sipokar.webapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
+=======
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,7 +24,10 @@ public class AuthController {
     private final UserRepository userRepository;
     private final UmkmRepository umkmRepository;
     private final PasswordEncoder passwordEncoder;
+<<<<<<< HEAD
+=======
     private final JavaMailSender mailSender;
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
 
     @GetMapping("/login")
     public String loginPage() {
@@ -34,17 +40,26 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+<<<<<<< HEAD
+    public String register(@RequestParam String username,
+                            @RequestParam String password,
+                            Model model) {
+=======
     public String register(@RequestParam String email,
                            @RequestParam String username,
                            @RequestParam String password,
                            Model model) {
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
         if (userRepository.findByUsername(username).isPresent()) {
             model.addAttribute("error", "Username sudah digunakan, silakan pilih username lain.");
             return "register";
         }
 
         User user = new User();
+<<<<<<< HEAD
+=======
         user.setEmail(email);
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(User.Role.UMKM);
@@ -53,6 +68,8 @@ public class AuthController {
         return "redirect:/login?registered=true";
     }
 
+<<<<<<< HEAD
+=======
     @GetMapping("/reset-password")
     public String resetPasswordPage() {
         return "reset-password";
@@ -76,6 +93,7 @@ public class AuthController {
         return "redirect:/reset-password?success=true";
     }
 
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
     @GetMapping("/dashboard")
     public String redirectDashboard(Authentication auth) {
         boolean isAdmin = auth.getAuthorities().stream()
@@ -94,6 +112,9 @@ public class AuthController {
             ? "redirect:/umkm/dashboard"
             : "redirect:/umkm/daftar";
     }
+<<<<<<< HEAD
+}
+=======
 
     @GetMapping("/update-password")
 public String updatePasswordPage(@RequestParam String email, Model model) {
@@ -119,3 +140,4 @@ public String processUpdatePassword(@RequestParam String email,
     return "redirect:/login?passwordUpdated=true";
 }
 }
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38

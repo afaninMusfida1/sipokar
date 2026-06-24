@@ -18,8 +18,11 @@ public class Feedback {
     @Column(nullable = false)
     private String nama;
 
+<<<<<<< HEAD
+=======
     private String email;
 
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
     @Column(nullable = false, columnDefinition = "TEXT")
     private String isi;
 
