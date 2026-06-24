@@ -40,9 +40,11 @@ public class PublicController {
 
     @PostMapping("/feedback")
     public String submitFeedback(@RequestParam String nama,
-                                  @RequestParam String pesan) {
+                                @RequestParam String email,
+                                @RequestParam String pesan) {
         Feedback feedback = new Feedback();
         feedback.setNama(nama);
+        feedback.setEmail(email);
         feedback.setIsi(pesan);
         feedbackRepository.save(feedback);
         return "redirect:/?feedback=success";

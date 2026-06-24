@@ -19,12 +19,15 @@ public class SecurityConfig {
         http
           .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/css/**", "/images/**",
-                             "/feedback", "/data-pengunjung", "/form-kunjungan", "/reservasi", "login", "/register").permitAll()
+                             "/feedback", "/data-pengunjung", "/form-kunjungan", "/reservasi", "/login", "/register", "/error", "/error/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/umkm/**").hasRole("UMKM")
             .requestMatchers("/uploads/**").permitAll()
             .anyRequest().authenticated()
           )
+          .exceptionHandling(ex -> ex          
+              .accessDeniedPage("/login")
+  )
           .formLogin(form -> form
             .loginPage("/login")
             .loginProcessingUrl("/login")

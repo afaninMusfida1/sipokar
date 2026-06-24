@@ -20,6 +20,7 @@ com\sipokar\webapp\model\User$Role.class
 com\sipokar\webapp\model\User.class
 com\sipokar\webapp\controller\admin\AdminFasilitasController.class
 com\sipokar\webapp\service\RetribusiService.class
+com\sipokar\webapp\controller\ReservasiController.class
 com\sipokar\webapp\service\QrCodeService.class
 com\sipokar\webapp\repository\FotoGaleriRepository.class
 com\sipokar\webapp\controller\admin\AdminPengunjungController.class
