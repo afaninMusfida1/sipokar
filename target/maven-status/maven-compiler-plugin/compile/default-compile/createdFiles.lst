@@ -20,6 +20,7 @@ com\sipokar\webapp\controller\admin\AdminKontenController.class
 com\sipokar\webapp\repository\UmkmRepository.class
 com\sipokar\webapp\model\Keuangan$Tipe.class
 com\sipokar\webapp\repository\DataPengunjungRepository.class
+com\sipokar\webapp\config\GlobalExceptionHandler.class
 com\sipokar\webapp\model\PageView.class
 com\sipokar\webapp\controller\umkm\UmkmProdukController.class
 com\sipokar\webapp\controller\admin\AdminDashboardController.class
