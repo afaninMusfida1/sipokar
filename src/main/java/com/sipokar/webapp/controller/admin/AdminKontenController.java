@@ -1,7 +1,5 @@
 package com.sipokar.webapp.controller.admin;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,29 +21,24 @@ public class AdminKontenController {
 
     @GetMapping
     public String getAll(Model model) {
-        // 1. Ambil semua data dari database
-        List<WisataInfo> listInfo = wisataInfoRepository.findAll();
-        
-        // 2. Logika untuk mengisi Form
-        WisataInfo infoForm;
-        if (listInfo.isEmpty()) {
-            infoForm = new WisataInfo(); // Jika database masih kosong, kasih form kosong
-        } else {
-            infoForm = listInfo.get(0);  // Jika sudah ada data, ambil data paling atas (index 0) untuk di-edit
-        }
+        // Tarik spesifik ID 1. Jika belum ada di database, buat objek baru dan paksa ID-nya jadi 1.
+        WisataInfo infoForm = wisataInfoRepository.findById(1L).orElseGet(() -> {
+            WisataInfo newInfo = new WisataInfo();
+            newInfo.setId(1L); 
+            return newInfo;
+        });
 
-        // 3. Lempar ke Thymeleaf
-        model.addAttribute("infoWisata", listInfo); // Opsional kalau kamu pakai untuk tabel
-        model.addAttribute("info", infoForm);       // INI YANG PENTING: Untuk pre-fill value form HTML
-        
+        model.addAttribute("info", infoForm);       
         return "admin/konten"; 
     }
 
     @PostMapping
     public String create(@ModelAttribute("info") WisataInfo wisataInfo) { 
-        // Menyimpan data. Jika objek punya ID (karena ditarik dari form), JPA otomatis melakukan UPDATE (Edit).
+        // Karena form HTML sekarang membawa <input type="hidden" name="id" value="1">
+        // JPA otomatis akan mendeteksi ID tersebut dan melakukan UPDATE, bukan CREATE.
         wisataInfoRepository.save(wisataInfo);
         
-        return "redirect:/admin/konten";
+        // Tambahkan parameter success agar alert hijau di HTML kamu muncul
+        return "redirect:/admin/konten?success=true"; 
     }
 }

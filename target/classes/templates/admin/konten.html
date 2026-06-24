@@ -20,7 +20,9 @@
                 </div>
 
                 <form th:action="@{/admin/konten}" th:object="${info}" method="post" class="space-y-6" id="kontenForm">
-
+    
+    <input type="hidden" th:field="*{id}" />
+    
     <div class="flex justify-end">
         <button type="button" id="editBtn" onclick="toggleEdit()" 
                 class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-all">
