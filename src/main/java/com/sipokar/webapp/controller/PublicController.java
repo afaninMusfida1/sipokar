@@ -7,6 +7,7 @@ import com.sipokar.webapp.repository.FeedbackRepository;
 import com.sipokar.webapp.repository.FotoGaleriRepository;
 import com.sipokar.webapp.repository.WisataInfoRepository;
 import com.sipokar.webapp.service.PageViewService;
+import com.sipokar.webapp.service.ProdukService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class PublicController {
     private final FotoGaleriRepository fotoGaleriRepository;
     private final FasilitasRepository fasilitasRepository;
     private final PageViewService pageViewService;
+    private final ProdukService produkService;
 
     @GetMapping("/")
     public String landingPage(Model model) {
@@ -32,6 +34,7 @@ public class PublicController {
         model.addAttribute("info", info);
         model.addAttribute("galeri", fotoGaleriRepository.findAllByOrderByIdDesc());
         model.addAttribute("fasilitas", fasilitasRepository.findAll());
+        model.addAttribute("produk", produkService.ambilSemuaProduk());
 
         pageViewService.recordVisit();
 
@@ -40,13 +43,17 @@ public class PublicController {
 
     @PostMapping("/feedback")
     public String submitFeedback(@RequestParam String nama,
-                                @RequestParam String email,
-                                @RequestParam String pesan) {
+                                 @RequestParam String pesan) {
         Feedback feedback = new Feedback();
         feedback.setNama(nama);
-        feedback.setEmail(email);
-        feedback.setIsi(pesan);
+        feedback.setIsi(pesan); // Sekarang method ini sudah bisa terbaca
         feedbackRepository.save(feedback);
         return "redirect:/?feedback=success";
+    }
+
+    @GetMapping("/produk-umkm")
+    public String halamanSemuaProduk(Model model) {
+        model.addAttribute("daftarProduk", produkService.ambilSemuaProduk());
+        return "produk-umkm";
     }
 }

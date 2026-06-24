@@ -18,8 +18,7 @@ public class Feedback {
     @Column(nullable = false)
     private String nama;
 
-    private String email;
-
+    // Variabel 'isi' yang tadinya hilang sudah dikembalikan ke sini
     @Column(nullable = false, columnDefinition = "TEXT")
     private String isi;
 
@@ -29,6 +28,6 @@ public class Feedback {
     @Column(name = "catatan_respons", columnDefinition = "TEXT")
     private String catatanRespons;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }
