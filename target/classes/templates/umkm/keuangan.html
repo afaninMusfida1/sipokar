@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sipokar · Keuangan Pokdarwis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body { background: #f5f7f2; font-family: 'Inter', system-ui, sans-serif; }
+        .card-shadow { box-shadow: 0 8px 24px rgba(0, 30, 10, 0.04), 0 2px 6px rgba(0, 20, 0, 0.02); }
+        .mangrove-gradient { background: linear-gradient(145deg, #f8fbf6 0%, #edf3e8 100%); }
+        .btn-mangrove { background: #1e3a2f; transition: all 0.2s ease; }
+        .btn-mangrove:hover { background: #143026; transform: translateY(-1px); box-shadow: 0 8px 18px -6px rgba(30, 58, 47, 0.3); }
+        .btn-outline-mangrove { border: 1.5px solid #1e3a2f; color: #1e3a2f; transition: all 0.2s ease; }
+        .btn-outline-mangrove:hover { background: #1e3a2f; color: #fff; }
+        .badge-income { background: #e4f3e4; color: #0f4f2e; }
+        .badge-expense { background: #fce8e8; color: #ac2c2c; }
+        .badge-tax { background: #fff3d6; color: #8a6d2b; }
+        .badge-clean { background: #d6ecff; color: #1a5a8c; }
+        .stat-card { transition: 0.2s; border: 1px solid #e8ede4; background: #fffffffa; }
+        .stat-card:hover { border-color: #bcd0b4; box-shadow: 0 10px 24px -10px rgba(30, 58, 40, 0.08); }
+        .table-row-hover:hover { background: #fafff8; }
+        input:focus, select:focus, textarea:focus { border-color: #2b5e3b; outline: 2px solid rgba(43, 94, 59, 0.15); outline-offset: 0; }
+        .kw-card { background: #fff; border: 1px solid #e3ece0; border-radius: 16px; padding: 14px; position: relative; transition: 0.2s; }
+        .kw-card:hover { border-color: #b5cfae; box-shadow: 0 6px 18px -8px rgba(30, 58, 40, 0.1); }
+        .kw-progress { height: 5px; border-radius: 3px; background: #eaf1e6; margin-top: 8px; overflow: hidden; }
+        .kw-progress-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+        .badge-lunas { background: #e4f3e4; color: #0f4f2e; }
+        .badge-belum { background: #fce8e8; color: #ac2c2c; }
+        .badge-proses { background: #fff3d6; color: #8a6d2b; }
+        .badge-file { background: #e0eef9; color: #1b5e7a; cursor: pointer; }
+        .badge-file:hover { background: #c9dfef; }
+        .upload-zone { border: 2px dashed #c5d9be; border-radius: 14px; padding: 22px 16px; text-align: center; cursor: pointer; position: relative; transition: border-color 0.15s, background 0.15s; background: #f8fbf6; }
+        .upload-zone:hover, .upload-zone.dragover { border-color: #2b5e3b; background: #f0f8eb; }
+        .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .file-preview { display: none; align-items: center; gap: 10px; background: #e0eef9; border-radius: 10px; padding: 10px 14px; margin-top: 8px; }
+        .file-preview.show { display: flex; }
+        .kw-history-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+        .kw-history-table th { text-align: left; font-size: 11px; font-weight: 600; color: #2a4d36; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 16px; background: #f2f8ef; }
+        .kw-history-table td { padding: 11px 16px; border-top: 1px solid #eef5ea; vertical-align: middle; }
+        .kw-history-table tr:hover td { background: #fafff8; }
+        .toast-kw { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #1e3a2f; color: #fff; padding: 10px 18px; border-radius: 12px; font-size: 13px; display: flex; align-items: center; gap: 8px; opacity: 0; transform: translateY(8px); transition: all 0.25s; z-index: 999; pointer-events: none; }
+        .toast-kw.show { opacity: 1; transform: translateY(0); }
+        .kw-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); z-index: 1000; align-items: center; justify-content: center; }
+        .kw-modal-overlay.show { display: flex; }
+        .kw-modal { background: #fff; border-radius: 20px; padding: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18); }
+        .empty-state { text-align: center; padding: 32px 16px; color: #6d8a73; }
+        .empty-state i { font-size: 42px; color: #bcd0b4; margin-bottom: 12px; }
+        .empty-state p { font-size: 14px; }
+        .empty-state .sub { font-size: 12px; color: #8aaa8a; }
+        .export-dropdown { position: relative; display: inline-block; }
+        .export-dropdown-content { display: none; position: absolute; right: 0; top: 100%; background: #fff; min-width: 150px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); border: 1px solid #e3ece0; z-index: 50; overflow: hidden; margin-top: 4px; }
+        .export-dropdown-content.show { display: block; }
+        .export-dropdown-content a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 13px; color: #1e3a2f; text-decoration: none; transition: background 0.15s; cursor: pointer; }
+        .export-dropdown-content a:hover { background: #f2f8ef; }
+        .print-only { display: none; }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: #fff !important; padding: 20px !important; }
+            .card-shadow { box-shadow: none !important; border: 1px solid #ddd !important; }
+            .stat-card { border: 1px solid #ddd !important; }
+        }
+        .month-nav { display: flex; align-items: center; gap: 12px; background: white; padding: 4px 12px 4px 16px; border-radius: 30px; border: 1px solid #dce6d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .month-nav a { background: transparent; border: none; font-size: 16px; color: #2b5e3b; cursor: pointer; padding: 4px 8px; border-radius: 20px; transition: background 0.15s; text-decoration: none;}
+        .month-nav a:hover { background: #eaf1e6; }
+        .month-nav span { font-weight: 600; font-size: 14px; color: #1e3a2f; min-width: 100px; text-align: center; }
+    </style>
+</head>
+<body class="antialiased text-gray-800 p-4 md:p-6 mangrove-gradient min-h-screen">
+    <div class="max-w-7xl mx-auto">
+
+        <div class="toast-kw" id="kwToast"></div>
+
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-3 no-print">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-[#1e3a2f] rounded-2xl flex items-center justify-center text-white shadow-sm">
+                    <i class="fas fa-tree text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-[#1a3329] flex items-center gap-2">
+                        <span>Sipokar</span>
+                        <span class="text-sm font-normal text-[#3b5e4a] bg-white/50 px-3 py-1 rounded-full text-xs border border-[#dbe4d5]">
+                            <i class="fas fa-leaf mr-1"></i> Pokdarwis
+                        </span>
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="month-nav no-print" id="monthNav">
+                <a th:href="@{/umkm/keuangan(year=${prevYear}, month=${prevMonth})}" title="Bulan sebelumnya">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                <span th:text="${namaBulan} + ' ' + ${selectedYear}">Juni 2026</span>
+                <a th:href="@{/umkm/keuangan(year=${nextYear}, month=${nextMonth})}" title="Bulan berikutnya">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="stat-card p-4 rounded-2xl flex items-start gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-green-100/70 flex items-center justify-center text-green-800"><i class="fas fa-arrow-down"></i></div>
+                <div>
+                    <p class="text-xs text-[#4b6b53] font-medium">Total Pemasukan</p>
+                    <p class="text-xl font-bold text-[#1f5437]" th:text="${totalPemasukan != null ? 'Rp ' + #numbers.formatDecimal(totalPemasukan, 0, 'COMMA', 0, 'POINT') : 'Rp 0'}">Rp 0</p>
+                </div>
+            </div>
+            <div class="stat-card p-4 rounded-2xl flex items-start gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-red-100/70 flex items-center justify-center text-red-700"><i class="fas fa-arrow-up"></i></div>
+                <div>
+                    <p class="text-xs text-[#4b6b53] font-medium">Total Pengeluaran</p>
+                    <p class="text-xl font-bold text-[#973333]" th:text="${totalPengeluaran != null ? 'Rp ' + #numbers.formatDecimal(totalPengeluaran, 0, 'COMMA', 0, 'POINT') : 'Rp 0'}">Rp 0</p>
+                </div>
+            </div>
+            <div class="stat-card p-4 rounded-2xl flex items-start gap-3 bg-[#e7f5e7] border-[#b8d9b8]">
+                <div class="w-10 h-10 rounded-2xl bg-[#1e3a2f]/10 flex items-center justify-center text-[#1e3a2f]"><i class="fas fa-hand-holding-usd"></i></div>
+                <div>
+                    <p class="text-xs text-[#3a6b3a] font-medium">Saldo Kas</p>
+                    <p class="text-xl font-bold text-[#1a4a1a]" th:text="${saldoKas != null ? 'Rp ' + #numbers.formatDecimal(saldoKas, 0, 'COMMA', 0, 'POINT') : 'Rp 0'}">Rp 0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div class="lg:col-span-2 bg-white/90 p-5 rounded-2xl card-shadow border border-[#e3ece0]">
+                <h4 class="text-sm font-bold text-[#1e3a2f] flex items-center gap-2 mb-3"><i class="fas fa-chart-pie text-[#2b5e3b]"></i> Komposisi Pengeluaran</h4>
+                <div class="h-48 relative">
+                    <canvas id="expenseChart" class="w-full h-full"></canvas>
+                </div>
+                <div class="flex flex-wrap gap-4 text-xs mt-3 text-[#3a5a43]" id="chartLegend"></div>
+                <div id="chartEmpty" th:if="${#lists.isEmpty(transaksi)}" class="empty-state">
+                    <i class="fas fa-chart-pie"></i>
+                    <p>Belum ada data pengeluaran</p>
+                    <p class="sub">Tambahkan catatan keuangan untuk mulai melihat grafik</p>
+                </div>
+            </div>
+
+            <div class="bg-white/90 p-5 rounded-2xl card-shadow border border-[#e3ece0] flex flex-col">
+                <div>
+                    <h4 class="text-sm font-bold text-[#1e3a2f] flex items-center gap-2 mb-3">
+                        <i class="fas fa-hand-holding-usd text-[#2b5e3b]"></i> Retribusi
+                    </h4>
+                    <div class="space-y-3" id="retribusiContainer">
+                        <div class="flex justify-between items-center border-b border-[#eaf1e6] pb-2">
+                            <span class="text-sm flex items-center gap-1"><i class="fas fa-file-invoice text-amber-600"></i> Pajak <span class="text-xs text-[#6d8a73]">(PPN 11% Sewa + PPh Final 0,5%)</span></span>
+                            <span class="font-bold text-[#826b32]" id="pajakNominal" th:text="${estimasiPajak != null ? 'Rp ' + #numbers.formatDecimal(estimasiPajak, 0, 'COMMA', 0, 'POINT') : 'Rp 0'}">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-[#eaf1e6] pb-2">
+                            <span class="text-sm flex items-center gap-1"><i class="fas fa-trash-alt text-blue-600"></i> Iuran Sampah</span>
+                            <span class="font-bold text-[#1f5a7a]" id="sampahNominal">Rp 100.000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-[#4f6f57] bg-[#f2f8ef] p-2 rounded-xl flex items-center gap-2">
+                    <i class="fas fa-info-circle text-[#2b5e3b] flex-shrink-0"></i>
+                    <span>PPN 11% dikenakan atas <strong>Sewa Tempat</strong> (dibayar ke Pemkot). PPh Final UMKM 0,5% dari omzet kotor.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white/90 backdrop-blur-sm rounded-2xl card-shadow border border-[#e3ece0] overflow-hidden mb-6 no-print">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#eaf1e6] flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                        <i class="fas fa-receipt text-amber-600 text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-[#1e3a2f] text-sm">Bukti Pembayaran Retribusi</h3>
+                        <p class="text-xs text-[#4f6f57]">Upload bukti bayar — dikirim ke admin untuk verifikasi</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('formRetribusi').classList.toggle('hidden')" class="text-xs bg-[#1e3a2f] text-white px-4 py-1.5 rounded-full flex items-center gap-1 hover:bg-[#143026] transition-colors">
+                    <i class="fas fa-plus text-xs"></i> Tambah
+                </button>
+            </div>
+
+            <form id="formRetribusi" th:action="@{/umkm/keuangan/retribusi}" method="POST" enctype="multipart/form-data" class="hidden p-5 border-b border-[#eaf1e6] bg-[#fafff8]">
+                <p class="text-sm font-bold text-[#1e3a2f] mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-[#2b5e3b]"></i> Catat Pembayaran Retribusi</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Jenis</label>
+                        <select name="jenis" id="rbJenis" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
+                            <option value="Pajak">📄 Pajak (PPN 11% Sewa + PPh Final 0,5%)</option>
+                            <option value="Iuran Sampah">🧹 Iuran Sampah</option>
+                            <option value="Lainnya">📋 Retribusi Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Nominal Dibayar</label>
+                        <input type="number" name="nominal" id="rbNominal" min="0" step="1000" placeholder="0" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" required/>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Tanggal Bayar</label>
+                        <input type="date" name="tanggal" id="rbTanggal" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" required/>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Keterangan (opsional)</label>
+                    <input type="text" name="keterangan" id="rbKeterangan" placeholder="Contoh: Pajak bulan Juni 2026 via transfer" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5">Bukti Pembayaran <span class="text-red-400">*</span></label>
+                    <div class="upload-zone" id="rbUploadZone">
+                        <input type="file" name="fileBukti" id="rbFileInput" accept="image/*,.pdf" onchange="rbHandleFile(this)" required/>
+                        <div id="rbUzContent">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-[#8aab8a] mb-2 block"></i>
+                            <div class="text-sm text-[#4f6f57] font-medium">Klik atau seret file bukti</div>
+                            <div class="text-xs text-[#7a9a7a] mt-1">JPG, PNG, atau PDF · Maks. 5 MB</div>
+                        </div>
+                    </div>
+                    <div class="file-preview" id="rbFilePreview">
+                        <i class="fas fa-file-alt text-[#1b5e7a] text-xl flex-shrink-0"></i>
+                        <span class="text-sm text-[#1b5e7a] font-medium flex-1 truncate" id="rbFpName">—</span>
+                        <span class="text-xs text-[#4a7a9a]" id="rbFpSize"></span>
+                        <button type="button" onclick="rbRemoveFile()" class="ml-2 text-[#1b5e7a] hover:text-red-500 transition-colors"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-[#4f6f57] bg-[#f0f8ea] border border-[#d0e8c8] rounded-xl p-3 mb-4">
+                    <i class="fas fa-info-circle text-[#2b5e3b] flex-shrink-0"></i>
+                    <span>Bukti yang diunggah dikirim ke admin. Status menjadi <strong>Lunas</strong> setelah diverifikasi.</span>
+                </div>
+                <button type="submit" class="btn-mangrove text-white px-6 py-3 rounded-xl font-bold text-sm shadow-sm flex items-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Kirim ke Admin
+                </button>
+            </form>
+
+            <div class="overflow-x-auto">
+                <table class="kw-history-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Jenis</th>
+                            <th>Keterangan</th>
+                            <th>Bukti</th>
+                            <th>Status</th>
+                            <th class="text-right">Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rbHistoryBody">
+                        <tr th:each="r : ${retribusiList}" class="border-t border-[#eef5ea] hover:bg-[#fafff8]">
+                            <td class="font-medium text-[#2d4d36]" th:text="${r.tanggal}"></td>
+                            <td th:text="${r.jenis}"></td>
+                            <td class="text-[#4f6f57]" th:text="${r.keterangan != null ? r.keterangan : '—'}"></td>
+                            <td>
+                                <span th:if="${r.buktiPath != null}" th:onclick="|previewBuktiRetribusi('${r.buktiPath}')|" class="badge-file text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1 cursor-pointer">
+                                    <i class="fas fa-paperclip"></i> Lihat Bukti
+                                </span>
+                                <span th:if="${r.buktiPath == null}" class="text-xs text-[#8aaa8a]">—</span>
+                            </td>
+                            <td>
+                                <span th:if="${r.status.name() == 'BELUM_BAYAR'}" class="badge-belum text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas fa-circle text-xs"></i> Belum bayar</span>
+                                <span th:if="${r.status.name() == 'MENUNGGU_VERIFIKASI'}" class="badge-proses text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas fa-clock text-xs"></i> Menunggu</span>
+                                <span th:if="${r.status.name() == 'LUNAS'}" class="badge-lunas text-xs px-2.5 py-1 rounded-full font-semibold inline-flex items-center gap-1"><i class="fas fa-check-circle text-xs"></i> Lunas</span>
+                            </td>
+                            <td class="text-right font-bold text-[#973333]" th:text="'Rp ' + #numbers.formatDecimal(r.nominal, 0, 'COMMA', 0, 'POINT')"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(retribusiList)}">
+                            <td colspan="6" class="text-center py-4 text-gray-400">Belum ada data retribusi.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-[#f6fbf3] px-5 py-3 text-xs text-[#4f6f57] border-t border-[#dce8d6] flex justify-between items-center flex-wrap gap-2">
+                <span id="rbCount"><i class="fas fa-history mr-1"></i> <span th:text="${retribusiList != null ? retribusiList.size() : 0}">0</span> transaksi retribusi</span>
+                <span class="text-[#8aaa8a]">* status berubah setelah verifikasi admin</span>
+            </div>
+        </div>
+
+        <div class="bg-white/90 backdrop-blur-sm p-5 md:p-6 rounded-2xl card-shadow border border-[#e3ece0] mb-6 no-print">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-xl bg-[#1e3a2f] text-white flex items-center justify-center text-sm"><i class="fas fa-pen-fancy"></i></div>
+                <h2 class="text-lg font-bold text-[#1e3a2f]">Catatan Keuangan</h2>
+                <span class="text-xs text-[#5e7d66] bg-[#eaf1e6] px-3 py-1 rounded-full ml-auto"><i class="far fa-clock mr-1"></i> hari ini</span>
+            </div>
+            <form th:action="@{/umkm/keuangan/transaksi}" method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="far fa-calendar mr-1"></i> Tanggal</label>
+                    <input type="date" name="tanggal" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" required/>
+                </div>
+                <div class="md:col-span-1">
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-pen mr-1"></i> Keterangan</label>
+                    <input type="text" name="keterangan" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" placeholder="Contoh: Sewa becak air" required/>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-tag mr-1"></i> Tipe</label>
+                    <select name="tipe" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm">
+                        <option value="PEMASUKAN">✅ Pemasukan</option>
+                        <option value="PENGELUARAN">❌ Pengeluaran</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[#3f5f49] uppercase tracking-wider mb-1.5"><i class="fas fa-rupiah-sign mr-1"></i> Nominal</label>
+                    <input type="number" name="nominal" step="1" class="w-full p-3 bg-white border border-[#d3e0cd] rounded-xl focus:ring-2 focus:ring-[#2b5e3b] outline-none text-sm" placeholder="0" required/>
+                </div>
+                <div class="md:col-span-4 flex justify-end">
+                    <button type="submit" class="btn-mangrove text-white px-6 py-3 rounded-xl font-bold text-sm shadow-sm flex items-center gap-2">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white/95 rounded-2xl card-shadow border border-[#e3ece0] overflow-hidden no-print">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#eaf1e6] flex-wrap gap-2">
+                <h3 class="font-bold text-[#1e3a2f] flex items-center gap-2">
+                    <i class="fas fa-list-ul text-[#2b5e3b]"></i> Riwayat Transaksi
+                    <span class="ml-2 text-xs bg-[#eaf1e6] px-2.5 py-0.5 rounded-full text-[#2b5e3b]" th:text="${transaksi != null ? transaksi.size() : 0}">0</span>
+                </h3>
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-600"></span> pemasukan</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500"></span> pengeluaran</span>
+                    <div class="relative">
+                        <input type="text" id="searchRiwayat" placeholder="Cari transaksi..." class="pl-8 pr-3 py-1.5 border border-[#d3e0cd] rounded-xl text-xs focus:ring-1 focus:ring-[#2b5e3b] outline-none w-36" />
+                        <i class="fas fa-search absolute left-2.5 top-2 text-[#6d8a73] text-xs"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-[#f2f8ef] text-[#2a4d36] text-xs uppercase tracking-wider">
+                        <tr>
+                            <th class="px-6 py-3.5 text-left"><i class="far fa-calendar-alt mr-1"></i> Tanggal</th>
+                            <th class="px-6 py-3.5 text-left">Keterangan</th>
+                            <th class="px-6 py-3.5 text-left">Kategori/Tipe</th>
+                            <th class="px-6 py-3.5 text-right">Nominal</th>
+                            <th class="px-6 py-3.5 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riwayatBody">
+                        <tr th:each="keuangan : ${transaksi}" class="border-b border-[#eaf1e6] hover:bg-[#fafff8] transition-colors">
+                            <td class="px-6 py-3.5 whitespace-nowrap text-[#4f6f57]" th:text="${keuangan.tanggal}"></td>
+                            <td class="px-6 py-3.5 font-medium text-[#1e3a2f]" th:text="${keuangan.keterangan}"></td>
+                            <td class="px-6 py-3.5">
+                                <span th:classappend="${keuangan.tipe.name() == 'PEMASUKAN'} ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase" th:text="${keuangan.kategori != null ? keuangan.kategori : keuangan.tipe}">
+                                </span>
+                            </td>
+                            <td class="px-6 py-3.5 text-right font-bold" th:classappend="${keuangan.tipe.name() == 'PEMASUKAN'} ? 'text-green-700' : 'text-red-700'" th:text="${(keuangan.tipe.name() == 'PEMASUKAN' ? '+ Rp ' : '- Rp ') + #numbers.formatDecimal(keuangan.nominal, 0, 'COMMA', 0, 'POINT')}">
+                            </td>
+                            <td class="px-6 py-3.5 text-center">
+                                <a th:href="@{/umkm/keuangan/hapus/{id}(id=${keuangan.id})}" onclick="return confirm('Yakin ingin menghapus transaksi ini?')" class="text-red-400 hover:text-red-600 transition-colors text-sm" title="Hapus">
+                                    <i class="fas fa-times-circle"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(transaksi)}">
+                            <td colspan="5" class="text-center py-6 text-gray-400">Belum ada transaksi di bulan ini.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="bg-[#f6fbf3] px-6 py-3 text-xs text-[#4f6f57] border-t border-[#dce8d6] flex justify-between items-center flex-wrap gap-2" id="riwayatFooter">
+                <span id="riwayatInfo"><i class="fas fa-chevron-left mr-2"></i> <span th:text="${transaksi != null ? transaksi.size() : 0}"></span> transaksi</span>
+            </div>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm border-t border-[#d4e2ce] pt-6 no-print">
+            <div class="flex items-center gap-4 text-[#2b5e3b]">
+                <span class="flex items-center gap-1"><i class="fas fa-file-export"></i> Ekspor Laporan</span>
+                <div class="export-dropdown">
+                    <button onclick="toggleExport()" class="btn-outline-mangrove px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 hover:bg-[#1e3a2f] hover:text-white transition-colors">
+                        <i class="fas fa-download"></i> Unduh
+                    </button>
+                    <div class="export-dropdown-content" id="exportDropdown">
+                        <a onclick="window.print()"><i class="fas fa-file-pdf text-red-500"></i> Cetak / PDF</a>
+                        </div>
+                </div>
+            </div>
+            <div class="text-[#466a4e]"><i class="fas fa-map-pin mr-1"></i> Medokan Ayu</div>
+        </div>
+
+        <div class="kw-modal-overlay" id="rbModal" onclick="if(event.target===this)this.classList.remove('show')">
+            <div class="kw-modal">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-[#1e3a2f] flex items-center gap-2"><i class="fas fa-file-image text-[#2b5e3b]"></i> Pratinjau Bukti</h4>
+                    <button onclick="document.getElementById('rbModal').classList.remove('show')" class="text-gray-400 hover:text-gray-600 text-lg"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="bg-[#f2f8ef] rounded-xl p-8 text-center mb-4">
+                    <i class="fas fa-file-alt text-5xl text-[#2b5e3b] mb-3 block"></i>
+                    <p class="font-semibold text-[#1e3a2f]" id="rbModalFileName">—</p>
+                    <p class="text-xs text-[#4f6f57] mt-1">File bukti pembayaran retribusi</p>
+                </div>
+                <p class="text-xs text-[#4f6f57] text-center bg-amber-50 border border-amber-200 rounded-xl p-2">
+                    <i class="fas fa-info-circle text-amber-500 mr-1"></i> Bukti disimpan di database
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Data dari Controller ke Frontend khusus untuk Grafik
+        const rawTransaksi = /*[[${transaksi}]]*/ [];
+        /*]]>*/
+
+        // Fungsi UI Toggle
+        function toggleExport() {
+            document.getElementById('exportDropdown').classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.export-dropdown')) {
+                const dropdown = document.getElementById('exportDropdown');
+                if(dropdown) dropdown.classList.remove('show');
+            }
+        });
+
+        // Search Bar Transaksi
+        document.getElementById('searchRiwayat').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const rows = document.getElementById('riwayatBody').querySelectorAll('tr');
+            rows.forEach(tr => {
+                const text = tr.textContent.toLowerCase();
+                tr.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+
+        // UI Upload File Preview
+        function rbHandleFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { 
+                alert('File terlalu besar. Maks. 5 MB.'); 
+                input.value = ''; 
+                return; 
+            }
+            document.getElementById('rbFpName').textContent = file.name;
+            document.getElementById('rbFpSize').textContent = (file.size / 1024).toFixed(0) + ' KB';
+            document.getElementById('rbFilePreview').classList.add('show');
+            document.getElementById('rbUzContent').style.opacity = '0.35';
+        }
+
+        function rbRemoveFile() {
+            document.getElementById('rbFileInput').value = '';
+            document.getElementById('rbFilePreview').classList.remove('show');
+            document.getElementById('rbUzContent').style.opacity = '1';
+        }
+
+        function previewBuktiRetribusi(nama) {
+            document.getElementById('rbModalFileName').textContent = nama;
+            document.getElementById('rbModal').classList.add('show');
+        }
+
+        // Render Grafik Chart.js
+        document.addEventListener('DOMContentLoaded', function() {
+            if (rawTransaksi && rawTransaksi.length > 0) {
+                const expenses = rawTransaksi.filter(t => t.tipe === 'PENGELUARAN' || t.tipe === 'pengeluaran');
+                if (expenses.length > 0) {
+                    const catMap = {};
+                    expenses.forEach(t => {
+                        const cat = t.keterangan || 'Pengeluaran';
+                        catMap[cat] = (catMap[cat] || 0) + t.nominal;
+                    });
+                    
+                    const labels = Object.keys(catMap);
+                    const data = Object.values(catMap);
+                    const colors = ['#3b7a4b', '#b68b40', '#3f7a9e', '#b34a4a', '#8a6d2b', '#6d8a73'];
+
+                    const ctx = document.getElementById('expenseChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{ data: data, backgroundColor: colors.slice(0, labels.length), borderWidth: 2 }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
+                    });
+
+                    const legendContainer = document.getElementById('chartLegend');
+                    labels.forEach((label, i) => {
+                        const span = document.createElement('span');
+                        span.innerHTML = `<span class="inline-block w-3 h-3 rounded-full mr-1" style="background:${colors[i % colors.length]}"></span> ${label}`;
+                        legendContainer.appendChild(span);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

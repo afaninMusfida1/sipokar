@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semua Produk UMKM | Sipokar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 600: '#16a34a', 700: '#15803d', 800: '#166534' }
+                    },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .product-card { transition: transform .3s ease, box-shadow .3s ease; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 28px -10px rgba(0,0,0,.15); }
+        .product-img { transition: transform .5s ease; }
+        .product-card:hover .product-img { transform: scale(1.06); }
+        @media (prefers-reduced-motion: reduce) {
+            .product-card, .product-img { transition: none !important; }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+
+    <!-- Navbar: simple, hanya logo + kembali ke beranda -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+
+                <a href="/" class="flex items-center gap-2.5 no-underline">
+                    <h1 class="text-xl md:text-2xl font-heading font-bold text-gray-900 tracking-tight">
+                        Si<span class="text-green-600">pokar</span>
+                    </h1>
+                </a>
+
+                <a href="/" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-200 no-underline">
+                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+                    </svg>
+                    <span>Kembali ke Beranda</span>
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <section class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-6 py-14">
+            <span class="inline-block bg-brand-600/15 text-brand-600 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full border border-brand-600/30 mb-4">
+                UMKM Sekitar Mangrove
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold mb-3">Semua Produk UMKM</h1>
+            <p class="text-gray-300 max-w-xl">Jelajahi dan dukung produk-produk lokal buatan warga sekitar kawasan ekowisata Mangrove.</p>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+
+        <div class="flex items-center justify-between mb-6">
+            <p class="text-sm font-semibold text-gray-500" th:text="${#lists.size(daftarProduk)} + ' produk tersedia'">0 produk tersedia</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div th:each="p : ${daftarProduk}"
+                 class="product-card bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
+
+                <div class="h-48 w-full overflow-hidden relative">
+                    <img th:src="@{${p.gambar != null and p.gambar != '' ? p.gambar : '/images/produk/placeholder.jpg'}}"
+                         alt="Foto Produk"
+                         class="product-img w-full h-full object-cover">
+
+                    <div th:if="${p.diskon != null and p.diskon > 0}"
+                         class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                        <span th:text="${p.diskon} + '% OFF'">Diskon</span>
+                    </div>
+                </div>
+
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="text-lg font-bold text-gray-900 mb-1" th:text="${p.nama}">Nama Produk</h3>
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-1" th:text="${p.deskripsi}">Deskripsi produk...</p>
+                </div>
+
+                <div class="px-5 pb-5 pt-3 border-t border-gray-100 flex items-end justify-between">
+                    <div class="flex flex-col">
+                        <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Harga</p>
+                        <span th:if="${p.diskon != null and p.diskon > 0}" class="text-xs text-gray-400 line-through">
+                            Rp [[${#numbers.formatInteger(p.harga, 0, 'POINT')}]]
+                        </span>
+                        <span class="text-base font-bold text-brand-700">
+                            Rp [[${#numbers.formatInteger(p.harga - (p.harga * (p.diskon != null ? p.diskon : 0) / 100), 0, 'POINT')}]]
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div th:if="${#lists.isEmpty(daftarProduk)}" class="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100 mt-4">
+            <p class="text-gray-700 text-lg font-bold mb-1">Belum ada produk yang terdaftar saat ini.</p>
+            <p class="text-gray-400 text-sm">Kembali lagi nanti untuk melihat produk UMKM baru.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-8 text-center text-gray-500 text-sm">
+        <p class="font-medium">&copy; 2026 Sipokar. All rights reserved.</p>
+        <p class="mt-1 text-gray-400">Dikelola untuk kelestarian alam.</p>
+    </footer>
+
+</body>
+</html>
