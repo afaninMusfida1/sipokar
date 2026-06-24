@@ -1,16 +1,11 @@
 com\sipokar\webapp\repository\PageViewRepository.class
 com\sipokar\webapp\model\Retribusi$StatusRetribusi.class
-<<<<<<< HEAD
 com\sipokar\webapp\service\ProdukService.class
-=======
-com\sipokar\webapp\repository\FasilitasRepository.class
->>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
 com\sipokar\webapp\config\WebConfig.class
 com\sipokar\webapp\repository\KeuanganRepository.class
 com\sipokar\webapp\controller\umkm\UmkmRegisterController.class
 com\sipokar\webapp\config\SecurityConfig.class
 com\sipokar\webapp\model\Retribusi.class
-<<<<<<< HEAD
 com\sipokar\webapp\controller\admin\AdminUmkmController.class
 com\sipokar\webapp\WebappApplication.class
 com\sipokar\webapp\controller\admin\AdminFeedbackController.class
@@ -51,56 +46,12 @@ com\sipokar\webapp\model\DataPengunjung.class
 com\sipokar\webapp\controller\FormKunjunganController.class
 com\sipokar\webapp\repository\WisataInfoRepository.class
 com\sipokar\webapp\repository\ProdukRepository.class
-=======
-com\sipokar\webapp\model\FotoGaleri.class
-com\sipokar\webapp\controller\PublicController.class
-com\sipokar\webapp\controller\admin\AdminUmkmController.class
-com\sipokar\webapp\WebappApplication.class
-com\sipokar\webapp\controller\admin\AdminFeedbackController.class
-com\sipokar\webapp\model\Fasilitas.class
-com\sipokar\webapp\repository\FeedbackRepository.class
-com\sipokar\webapp\repository\RetribusiRepository.class
-com\sipokar\webapp\model\Keuangan$Kategori.class
-com\sipokar\webapp\service\UserDetailsServiceImpl.class
-com\sipokar\webapp\model\User$Role.class
-com\sipokar\webapp\model\User.class
-com\sipokar\webapp\controller\admin\AdminFasilitasController.class
-com\sipokar\webapp\service\RetribusiService.class
-com\sipokar\webapp\controller\ReservasiController.class
-com\sipokar\webapp\service\QrCodeService.class
-com\sipokar\webapp\repository\FotoGaleriRepository.class
-com\sipokar\webapp\controller\admin\AdminPengunjungController.class
-com\sipokar\webapp\repository\UserRepository.class
-com\sipokar\webapp\model\Umkm.class
-com\sipokar\webapp\model\WisataInfo.class
-com\sipokar\webapp\service\UmkmService.class
-com\sipokar\webapp\controller\AuthController.class
-com\sipokar\webapp\controller\admin\AdminKontenController.class
-com\sipokar\webapp\repository\UmkmRepository.class
-com\sipokar\webapp\model\Keuangan$Tipe.class
-com\sipokar\webapp\service\KeuanganService.class
-com\sipokar\webapp\model\DataPengunjung.class
-com\sipokar\webapp\repository\DataPengunjungRepository.class
-com\sipokar\webapp\controller\FormKunjunganController.class
-com\sipokar\webapp\model\PageView.class
-com\sipokar\webapp\repository\WisataInfoRepository.class
->>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
 com\sipokar\webapp\service\PengunjungService.class
 com\sipokar\webapp\service\AdminDashboardService.class
 com\sipokar\webapp\service\PageViewService.class
 com\sipokar\webapp\controller\umkm\UmkmKeuanganController.class
 com\sipokar\webapp\controller\umkm\UmkmDashboardController.class
 com\sipokar\webapp\service\CloudinaryService.class
-<<<<<<< HEAD
 com\sipokar\webapp\config\CloudinaryConfig.class
 com\sipokar\webapp\model\Umkm$Status.class
 com\sipokar\webapp\controller\admin\AdminGaleriController.class
-=======
-com\sipokar\webapp\controller\admin\AdminDashboardController.class
-com\sipokar\webapp\config\CloudinaryConfig.class
-com\sipokar\webapp\model\Umkm$Status.class
-com\sipokar\webapp\controller\admin\AdminGaleriController.class
-com\sipokar\webapp\model\Keuangan.class
-com\sipokar\webapp\controller\umkm\UmkmController.class
-com\sipokar\webapp\model\Feedback.class
->>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
