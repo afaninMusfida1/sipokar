@@ -20,6 +20,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+<<<<<<< HEAD
+=======
+    @Column(unique = true, nullable = false)
+    private String email;
+
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;

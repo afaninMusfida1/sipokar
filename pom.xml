@@ -28,7 +28,13 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+<<<<<<< HEAD
 	</properties>
+=======
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		</properties>
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,6 +102,13 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+<<<<<<< HEAD
+=======
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
 	</dependencies>
 
 	<build>

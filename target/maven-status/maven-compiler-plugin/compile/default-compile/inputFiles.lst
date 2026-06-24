@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 D:\MATKUL POLINES SEM 2\PBO\pbo2\sipokar-main\src\main\java\com\sipokar\webapp\config\CloudinaryConfig.java
 D:\MATKUL POLINES SEM 2\PBO\pbo2\sipokar-main\src\main\java\com\sipokar\webapp\config\SecurityConfig.java
 D:\MATKUL POLINES SEM 2\PBO\pbo2\sipokar-main\src\main\java\com\sipokar\webapp\config\WebConfig.java
@@ -50,3 +51,53 @@ D:\MATKUL POLINES SEM 2\PBO\pbo2\sipokar-main\src\main\java\com\sipokar\webapp\s
 D:\MATKUL POLINES SEM 2\PBO\pbo2\sipokar-main\src\main\java\com\sipokar\webapp\service\UmkmService.java
 D:\MATKUL POLINES SEM 2\PBO\pbo2\sipokar-main\src\main\java\com\sipokar\webapp\service\UserDetailsServiceImpl.java
 D:\MATKUL POLINES SEM 2\PBO\pbo2\sipokar-main\src\main\java\com\sipokar\webapp\WebappApplication.java
+=======
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\config\CloudinaryConfig.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\config\SecurityConfig.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\config\WebConfig.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminDashboardController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminFasilitasController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminFeedbackController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminGaleriController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminKontenController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminPengunjungController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminUmkmController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\AuthController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\FormKunjunganController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\PublicController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\ReservasiController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\umkm\UmkmController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\umkm\UmkmDashboardController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\umkm\UmkmKeuanganController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\umkm\UmkmRegisterController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\DataPengunjung.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Fasilitas.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Feedback.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\FotoGaleri.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Keuangan.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\PageView.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Retribusi.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Umkm.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\User.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\WisataInfo.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\DataPengunjungRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\FasilitasRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\FeedbackRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\FotoGaleriRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\KeuanganRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\PageViewRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\RetribusiRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\UmkmRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\UserRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\WisataInfoRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\AdminDashboardService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\CloudinaryService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\KeuanganService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\PageViewService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\PengunjungService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\QrCodeService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\RetribusiService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\UmkmService.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\service\UserDetailsServiceImpl.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\WebappApplication.java
+>>>>>>> f58bcb704ca04e133dbe4515d85768387958ed38
