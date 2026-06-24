@@ -10,15 +10,15 @@
             <form th:action="@{/admin/fasilitas}" th:object="${fasilitas}" method="post" class="flex flex-col sm:flex-row gap-3">
                 <input type="text" th:field="*{nama}" required placeholder="Nama fasilitas (Contoh: Musholla)" class="flex-1 p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none text-sm">
                 
-                <select th:field="*{icon}" class="w-full sm:w-48 p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none text-sm text-gray-600">
-                    <option value="Umum">Umum</option>
-                    <option value="Hiburan">Hiburan</option>
-                    <option value="Kebersihan">Kebersihan</option>
-                    <option value="Keamanan">Keamanan</option>
-                </select>
+                <!-- PERUBAHAN: select diganti input teks bebas -->
+                <input type="text" th:field="*{icon}"
+                       placeholder="Icon emoji (contoh: 🕌)"
+                       class="w-full sm:w-48 p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none text-sm">
 
                 <button type="submit" class="bg-gray-900 text-white px-6 py-2 rounded-xl text-sm font-semibold hover:bg-green-600 transition-all">Tambah</button>
             </form>
+            <!-- Referensi emoji cepat -->
+            <p class="text-xs text-gray-400 mt-3">Contoh emoji: 🕌 🏫 📚 🚿 🔒 🔬 🍽️ 🅿️ 🏃 💊 🎭 🌳</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -26,7 +26,10 @@
             <div th:each="f : ${daftarFasilitas}" class="group bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-md transition-all duration-300 relative">
                 
                 <div class="flex justify-between items-start mb-4">
-                    <span class="text-[10px] uppercase tracking-wider font-bold text-green-700 bg-green-50 px-2 py-1 rounded-md" th:text="${f.icon}">Kategori</span>
+                    <!-- PERUBAHAN: badge kategori diganti tampilan emoji besar -->
+                    <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-2xl">
+                        <span th:text="${f.icon}">🏷️</span>
+                    </div>
                     
                     <form th:action="@{/admin/fasilitas/{id}/hapus(id=${f.id})}" method="post" th:id="'deleteForm' + ${f.id}">
                         <button type="button" 
@@ -47,6 +50,7 @@
                 <p class="text-gray-400 text-sm">Belum ada fasilitas yang ditambahkan.</p>
             </div>
         </div>
+
         <script>
     function confirmDelete(id) {
         Swal.fire({
@@ -60,7 +64,6 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Submit form berdasarkan ID unik
                 document.getElementById('deleteForm' + id).submit();
             }
         });
