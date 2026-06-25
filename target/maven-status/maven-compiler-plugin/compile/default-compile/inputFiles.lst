@@ -11,6 +11,7 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminKontenController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminNotificationController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminPengunjungController.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminReservasiController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\admin\AdminUmkmController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\AuthController.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\controller\FormKunjunganController.java
@@ -30,6 +31,8 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Notification.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\PageView.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Produk.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Reservasi.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\ReservasiTempat.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Retribusi.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\Umkm.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\model\User.java
@@ -43,6 +46,8 @@ C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\NotificationRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\PageViewRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\ProdukRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\ReservasiRepository.java
+C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\ReservasiTempatRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\RetribusiRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\UmkmRepository.java
 C:\Users\LENOVO\OneDrive\Pictures\Documents\SOLINEP\SMT 2\OOP\tubes\sipokar\src\main\java\com\sipokar\webapp\repository\UserRepository.java

@@ -45,11 +45,8 @@
 
         </div>
 
-        <!-- Bawah Grid: Table & Chart -->
-        <!-- Tambahkan items-start agar kotak kiri dan kanan tidak saling memanjangkan diri -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 items-start">
             
-            <!-- Table Check-in -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center bg-gray-50/50">
                     <h2 class="text-base font-semibold text-gray-900">Check-in Terbaru</h2>
@@ -59,19 +56,21 @@
                     <table class="w-full text-sm text-left">
                         <thead class="bg-white border-b border-gray-100 text-gray-500 font-medium">
                             <tr>
-                                <th class="px-6 py-3 font-medium">Waktu</th>
-                                <th class="px-6 py-3 font-medium">Nama</th>
-                                <th class="px-6 py-3 font-medium">Kota Asal</th>
-                                <th class="px-6 py-3 font-medium text-center">Jumlah</th>
+                                <th class="px-6 py-3 font-medium">Tanggal</th>
+                                <th class="px-6 py-3 font-medium text-center">Dewasa</th>
+                                <th class="px-6 py-3 font-medium text-center">Anak-anak</th>
+                                <th class="px-6 py-3 font-medium text-center">Total</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 text-gray-600">
                             <tr th:each="tamu : ${checkInTerbaru}" class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-3" th:text="${tamu.waktuCheckIn != null} ? ${#temporals.format(tamu.waktuCheckIn, 'dd/MM HH:mm')} : '-'"></td>
-                                <td class="px-6 py-3 font-medium text-gray-900" th:text="${tamu.nama}"></td>
-                                <td class="px-6 py-3" th:text="${tamu.kotaAsal}"></td>
+                                <td class="px-6 py-3" th:text="${tamu.tanggalKunjungan != null} ? ${#temporals.format(tamu.tanggalKunjungan, 'dd/MM/yyyy')} : '-'"></td>
+                                <td class="px-6 py-3 text-center" th:text="${tamu.jumlahDewasa != null} ? ${tamu.jumlahDewasa} : 0"></td>
+                                <td class="px-6 py-3 text-center" th:text="${tamu.jumlahAnak != null} ? ${tamu.jumlahAnak} : 0"></td>
                                 <td class="px-6 py-3 text-center">
-                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-50 text-green-700 font-medium text-xs" th:text="${tamu.jumlahOrang != null} ? ${tamu.jumlahOrang} : 0"></span>
+                                    <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-green-50 text-green-700 font-medium text-xs" 
+                                          th:text="${(tamu.jumlahDewasa != null ? tamu.jumlahDewasa : 0) + (tamu.jumlahAnak != null ? tamu.jumlahAnak : 0)}">
+                                    </span>
                                 </td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(checkInTerbaru)}">
@@ -82,11 +81,9 @@
                 </div>
             </div>
 
-            <!-- Chart -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <h2 class="text-base font-semibold text-gray-900 mb-6">Tren Pengunjung (30 Hari)</h2>
                 
-                <!-- BUNGKUS INI YANG PALING PENTING! Mencegah Chart.js melar ke bawah -->
                 <div class="relative w-full h-[300px]">
                     <canvas id="trenChart"></canvas>
                 </div>
@@ -94,7 +91,6 @@
 
         </div>
 
-        <!-- Script Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script th:inline="javascript">
             const labels = /*[[${trenLabels}]]*/ [];
@@ -120,7 +116,7 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false, // Wajib ada kalau dibungkus div relative h-[300px]
+                    maintainAspectRatio: false,
                     plugins: { 
                         legend: { display: false } 
                     },

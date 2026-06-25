@@ -31,4 +31,5 @@ public class FormKunjunganController {
         pengunjungService.simpan(dataPengunjung);
         return "redirect:/form-kunjungan?success=true";
     }
+
 }
