@@ -885,6 +885,22 @@
             <p class="text-gray-500 max-w-md mx-auto text-sm">Berbagai fasilitas untuk memastikan pengalaman wisata yang menyenangkan. Kami juga memiliki berbagai fasilitas lain yang dapat Anda reservasi untuk pengalaman wisata yang lebih lengkap dan menyenangkan.</p>
         </div>
 
+<<<<<<< HEAD
+        <section th:if="${fasilitas != null and not #lists.isEmpty(fasilitas)}" class="mb-20 reveal">
+            <div class="bg-gradient-to-br from-gray-50 to-white rounded-3xl border border-gray-100 p-8 shadow-sm">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div th:each="f : ${fasilitas}" class="facility-card group bg-white rounded-2xl p-6 border border-gray-100 hover:border-green-300 text-center cursor-default">
+                        <div class="facility-icon w-20 h-20 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-3 shadow-sm overflow-hidden">
+                            <img th:if="${f.foto != null and #strings.startsWith(f.foto, 'http')}"
+                                 th:src="${f.foto}"
+                                 class="w-full h-full object-cover" alt="ikon fasilitas">
+
+                            <img th:if="${f.foto != null and !#strings.startsWith(f.foto, 'http')}"
+                                 th:src="@{'/uploads/fasilitas/' + ${f.foto}}"
+                                 class="w-full h-full object-cover" alt="ikon fasilitas">
+
+                            <span th:if="${f.foto == null}" class="text-xl">🚲</span>
+=======
         <!-- Zig-Zag Cards Container -->
         <div class="space-y-8" th:if="${fasilitas != null and not #lists.isEmpty(fasilitas)}">
 
@@ -910,6 +926,7 @@
                         <div class="flex items-center gap-2 text-green-600 text-sm font-medium">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             <span>Panjang 500 meter</span>
+>>>>>>> a1074a71e6f81db413888d9b68aae3199f040529
                         </div>
                     </div>
                 </div>
