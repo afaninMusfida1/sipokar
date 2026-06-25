@@ -1,20 +1,25 @@
 package com.sipokar.webapp.controller.admin;
 
-import com.sipokar.webapp.model.Fasilitas;
-import com.sipokar.webapp.repository.FasilitasRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
-import java.util.UUID;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.sipokar.webapp.model.Fasilitas;
+import com.sipokar.webapp.repository.FasilitasRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/admin/fasilitas")
@@ -22,9 +27,7 @@ import java.util.UUID;
 public class AdminFasilitasController {
 
     private final FasilitasRepository fasilitasRepository;
-
-    @Value("${app.upload.dir}")
-    private String uploadDir;
+    private final Cloudinary cloudinary;
 
     @GetMapping
     public String daftar(Model model) {
@@ -40,8 +43,12 @@ public class AdminFasilitasController {
         fasilitas.setId(null);
 
         if (!file.isEmpty()) {
-            String namaFile = simpanFile(file);
-            fasilitas.setFoto(namaFile);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> hasil = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    ObjectUtils.asMap("folder", "fasilitas")
+            );
+            fasilitas.setFoto((String) hasil.get("secure_url"));
         }
 
         fasilitasRepository.save(fasilitas);
@@ -49,37 +56,36 @@ public class AdminFasilitasController {
     }
 
     @PostMapping("/{id}/hapus")
-    public String hapus(@PathVariable Long id) {
+    public String hapus(@PathVariable Long id) throws IOException {
         Optional<Fasilitas> existing = fasilitasRepository.findById(id);
+
         existing.ifPresent(f -> {
-            if (f.getFoto() != null) {
+            String foto = f.getFoto();
+            if (foto != null && foto.startsWith("http")) {
+                String publicId = extractPublicId(foto);
                 try {
-                    Files.deleteIfExists(Paths.get(uploadDir, f.getFoto()));
+                    cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
                 } catch (IOException e) {
-                    // log saja, jangan sampai gagalkan proses hapus data
                 }
             }
         });
+
         fasilitasRepository.deleteById(id);
         return "redirect:/admin/fasilitas";
     }
 
-    private String simpanFile(MultipartFile file) throws IOException {
-        Path dir = Paths.get(uploadDir);
-        if (!Files.exists(dir)) {
-            Files.createDirectories(dir);
+    private String extractPublicId(String url) {
+        String tanpaQuery = url.split("\\?")[0];
+        String setelahUpload = tanpaQuery.substring(tanpaQuery.indexOf("/upload/") + "/upload/".length());
+        String[] segmen = setelahUpload.split("/");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < segmen.length; i++) {
+            if (i == 0 && segmen[i].matches("v\\d+")) continue;
+            if (sb.length() > 0) sb.append("/");
+            sb.append(segmen[i]);
         }
-
-        String ekstensi = "";
-        String original = file.getOriginalFilename();
-        if (original != null && original.contains(".")) {
-            ekstensi = original.substring(original.lastIndexOf("."));
-        }
-
-        String namaFile = UUID.randomUUID() + ekstensi;
-        Path target = dir.resolve(namaFile);
-        file.transferTo(target);
-
-        return namaFile;
+        String hasil = sb.toString();
+        int titikTerakhir = hasil.lastIndexOf('.');
+        return titikTerakhir > 0 ? hasil.substring(0, titikTerakhir) : hasil;
     }
 }
