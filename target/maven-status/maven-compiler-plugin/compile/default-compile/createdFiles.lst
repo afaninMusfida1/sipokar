@@ -9,7 +9,9 @@ com\sipokar\webapp\model\Retribusi.class
 com\sipokar\webapp\controller\admin\AdminUmkmController.class
 com\sipokar\webapp\WebappApplication.class
 com\sipokar\webapp\controller\admin\AdminFeedbackController.class
+com\sipokar\webapp\model\Reservasi$Status.class
 com\sipokar\webapp\model\Keuangan$Kategori.class
+com\sipokar\webapp\model\Reservasi.class
 com\sipokar\webapp\model\Produk.class
 com\sipokar\webapp\model\User.class
 com\sipokar\webapp\service\QrCodeService.class
@@ -26,6 +28,7 @@ com\sipokar\webapp\controller\admin\AdminDashboardController.class
 com\sipokar\webapp\model\Keuangan.class
 com\sipokar\webapp\controller\umkm\UmkmController.class
 com\sipokar\webapp\model\Feedback.class
+com\sipokar\webapp\model\ReservasiTempat.class
 com\sipokar\webapp\repository\FasilitasRepository.class
 com\sipokar\webapp\model\FotoGaleri.class
 com\sipokar\webapp\controller\PublicController.class
@@ -46,12 +49,15 @@ com\sipokar\webapp\model\DataPengunjung.class
 com\sipokar\webapp\controller\FormKunjunganController.class
 com\sipokar\webapp\repository\WisataInfoRepository.class
 com\sipokar\webapp\repository\ProdukRepository.class
+com\sipokar\webapp\repository\ReservasiRepository.class
 com\sipokar\webapp\service\PengunjungService.class
 com\sipokar\webapp\service\AdminDashboardService.class
 com\sipokar\webapp\service\PageViewService.class
 com\sipokar\webapp\controller\umkm\UmkmKeuanganController.class
 com\sipokar\webapp\controller\umkm\UmkmDashboardController.class
 com\sipokar\webapp\service\CloudinaryService.class
+com\sipokar\webapp\controller\admin\AdminReservasiController.class
 com\sipokar\webapp\config\CloudinaryConfig.class
 com\sipokar\webapp\model\Umkm$Status.class
 com\sipokar\webapp\controller\admin\AdminGaleriController.class
+com\sipokar\webapp\repository\ReservasiTempatRepository.class
