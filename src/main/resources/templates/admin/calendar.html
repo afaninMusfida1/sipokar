@@ -1,0 +1,350 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Calendar Management</title>
+
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+    <style>
+      .fc {
+        width: 100%;
+      }
+
+      .fc-toolbar {
+        margin-bottom: 20px !important;
+      }
+
+      .fc-toolbar-title {
+        font-size: 28px !important;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .fc-button {
+        background: #16a34a !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 10px 16px !important;
+        font-weight: 600 !important;
+      }
+
+      .fc-prev-button {
+        margin-right: 8px !important;
+      }
+
+      .fc-next-button {
+        margin-right: 16px !important;
+      }
+
+      .fc-button:hover {
+        background: #15803d !important;
+      }
+
+      /* FIX HEIGHT */
+      .fc-daygrid-day {
+        height: 120px !important;
+        max-height: 120px !important;
+      }
+
+      .fc-daygrid-day-frame {
+        height: 120px !important;
+        overflow: hidden !important;
+      }
+
+      .fc-daygrid-day-events {
+        max-height: 60px !important;
+        overflow: hidden !important;
+      }
+
+      .fc-day-today {
+        background: #dcfce7 !important;
+      }
+
+      .fc-day-sun .fc-daygrid-day-number,
+      .fc-col-header-cell.fc-day-sun {
+        color: #dc2626 !important;
+      }
+
+      .fc-scrollgrid {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+      }
+
+      /* HORIZONTAL EVENT */
+      .fc-event {
+        width: calc(100% - 8px) !important;
+        max-width: calc(100% - 8px) !important;
+
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+
+        overflow: hidden !important;
+        white-space: nowrap !important;
+
+        background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+        color: white !important;
+        font-weight: 500;
+      }
+
+      .fc-event-time {
+        flex-shrink: 0 !important;
+        font-weight: 700 !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+      }
+
+      .fc-event-title {
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        flex: 1 !important;
+      }
+
+      .fc-daygrid-event-dot {
+        display: none !important;
+      }
+
+      .fc-daygrid-more-link {
+        color: #16a34a !important;
+        font-weight: 600;
+      }
+
+      .fc-popover {
+        border-radius: 14px !important;
+        border: none !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12) !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      th:replace="~{fragments/admin-layout :: layout('Calendar Management', ~{::section})}"
+    >
+      <section>
+        <div
+          class="w-full bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
+        >
+          <div id="calendar"></div>
+        </div>
+
+        <!-- Modal -->
+        <div
+          id="eventModal"
+          class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        >
+          <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+              <h2 id="modalTitle" class="text-xl font-semibold">
+                Tambah Agenda
+              </h2>
+              <button onclick="closeModal()" class="text-2xl">×</button>
+            </div>
+
+            <form
+              id="agendaForm"
+              th:action="@{/admin/calendar/save}"
+              method="post"
+              class="space-y-4"
+            >
+              <input
+                type="hidden"
+                th:name="${_csrf.parameterName}"
+                th:value="${_csrf.token}"
+              />
+
+              <input type="hidden" name="id" id="agendaId" />
+
+              <input
+                type="text"
+                name="title"
+                id="agendaTitle"
+                placeholder="Judul agenda"
+                required
+                class="w-full border rounded-xl px-4 py-3"
+              />
+
+              <textarea
+                name="description"
+                id="agendaDescription"
+                rows="3"
+                placeholder="Deskripsi"
+                class="w-full border rounded-xl px-4 py-3"
+              ></textarea>
+
+              <input
+                type="date"
+                name="eventDate"
+                id="agendaDate"
+                required
+                class="w-full border rounded-xl px-4 py-3"
+              />
+
+              <input
+                type="time"
+                name="eventTime"
+                id="agendaTime"
+                required
+                class="w-full border rounded-xl px-4 py-3"
+              />
+
+              <input
+                type="text"
+                name="type"
+                id="agendaType"
+                placeholder="Tipe agenda"
+                class="w-full border rounded-xl px-4 py-3"
+              />
+
+              <div class="flex justify-between">
+                <button
+                  type="button"
+                  id="deleteBtn"
+                  class="hidden px-4 py-2 rounded-xl bg-red-600 text-white"
+                >
+                  Hapus
+                </button>
+
+                <div class="flex gap-3 ml-auto">
+                  <button
+                    type="button"
+                    onclick="closeModal()"
+                    class="px-4 py-2 rounded-xl border"
+                  >
+                    Batal
+                  </button>
+
+                  <button
+                    type="submit"
+                    id="saveBtn"
+                    class="px-4 py-2 rounded-xl bg-green-600 text-white"
+                  >
+                    Simpan Agenda
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      let calendar;
+
+      document.addEventListener("load", function () {
+        const calendarEl = document.getElementById("calendar");
+
+        calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+
+          height: "calc(100vh - 220px)",
+
+          expandRows: false,
+          fixedWeekCount: false,
+
+          dayMaxEvents: 1,
+          moreLinkClick: "popover",
+
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "",
+          },
+
+          buttonText: {
+            today: "Hari Ini",
+          },
+
+          eventTimeFormat: {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+            meridiem: "short",
+          },
+
+          events: "/admin/calendar/events",
+
+          dateClick(info) {
+            resetForm();
+            document.getElementById("modalTitle").innerText = "Tambah Agenda";
+            document.getElementById("agendaDate").value = info.dateStr;
+            document.getElementById("eventModal").classList.remove("hidden");
+          },
+
+          eventClick(info) {
+            const event = info.event;
+
+            document.getElementById("modalTitle").innerText = "Edit Agenda";
+            document.getElementById("agendaId").value = event.id;
+            document.getElementById("agendaTitle").value = event.title;
+            document.getElementById("agendaDate").value =
+              event.startStr.split("T")[0];
+            document.getElementById("agendaTime").value = event.start
+              .toTimeString()
+              .slice(0, 5);
+
+            document.getElementById("deleteBtn").classList.remove("hidden");
+            document.getElementById("eventModal").classList.remove("hidden");
+          },
+        });
+
+        calendar.render();
+
+        document
+          .getElementById("agendaForm")
+          .addEventListener("submit", function () {
+            const btn = document.getElementById("saveBtn");
+            btn.disabled = true;
+            btn.innerText = "Menyimpan...";
+          });
+
+        document
+          .getElementById("deleteBtn")
+          .addEventListener("click", function () {
+            const id = document.getElementById("agendaId").value;
+
+            if (!confirm("Hapus agenda ini?")) return;
+
+            const csrfToken =
+              document.querySelector('meta[name="_csrf"]').content;
+            const csrfHeader = document.querySelector(
+              'meta[name="_csrf_header"]',
+            ).content;
+
+            fetch("/admin/calendar/delete/" + id, {
+              method: "POST",
+              headers: {
+                [csrfHeader]: csrfToken,
+              },
+            }).then(() => {
+              closeModal();
+              calendar.refetchEvents();
+            });
+          });
+      });
+
+      function closeModal() {
+        document.getElementById("eventModal").classList.add("hidden");
+      }
+
+      function resetForm() {
+        document.getElementById("agendaForm").reset();
+        document.getElementById("agendaId").value = "";
+        document.getElementById("deleteBtn").classList.add("hidden");
+      }
+    </script>
+  </body>
+</html>
