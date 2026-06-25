@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sipokar.webapp.model.Feedback;
 import com.sipokar.webapp.model.WisataInfo;
-import com.sipokar.webapp.repository.FasilitasRepository; // 1. IMPORT BARU UNTUK PRODUK SERVICE
+import com.sipokar.webapp.repository.FasilitasRepository; 
 import com.sipokar.webapp.repository.FeedbackRepository;
 import com.sipokar.webapp.repository.FotoGaleriRepository;
 import com.sipokar.webapp.repository.WisataInfoRepository;
@@ -26,7 +26,7 @@ public class PublicController {
     private final FotoGaleriRepository fotoGaleriRepository;
     private final FasilitasRepository fasilitasRepository;
     private final PageViewService pageViewService;
-    private final ProdukService produkService; // 2. TAMBAHKAN DI SINI (Otomatis terhubung tanpa @Autowired)
+    private final ProdukService produkService; 
 
     @GetMapping("/")
     public String landingPage(Model model) {
@@ -61,5 +61,7 @@ public class PublicController {
         model.addAttribute("daftarProduk", produkService.ambilSemuaProduk());
         return "produk-umkm"; // Ini akan mengarah ke file templates/produk-umkm.html
     }
+
+    
 
 }

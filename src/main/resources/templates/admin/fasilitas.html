@@ -30,10 +30,15 @@
 
                 <div class="flex justify-between items-start mb-4">
                     <div class="w-12 h-12 bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center">
-                        <img th:if="${f.foto != null}"
+                        <img th:if="${f.foto != null and #strings.startsWith(f.foto, 'http')}"
+                             th:src="${f.foto}"
+                             class="w-full h-full object-cover" alt="foto fasilitas">
+
+                        <img th:if="${f.foto != null and !#strings.startsWith(f.foto, 'http')}"
                              th:src="@{'/uploads/fasilitas/' + ${f.foto}}"
                              class="w-full h-full object-cover" alt="foto fasilitas">
-                        <span th:unless="${f.foto != null}" class="text-2xl">🏷️</span>
+
+                        <span th:if="${f.foto == null}" class="text-2xl">🏷️</span>
                     </div>
 
                     <form th:action="@{/admin/fasilitas/{id}/hapus(id=${f.id})}" method="post" th:id="'deleteForm' + ${f.id}">
