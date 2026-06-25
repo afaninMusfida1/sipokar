@@ -26,6 +26,8 @@ public class ReservasiController {
         Set<Long> reservedTempatIds = reservasiRepository
                 .findByTanggalGreaterThanEqualOrderByTanggalAsc(LocalDate.now())
                 .stream()
+                .filter(reservasi -> reservasi.getStatus() == Reservasi.Status.BOOKED
+                        || reservasi.getStatus() == Reservasi.Status.PENDING)
                 .map(reservasi -> reservasi.getTempat().getId())
                 .collect(Collectors.toSet());
 
