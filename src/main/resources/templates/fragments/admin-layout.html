@@ -26,7 +26,7 @@
       <div th:replace="~{fragments/sidebar :: admin-sidebar}"></div>
 
       <!-- Main Content -->
-      <main class="flex-1 min-w-0 h-screen overflow-y-auto">
+      <main class="flex-1 min-w-0 h-screen overflow-y-auto lg:ml-72">
         <header
           class="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between sticky top-0 z-10"
         >
@@ -72,7 +72,7 @@
           </div>
         </header>
 
-        <div class="p-8 max-w-7xl mx-auto">
+        <div class="w-full px-8 py-8">
           <h1
             class="text-3xl font-bold mb-8 text-gray-900 tracking-tight"
             th:text="${title}"

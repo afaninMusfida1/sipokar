@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sipokar.webapp.model.Feedback;
 import com.sipokar.webapp.model.WisataInfo;
-import com.sipokar.webapp.repository.FasilitasRepository; 
+import com.sipokar.webapp.repository.DataPengunjungRepository;
+import com.sipokar.webapp.repository.FasilitasRepository;
 import com.sipokar.webapp.repository.FeedbackRepository;
 import com.sipokar.webapp.repository.FotoGaleriRepository;
 import com.sipokar.webapp.repository.WisataInfoRepository;
+import com.sipokar.webapp.repository.UmkmRepository;
 import com.sipokar.webapp.service.PageViewService;
 import com.sipokar.webapp.service.ProdukService;
 
@@ -26,42 +28,52 @@ public class PublicController {
     private final FotoGaleriRepository fotoGaleriRepository;
     private final FasilitasRepository fasilitasRepository;
     private final PageViewService pageViewService;
-    private final ProdukService produkService; 
+    private final ProdukService produkService;
+
+    // TAMBAHAN BARU
+    private final DataPengunjungRepository dataPengunjungRepository;
+    private final UmkmRepository umkmRepository;
 
     @GetMapping("/")
     public String landingPage(Model model) {
         WisataInfo info = wisataInfoRepository.findById(1L)
                 .orElseGet(WisataInfo::new);
 
-        model.addAttribute("info", info);
-        model.addAttribute("galeri", fotoGaleriRepository.findAllByOrderByIdDesc());
-        
-        // INI YANG PALING PENTING - Namanya harus 'daftarFasilitas'
-        model.addAttribute("daftarFasilitas", fasilitasRepository.findAll());
-
-        model.addAttribute("produk", produkService.ambilSemuaProduk());
-
+        // record dulu
         pageViewService.recordVisit();
 
-        // Print ke terminal buat ngecek data beneran ada atau nggak
-        System.out.println("JUMLAH FASILITAS DITEMUKAN: " + fasilitasRepository.findAll().size());
+        // baru ambil total (sama persis seperti admin dashboard)
+        long totalPengunjungBulanan = pageViewService.totalKunjungan();
+        long totalUmkm = umkmRepository.count();
+
+        model.addAttribute("info", info);
+        model.addAttribute("galeri", fotoGaleriRepository.findAllByOrderByIdDesc());
+        model.addAttribute("daftarFasilitas", fasilitasRepository.findAll());
+        model.addAttribute("produk", produkService.ambilSemuaProduk());
+
+        model.addAttribute("totalPengunjungBulanan", totalPengunjungBulanan);
+        model.addAttribute("totalUmkm", totalUmkm);
+
+        System.out.println("TOTAL PENGUNJUNG LANDING: " + totalPengunjungBulanan);
+        System.out.println("TOTAL UMKM LANDING: " + totalUmkm);
 
         return "index";
     }
 
     @PostMapping("/feedback")
     public String submitFeedback(@RequestParam String nama,
-                                 @RequestParam String pesan) {
+            @RequestParam String pesan) {
         Feedback feedback = new Feedback();
         feedback.setNama(nama);
         feedback.setIsi(pesan);
         feedbackRepository.save(feedback);
+
         return "redirect:/?feedback=success";
     }
 
     @GetMapping("/produk-umkm")
     public String halamanSemuaProduk(Model model) {
         model.addAttribute("daftarProduk", produkService.ambilSemuaProduk());
-        return "produk-umkm"; 
+        return "produk-umkm";
     }
 }

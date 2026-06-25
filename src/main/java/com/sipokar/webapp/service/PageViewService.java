@@ -36,4 +36,8 @@ public class PageViewService {
                 .map(PageView::getJumlah)
                 .orElse(0L);
     }
+
+    public long getMonthlyVisitors() {
+        return pageViewRepository.countByMonth(LocalDate.now().getMonthValue());
+    }
 }

@@ -20,13 +20,8 @@ public class ReservasiTempat {
     @Column(columnDefinition = "TEXT")
     private String deskripsi;
 
-    private String lokasi;
-
     private Integer kapasitas;
 
     @Column(name = "foto_url")
     private String fotoUrl;
-
-    @Column(name = "info_tambahan", columnDefinition = "TEXT")
-    private String infoTambahan;
 }

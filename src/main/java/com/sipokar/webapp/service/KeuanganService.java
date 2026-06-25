@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,6 @@ public class KeuanganService {
 
     private final KeuanganRepository keuanganRepository;
 
-    // === Overload untuk bulan berjalan ===
     public BigDecimal totalPemasukan(Long umkmId) {
         YearMonth now = YearMonth.now();
         return totalPemasukan(umkmId, now.getYear(), now.getMonthValue());
@@ -34,11 +34,19 @@ public class KeuanganService {
         return saldo(umkmId, now.getYear(), now.getMonthValue());
     }
 
-    // === Method dengan parameter bulan ===
     public List<Keuangan> riwayat(Long umkmId, int year, int month) {
-        LocalDate start = LocalDate.of(year, month, 1);
-        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
-        return keuanganRepository.findByUmkmIdAndTanggalBetween(umkmId, start, end);
+        List<Keuangan> all = keuanganRepository.findByUmkm_Id(umkmId);
+
+        return all.stream()
+                .filter(k -> {
+                    String ym = k.getTanggal().format(
+                            java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+
+                    String selected = String.format("%d-%02d", year, month);
+
+                    return ym.equals(selected);
+                })
+                .toList();
     }
 
     public BigDecimal totalPemasukan(Long umkmId, int year, int month) {
@@ -60,16 +68,26 @@ public class KeuanganService {
                 .subtract(totalPengeluaran(umkmId, year, month));
     }
 
-    // === Method untuk controller (find by date range) ===
-    public List<Keuangan> findByUmkmAndTanggalBetween(Long umkmId, LocalDate start, LocalDate end) {
-        return keuanganRepository.findByUmkmIdAndTanggalBetween(umkmId, start, end);
+    public List<Keuangan> findByUmkmAndTanggalBetween(
+            Long umkmId,
+            LocalDate start,
+            LocalDate end) {
+
+        return keuanganRepository.findByUmkm_IdAndTanggalBetween(
+                umkmId,
+                start,
+                end);
     }
 
     public Keuangan save(Keuangan keuangan) {
-        return keuanganRepository.save(keuangan); 
+        return keuanganRepository.save(keuangan);
     }
 
     public List<Keuangan> findByUmkmId(Long umkmId) {
-        return keuanganRepository.findByUmkmId(umkmId); 
+        return keuanganRepository.findByUmkm_Id(umkmId);
+    }
+
+    public Optional<Keuangan> findById(Long id) {
+        return keuanganRepository.findById(id);
     }
 }

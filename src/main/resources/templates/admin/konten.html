@@ -1,122 +1,254 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Kelola Konten</title></head>
-<body>
-<div th:replace="~{fragments/admin-layout :: layout('Kelola Konten Landing Page', ~{::section})}">
-    <section>
-        
-        <div th:if="${param.success}" class="flex items-center gap-3 bg-green-50/80 border border-green-200 text-green-800 p-4 rounded-xl mb-8 max-w-4xl shadow-sm">
-            <svg class="w-5 h-5 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span class="text-sm font-medium">Konten landing page berhasil diperbarui!</span>
+  <head>
+    <title>Kelola Konten</title>
+  </head>
+  <body>
+    <div
+      th:replace="~{fragments/admin-layout :: layout('Kelola Konten Landing Page', ~{::section})}"
+    >
+      <section>
+        <div
+          th:if="${param.success}"
+          class="flex items-center gap-3 bg-green-50/80 border border-green-200 text-green-800 p-4 rounded-xl mb-8 max-w-4xl shadow-sm"
+        >
+          <svg
+            class="w-5 h-5 text-green-600 shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span class="text-sm font-medium"
+            >Konten landing page berhasil diperbarui!</span
+          >
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl">
-            
-            <div class="lg:col-span-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-                
-                <div class="mb-8">
-                    <h2 class="text-lg font-semibold text-gray-900">Informasi Umum</h2>
-                    <p class="text-sm text-gray-500 mt-1">Data ini akan ditampilkan langsung di halaman utama website.</p>
-                </div>
-
-                <form th:action="@{/admin/konten}" th:object="${info}" method="post" class="space-y-6" id="kontenForm">
-    
-    <input type="hidden" th:field="*{id}" />
-    
-    <div class="flex justify-end">
-        <button type="button" id="editBtn" onclick="toggleEdit()" 
-                class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-all">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-            Edit Konten
-        </button>
-    </div>
-
-    <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Profil Wisata</label>
-        <textarea th:field="*{deskripsi}" disabled rows="4" class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed resize-none"></textarea>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-gray-50/50 rounded-xl border border-gray-100">
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Jam Buka</label>
-            <input type="text" th:field="*{jamBuka}" disabled class="input-field w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed">
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Jam Tutup</label>
-            <input type="text" th:field="*{jamTutup}" disabled class="input-field w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed">
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Harga Tiket</label>
-            <input type="text" th:field="*{hargaTiket}" disabled class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed">
-        </div>
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Kontak / No WA</label>
-            <input type="text" th:field="*{kontak}" disabled class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed">
-        </div>
-    </div>
-
-    <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Info Parkir</label>
-        <textarea th:field="*{infoParkir}" disabled rows="2" class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed resize-none"></textarea>
-    </div>
-
-    <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">URL Foto Unggulan</label>
-        <input type="url" th:field="*{fotoUrl}" disabled class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed font-mono">
-    </div>
-
-    <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Link Google Maps</label>
-        <input type="url" th:field="*{mapsUrl}" disabled class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed font-mono">
-    </div>
-
-    <div id="saveContainer" class="pt-4 flex items-center justify-end hidden">
-        <button type="submit" class="bg-gray-900 text-white px-8 py-3.5 rounded-xl text-sm font-semibold shadow-md hover:bg-green-600 transition-all duration-300">
-            Simpan Perubahan
-        </button>
-    </div>
-</form>
-
-<script>
-    function toggleEdit() {
-        const inputs = document.querySelectorAll('.input-field');
-        const btn = document.getElementById('editBtn');
-        const saveContainer = document.getElementById('saveContainer');
-        
-        inputs.forEach(input => input.disabled = !input.disabled);
-        
-        if (saveContainer.classList.contains('hidden')) {
-            saveContainer.classList.remove('hidden');
-            btn.innerHTML = 'Batalkan Edit';
-            btn.classList.add('bg-red-50', 'text-red-600');
-        } else {
-            saveContainer.classList.add('hidden');
-            btn.innerHTML = '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg> Edit Konten';
-            btn.classList.remove('bg-red-50', 'text-red-600');
-        }
-    }
-</script>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-start">
+          <div
+            class="lg:col-span-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-200"
+          >
+            <div class="mb-8">
+              <h2 class="text-lg font-semibold text-gray-900">
+                Informasi Umum
+              </h2>
+              <p class="text-sm text-gray-500 mt-1">
+                Data ini akan ditampilkan langsung di halaman utama website.
+              </p>
             </div>
 
-            <div class="lg:col-span-4 space-y-6">
-                <div class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
-                    <h3 class="flex items-center gap-2 text-sm font-bold text-blue-900 mb-4">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        Tips Pengisian
-                    </h3>
-                    <ul class="list-disc pl-5 space-y-3 text-sm text-blue-800/80 marker:text-blue-400">
-                        <li>Jaga agar deskripsi tetap singkat, padat, dan menarik bagi wisatawan.</li>
-                        <li>Untuk Peta, buka Google Maps, cari lokasi, klik <b class="text-blue-900">Bagikan</b> → <b class="text-blue-900">Salin link</b>. Paste link tersebut di form samping.</li>
-                    </ul>
+            <form
+              th:action="@{/admin/konten}"
+              th:object="${info}"
+              method="post"
+              class="space-y-6"
+              id="kontenForm"
+            >
+              <input type="hidden" th:field="*{id}" />
+
+              <div class="flex justify-end">
+                <button
+                  type="button"
+                  id="editBtn"
+                  onclick="toggleEdit()"
+                  class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-all"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
+                  Edit Konten
+                </button>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Deskripsi Profil Wisata</label
+                >
+                <textarea
+                  th:field="*{deskripsi}"
+                  disabled
+                  rows="4"
+                  class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed resize-none"
+                ></textarea>
+              </div>
+
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-gray-50/50 rounded-xl border border-gray-100"
+              >
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Jam Buka</label
+                  >
+                  <input
+                    type="text"
+                    th:field="*{jamBuka}"
+                    disabled
+                    class="input-field w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed"
+                  />
                 </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Jam Tutup</label
+                  >
+                  <input
+                    type="text"
+                    th:field="*{jamTutup}"
+                    disabled
+                    class="input-field w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Harga Tiket</label
+                  >
+                  <input
+                    type="text"
+                    th:field="*{hargaTiket}"
+                    disabled
+                    class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Kontak / No WA</label
+                  >
+                  <input
+                    type="text"
+                    th:field="*{kontak}"
+                    disabled
+                    class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Info Parkir</label
+                >
+                <textarea
+                  th:field="*{infoParkir}"
+                  disabled
+                  rows="2"
+                  class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed resize-none"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >URL Foto Unggulan</label
+                >
+                <input
+                  type="url"
+                  th:field="*{fotoUrl}"
+                  disabled
+                  class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed font-mono"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Link Google Maps</label
+                >
+                <input
+                  type="url"
+                  th:field="*{mapsUrl}"
+                  disabled
+                  class="input-field w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl transition-all outline-none text-sm text-gray-900 disabled:opacity-60 disabled:cursor-not-allowed font-mono"
+                />
+              </div>
+
+              <div
+                id="saveContainer"
+                class="pt-4 flex items-center justify-end hidden"
+              >
+                <button
+                  type="submit"
+                  class="bg-gray-900 text-white px-8 py-3.5 rounded-xl text-sm font-semibold shadow-md hover:bg-green-600 transition-all duration-300"
+                >
+                  Simpan Perubahan
+                </button>
+              </div>
+            </form>
+
+            <script>
+              function toggleEdit() {
+                const inputs = document.querySelectorAll(".input-field");
+                const btn = document.getElementById("editBtn");
+                const saveContainer = document.getElementById("saveContainer");
+
+                inputs.forEach((input) => (input.disabled = !input.disabled));
+
+                if (saveContainer.classList.contains("hidden")) {
+                  saveContainer.classList.remove("hidden");
+                  btn.innerHTML = "Batalkan Edit";
+                  btn.classList.add("bg-red-50", "text-red-600");
+                } else {
+                  saveContainer.classList.add("hidden");
+                  btn.innerHTML =
+                    '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg> Edit Konten';
+                  btn.classList.remove("bg-red-50", "text-red-600");
+                }
+              }
+            </script>
+          </div>
+
+          <div class="lg:col-span-4 space-y-6">
+            <div class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+              <h3
+                class="flex items-center gap-2 text-sm font-bold text-blue-900 mb-4"
+              >
+                <svg
+                  class="w-5 h-5 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Tips Pengisian
+              </h3>
+              <ul
+                class="list-disc pl-5 space-y-3 text-sm text-blue-800/80 marker:text-blue-400"
+              >
+                <li>
+                  Jaga agar deskripsi tetap singkat, padat, dan menarik bagi
+                  wisatawan.
+                </li>
+                <li>
+                  Untuk Peta, buka Google Maps, cari lokasi, klik
+                  <b class="text-blue-900">Bagikan</b> →
+                  <b class="text-blue-900">Salin link</b>. Paste link tersebut
+                  di form samping.
+                </li>
+              </ul>
             </div>
-
+          </div>
         </div>
-
-    </section>
-</div>
-</body>
+      </section>
+    </div>
+  </body>
 </html>
