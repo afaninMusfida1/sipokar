@@ -256,8 +256,8 @@
                          class="product-img w-full h-full object-cover">
                     
                     <!-- Hover overlay -->
-                    <div class="img-overlay absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
-                        <button th:onclick="'openModal(' + ${p.id} + ')'" 
+                    <div class="img-overlay absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
+                        <button th:onclick="'openModal(\'' + ${p.id} + '\')'"
                                 class="w-full bg-white/90 backdrop-blur text-gray-900 py-2.5 rounded-xl font-semibold text-sm hover:bg-white transition-all flex items-center justify-center gap-2">
                             <i class="fas fa-eye text-brand-600"></i>
                             Lihat Detail
@@ -510,6 +510,85 @@
             revealElements.forEach(el => revealObserver.observe(el));
         })();
     </script>
+
+    <!-- ===== MODAL SCRIPT ===== -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    
+    // Thymeleaf akan otomatis mengubah List Java menjadi Array JSON
+    const daftarProduk = /*[[${daftarProduk}]]*/ [];
+
+    function formatRupiah(angka) {
+        return 'Rp ' + Math.floor(angka).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function openModal(id) {
+        const p = daftarProduk.find(item => item.id == id);
+        
+        if (!p) {
+            console.error("Produk dengan ID " + id + " tidak ditemukan!");
+            return;
+        }
+
+        const hargaAsli   = p.harga;
+        const diskon      = p.diskon || 0;
+        const hargaDiskon = hargaAsli - (hargaAsli * diskon / 100);
+
+        document.getElementById('modalImage').src         = p.gambar != null && p.gambar !== '' ? p.gambar : '/images/produk/placeholder.jpg';
+        document.getElementById('modalImage').alt         = p.nama;
+        document.getElementById('modalTitle').textContent = p.nama;
+        document.getElementById('modalDesc').textContent  = p.deskripsi;
+        document.getElementById('modalPrice').textContent = formatRupiah(hargaDiskon);
+
+        const originalPriceEl = document.getElementById('modalOriginalPrice');
+        const discountEl      = document.getElementById('modalDiscount');
+        const discountTextEl  = document.getElementById('modalDiscountText');
+
+        if (diskon > 0) {
+            originalPriceEl.textContent = formatRupiah(hargaAsli);
+            discountTextEl.textContent  = diskon + '% OFF';
+            discountEl.classList.remove('hidden');
+        } else {
+            originalPriceEl.textContent = '';
+            discountEl.classList.add('hidden');
+        }
+
+        const modal = document.getElementById('productModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('productModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+
+    // Tutup modal saat area luar (backdrop) diklik
+    document.getElementById('productModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // Tutup modal menggunakan tombol Escape di keyboard
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /*]]>*/
+</script>
+<!-- ===== SEARCH SCRIPT ===== -->
+<script>
+    document.querySelector('input[type="text"]').addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        document.querySelectorAll('.product-card').forEach(function(card) {
+            const nama = card.querySelector('h3')?.textContent.toLowerCase() || '';
+            const desc = card.querySelector('p')?.textContent.toLowerCase() || '';
+            card.style.display = (nama.includes(query) || desc.includes(query)) ? '' : 'none';
+        });
+    });
+</script>
 
 </body>
 </html>
