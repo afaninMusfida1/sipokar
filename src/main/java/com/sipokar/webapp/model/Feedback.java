@@ -18,6 +18,9 @@ public class Feedback {
     @Column(nullable = false)
     private String nama;
 
+    @Column(name = "email")
+    private String email;
+
     // Variabel 'isi' yang tadinya hilang sudah dikembalikan ke sini
     @Column(nullable = false, columnDefinition = "TEXT")
     private String isi;
