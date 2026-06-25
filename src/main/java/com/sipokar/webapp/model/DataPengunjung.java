@@ -16,11 +16,11 @@ public class DataPengunjung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String nama;
-
-    @Column(name = "kota_asal", nullable = false)
-    private String kotaAsal;
+    @Column(name = "jumlah_dewasa", nullable = false)
+    private Integer jumlahDewasa;
+    
+    @Column(name = "jumlah_anak", nullable = false)
+    private Integer jumlahAnak;
 
     @Column(name = "tanggal_kunjungan", nullable = false)
     private LocalDate tanggalKunjungan;

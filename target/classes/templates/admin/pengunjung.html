@@ -41,38 +41,41 @@
             
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
-                    <thead class="bg-white border-b border-gray-100 text-gray-500 font-medium">
-                        <tr>
-                            <th class="px-6 py-3 font-medium">Waktu Check-in</th>
-                            <th class="px-6 py-3 font-medium">Nama</th>
-                            <th class="px-6 py-3 font-medium">Kota Asal</th>
-                            <th class="px-6 py-3 font-medium">Tanggal Kunjungan</th>
-                            <th class="px-6 py-3 font-medium text-center">Jumlah Orang</th>
-                            <th class="px-6 py-3 font-medium text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-600">
-                        <tr th:each="tamu : ${daftarTamu}" class="hover:bg-gray-50 transition-colors">
-                            <td class="px-6 py-3" th:text="${#temporals.format(tamu.waktuCheckIn, 'dd/MM/yyyy HH:mm')}">-</td>
-                            <td class="px-6 py-3 font-medium text-gray-900" th:text="${tamu.nama}">-</td>
-                            <td class="px-6 py-3" th:text="${tamu.kotaAsal}">-</td>
-                            <td class="px-6 py-3" th:text="${#temporals.format(tamu.tanggalKunjungan, 'dd MMM yyyy')}">-</td>
-                            <td class="px-6 py-3 text-center">
-                                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-50 text-green-700 font-medium text-xs" th:text="${tamu.jumlahOrang}">0</span>
-                            </td>
-                            <td class="px-6 py-3 text-center">
-                                <form th:action="@{/admin/pengunjung/{id}/hapus(id=${tamu.id})}" method="post" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
-                                    <button type="submit" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 hover:text-red-700 transition-colors">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(daftarTamu)}">
-                            <td colspan="6" class="px-6 py-8 text-center text-gray-400">Belum ada data pengunjung.</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <thead class="bg-white border-b border-gray-100 text-gray-500 font-medium">
+        <tr>
+            <th class="px-6 py-3 font-medium">Tanggal</th>
+            <th class="px-6 py-3 font-medium text-center">Dewasa</th>
+            <th class="px-6 py-3 font-medium text-center">Anak-anak</th>
+            <th class="px-6 py-3 font-medium text-center">Total</th>
+            <th class="px-6 py-3 font-medium text-center">Aksi</th> 
+        </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100 text-gray-600">
+        <tr th:each="tamu : ${daftarPengunjung}" class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-3 font-medium text-gray-900" th:text="${tamu.tanggalKunjungan != null} ? ${#temporals.format(tamu.tanggalKunjungan, 'dd/MM/yyyy')} : '-'"></td>
+            
+            <td class="px-6 py-3 text-center" th:text="${tamu.jumlahDewasa != null} ? ${tamu.jumlahDewasa} : 0"></td>
+            
+            <td class="px-6 py-3 text-center" th:text="${tamu.jumlahAnak != null} ? ${tamu.jumlahAnak} : 0"></td>
+            
+            <td class="px-6 py-3 text-center">
+                <span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-green-50 text-green-700 font-medium text-xs" 
+                      th:text="${(tamu.jumlahDewasa != null ? tamu.jumlahDewasa : 0) + (tamu.jumlahAnak != null ? tamu.jumlahAnak : 0)}">
+                </span>
+            </td>
+
+            <td class="px-6 py-3 text-center">
+                <a th:href="@{/admin/pengunjung/hapus/{id}(id=${tamu.id})}" 
+                   class="text-red-500 hover:text-red-700 font-medium text-xs bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors"
+                   onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
+            </td>
+        </tr>
+        
+        <tr th:if="${#lists.isEmpty(daftarPengunjung)}">
+            <td colspan="5" class="px-6 py-8 text-center text-gray-400">Belum ada data pengunjung.</td>
+        </tr>
+    </tbody>
+</table>
             </div>
         </div>
         

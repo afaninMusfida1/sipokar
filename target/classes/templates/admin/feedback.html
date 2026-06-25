@@ -2,86 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Cek Feedback</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-  </head>
-
-  <body>
-    <th:block
-      th:replace="~{fragments/admin-layout :: layout('Cek Feedback', ~{::section})}"
-    >
-      <section>
-        <div class="space-y-6">
-          <div
-            th:each="fb : ${daftarFeedback}"
-            class="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
-          >
-            <!-- Header Feedback -->
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <p
-                  class="font-semibold text-gray-900 text-lg"
-                  th:text="${fb.nama}"
-                >
-                  Nama
-                </p>
-
-                <p
-                  class="text-xs text-gray-400 mt-1"
-                  th:text="${#temporals.format(fb.createdAt, 'dd MMM yyyy HH:mm')}"
-                >
-                  tanggal
-                </p>
-              </div>
-
-              <span
-                th:if="${fb.sudahDitindaklanjuti}"
-                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200"
-              >
-                Ditindaklanjuti
-              </span>
-
-              <span
-                th:unless="${fb.sudahDitindaklanjuti}"
-                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-200"
-              >
-                Belum diproses
-              </span>
+</head>
+<body>
+<div th:replace="~{fragments/admin-layout :: layout('Cek Feedback', ~{::section})}">
+    <section>
+        
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-600">
+                    <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-4">Waktu</th>
+                            <th class="px-6 py-4">Nama</th>
+                            <th class="px-6 py-4">Pesan</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr th:each="fb : ${daftarFeedback}" class="hover:bg-gray-50/50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-500" 
+                                th:text="${#temporals.format(fb.createdAt, 'dd MMM HH:mm')}"></td>
+                            
+                            <td class="px-6 py-4 font-medium text-gray-900" th:text="${fb.nama}">Nama</td>
+                            
+                            <td class="px-6 py-4 max-w-xs truncate" th:text="${fb.isi}">Isi feedback</td>
+                            
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span th:if="${fb.sudahDitindaklanjuti}" 
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    Ditindaklanjuti
+                                </span>
+                                <span th:unless="${fb.sudahDitindaklanjuti}" 
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                                    Menunggu Respon
+                                </span>
+                            </td>
+                            
+                            <td class="px-6 py-4 text-center">
+                                <div th:if="${fb.email != null}">
+                                    <a th:href="'mailto:' + ${fb.email}" 
+                                    class="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 font-semibold hover:underline">
+                                    <i class="fas fa-paper-plane text-xs"></i> Kirim Email
+                                    </a>
+                                </div>
+                                <div th:if="${fb.email == null}" class="text-gray-400 text-xs">
+                                    <i class="fas fa-user-slash mr-1"></i> Tanpa Email
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Isi Feedback -->
-            <div
-              class="bg-gray-50/50 border border-gray-200 p-4 rounded-xl mb-6"
-            >
-              <p
-                class="text-sm text-gray-700 leading-relaxed"
-                th:text="${fb.isi}"
-              >
-                Isi feedback
-              </p>
+            <div th:if="${#lists.isEmpty(daftarFeedback)}" class="p-8 text-center text-gray-500">
+                Belum ada feedback masuk.
             </div>
-
-            <!-- Action -->
-            <div class="flex gap-3">
-              <span
-                class="px-5 py-2.5 bg-gray-50 text-gray-500 rounded-lg text-sm font-medium flex items-center gap-2 border border-gray-200 w-full sm:w-auto justify-center"
-              >
-                <i class="fas fa-envelope"></i> Email tidak tersedia
-              </span>
-            </div>
-          </div>
-
-          <!-- Empty State -->
-          <div
-            th:if="${#lists.isEmpty(daftarFeedback)}"
-            class="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center text-gray-500 font-medium"
-          >
-            Belum ada feedback masuk.
-          </div>
         </div>
-      </section>
-    </th:block>
-  </body>
+
+    </section>
+</div>
+</body>
 </html>

@@ -408,18 +408,18 @@
     </style>
     <base target="_self">
 <base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased selection:bg-green-200 selection:text-green-900 overflow-x-hidden">
 
-    <!-- ===== NAVBAR (UNCHANGED) ===== -->
+    <!-- ===== NAVBAR ===== -->
     <nav id="main-nav" class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 md:h-20">
                 <div class="flex-shrink-0 flex items-center">
                     <a href="#" class="flex items-center gap-2.5 group">
-                        <h1 class="text-xl md:text-2xl font-heading font-bold text-gray-900 tracking-tight">
-                            Si<span class="text-green-600">pokar</span>
-                        </h1>
+                        <img src="/images/logoSipokar.png" alt="Sipokar - Wisata Edukasi Mangrove" class="h-14 md:h-16 w-auto object-contain">
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
@@ -535,7 +535,7 @@
         });
     </script>
 
-    <!-- ===== HERO SECTION (ENHANCED) ===== -->
+    <!-- ===== HERO SECTION ===== -->
     <header id="hero-slider" class="relative overflow-hidden h-[500px] md:h-[640px]">
         <!-- Floating particles -->
         <div class="absolute inset-0 z-20 pointer-events-none overflow-hidden">
@@ -598,13 +598,6 @@
             <button data-index="3" class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-all duration-300"></button>
             <button data-index="4" class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-all duration-300"></button>
         </div>
-
-        <!-- Bottom wave -->
-        <div class="absolute bottom-0 left-0 right-0 z-20">
-            <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
-                <path d="M0 60V30C240 60 480 60 720 30C960 0 1200 0 1440 30V60H0Z" fill="white"/>
-            </svg>
-        </div>
     </header>
 
     <script>
@@ -654,7 +647,7 @@
         })();
     </script>
 
-    <!-- ===== STATS BAR (NEW) ===== -->
+    <!-- ===== STATS BAR ===== -->
     <section class="bg-white py-8 -mt-1 relative z-10">
         <div class="max-w-6xl mx-auto px-4">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
@@ -678,7 +671,7 @@
         </div>
     </section>
 
-    <!-- ===== PRODUK UMKM SECTION (ENHANCED) ===== -->
+    <!-- ===== PRODUK UMKM SECTION ===== -->
     <section id="produk-umkm" class="bg-white py-16 border-b border-gray-100">
         <div class="max-w-6xl mx-auto px-4">
             <!-- Header Section with decorative element -->
@@ -780,7 +773,7 @@
         </div>
     </div>
 
-    <!-- ===== GALLERY SECTION (ENHANCED) ===== -->
+    <!-- ===== GALLERY SECTION ===== -->
     <section id="galeri" class="max-w-6xl mx-auto px-4 py-12">
         <div class="text-center mb-14 reveal">
             <div class="flex items-center justify-center gap-2 mb-3">
@@ -817,7 +810,7 @@
         </div>
     </section>
 
-    <!-- ===== INFO SECTION (ENHANCED) ===== -->
+    <!-- ===== INFO SECTION ===== -->
     <main id="info" class="max-w-6xl mx-auto px-4 py-16 mb-12">
         <!-- Section Header -->
         <div class="text-center mb-14 reveal">
@@ -878,37 +871,154 @@
             </div>
         </section>
 
-        <!-- Fasilitas Section -->
-        <div class="text-center mb-14 reveal">
+        <!-- ===== FASILITAS SECTION - ZIG ZAG LAYOUT ===== -->
+<section id="fasilitas" class="bg-gray-50 py-20">
+    <div class="max-w-6xl mx-auto px-4">
+        <!-- Section Header -->
+        <div class="text-center mb-16 reveal">
             <div class="flex items-center justify-center gap-2 mb-3">
                 <div class="w-8 h-0.5 bg-green-500 rounded-full"></div>
                 <span class="text-xs font-bold text-green-600 uppercase tracking-wider">Fasilitas Lengkap</span>
                 <div class="w-8 h-0.5 bg-green-500 rounded-full"></div>
             </div>
             <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">Kenyamanan Anda Prioritas Kami</h2>
-            <p class="text-gray-500 max-w-md mx-auto text-sm">Berbagai fasilitas untuk memastikan pengalaman wisata yang menyenangkan</p>
+            <p class="text-gray-500 max-w-md mx-auto text-sm">Berbagai fasilitas untuk memastikan pengalaman wisata yang menyenangkan. Kami juga memiliki berbagai fasilitas lain yang dapat Anda reservasi untuk pengalaman wisata yang lebih lengkap dan menyenangkan.</p>
         </div>
 
-        <section th:if="${fasilitas != null and not #lists.isEmpty(fasilitas)}" class="mb-20 reveal">
-            <div class="bg-gradient-to-br from-gray-50 to-white rounded-3xl border border-gray-100 p-8 shadow-sm">
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    <div th:each="f : ${fasilitas}" class="facility-card group bg-white rounded-2xl p-6 border border-gray-100 hover:border-green-300 text-center cursor-default">
-                        <div class="facility-icon w-20 h-20 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-3 shadow-sm overflow-hidden">
-                            <img th:if="${f.foto != null and #strings.startsWith(f.foto, 'http')}"
-                                 th:src="${f.foto}"
-                                 class="w-full h-full object-cover" alt="ikon fasilitas">
+        <!-- Zig-Zag Cards Container -->
+        <div class="space-y-8" th:if="${fasilitas != null and not #lists.isEmpty(fasilitas)}">
 
-                            <img th:if="${f.foto != null and !#strings.startsWith(f.foto, 'http')}"
-                                 th:src="@{'/uploads/fasilitas/' + ${f.foto}}"
-                                 class="w-full h-full object-cover" alt="ikon fasilitas">
+            <!-- Card 1: Image Left, Text Right -->
+            <div class="reveal-left bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-500 group">
+                <div class="flex flex-col md:flex-row items-stretch">
+                    <!-- Image Side -->
+                    <div class="md:w-2/5 relative overflow-hidden">
+                        <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/0b/3f/5c/mangrove-boardwalk-mida.jpg?w=900&h=500&s=1" 
+                             alt="Boardwalk Mangrove" 
+                             class="w-full h-64 md:h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-black/10 md:bg-gradient-to-l"></div>
+                    </div>
+                    <!-- Content Side -->
+                    <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center relative">
+                        <!-- Vertical Label -->
+                        
 
-                            <span th:if="${f.foto == null}" class="text-xl">🚲</span>
+                        <h3 class="text-xl md:text-2xl font-heading font-bold text-gray-900 mb-3">Boardwalk Mangrove</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed mb-4 pr-0">
+                            Jelajahi keindahan hutan mangrove melalui jembatan kayu yang aman dan nyaman. Dilengkapi railing pengaman untuk keselamatan pengunjung.
+                        </p>
+                        <div class="flex items-center gap-2 text-green-600 text-sm font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Panjang 500 meter</span>
                         </div>
-                        <span class="text-sm font-medium text-gray-700 group-hover:text-green-700 transition-colors" th:text="${f.nama}">Nama Fasilitas</span>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Card 2: Image Right, Text Left -->
+            <div class="reveal-right bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-500 group">
+                <div class="flex flex-col md:flex-row-reverse items-stretch">
+                    <!-- Image Side -->
+                    <div class="md:w-2/5 relative overflow-hidden">
+                        <img src="https://media.tacdn.com/media/attractions-splice-spp-674x446/0b/27/5d/8e.jpg" 
+                             alt="Kayak Mangrove" 
+                             class="w-full h-64 md:h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-l from-transparent to-black/10 md:bg-gradient-to-r"></div>
+                    </div>
+                    <!-- Content Side -->
+                    <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center relative">
+                        <!-- Vertical Label -->
+                        
+
+                        <h3 class="text-xl md:text-2xl font-heading font-bold text-gray-900 mb-3">Wisata Kayak Mangrove</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed mb-4 pl-0">
+                            Rasakan sensasi menyusuri sungai di tengah hutan mangrove dengan perahu kayak. Cocok untuk keluarga dan kelompok wisata.
+                        </p>
+                        <div class="flex items-center gap-2 text-green-600 text-sm font-medium pl-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Tersedia 20 unit kayak</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Image Left, Text Right -->
+            <div class="reveal-left bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-500 group">
+                <div class="flex flex-col md:flex-row items-stretch">
+                    <!-- Image Side -->
+                    <div class="md:w-2/5 relative overflow-hidden">
+                        <img src="https://thumbs.dreamstime.com/b/binoculars-notebook-pen-wooden-table-forest-background-observation-nature-concept-176353496.jpg" 
+                             alt="Bird Watching" 
+                             class="w-full h-64 md:h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-black/10 md:bg-gradient-to-l"></div>
+                    </div>
+                    <!-- Content Side -->
+                    <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center relative">
+                        <!-- Vertical Label -->
+                        
+
+                        <h3 class="text-xl md:text-2xl font-heading font-bold text-gray-900 mb-3">Bird Watching Tower</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed mb-4 pr-0">
+                            Menara pengamatan khusus untuk melihat berbagai spesies burung yang menghuni ekosistem mangrove. Dilengkapi teropong gratis.
+                        </p>
+                        <div class="flex items-center gap-2 text-green-600 text-sm font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>50+ spesies burung</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Image Right, Text Left -->
+            <div class="reveal-right bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-500 group">
+                <div class="flex flex-col md:flex-row-reverse items-stretch">
+                    <!-- Image Side -->
+                    <div class="md:w-2/5 relative overflow-hidden">
+                        <img src="https://seawatersolutions.org/wp-content/uploads/2021/03/Planting-Mangroves-in-Ghana-Mangrove-Mania.jpg" 
+                             alt="Nursery Mangrove" 
+                             class="w-full h-64 md:h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-l from-transparent to-black/10 md:bg-gradient-to-r"></div>
+                    </div>
+                    <!-- Content Side -->
+                    <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center relative">
+                        <!-- Vertical Label -->
+                        
+
+                        <h3 class="text-xl md:text-2xl font-heading font-bold text-gray-900 mb-3">Nursery & Edukasi</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed mb-4 pl-0">
+                            Pusat pembibitan mangrove dengan program edukasi untuk pelajar dan komunitas. Ikuti kegiatan penanaman mangrove bersama.
+                        </p>
+                        <div class="flex items-center gap-2 text-green-600 text-sm font-medium pl-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Program edukasi rutin</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        
+
+            <!-- More Fasilitas Link -->
+            <div class="reveal text-center pt-4 pb-2">
+                <a href="http://localhost:8080/reservasi" class="group inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold text-sm transition-colors duration-200">
+                    <span>Lihat Semua Fasilitas</span>
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+<!-- Fallback when no fasilitas data -->
+        <div th:if="${fasilitas == null or #lists.isEmpty(fasilitas)}" class="text-center text-gray-400 py-10 reveal">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            </div>
+            Belum ada data fasilitas.
+        </div>
+    </div>
+</section>
+
 
         <!-- Lokasi & Saran - Side by Side -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -982,7 +1092,7 @@
         </div>
     </main>
 
-    <!-- ===== MARQUEE TEXT (UNCHANGED) ===== -->
+    <!-- ===== MARQUEE TEXT ===== -->
     <div class="marquee-container bg-gray-900 py-3 overflow-hidden border-y border-gray-800">
         <div class="flex whitespace-nowrap">
             <div class="marquee-track-right flex items-center gap-8 px-4">
@@ -1031,13 +1141,13 @@
         </div>
     </div>
 
-    <!-- ===== FOOTER (UNCHANGED) ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="bg-gray-950 text-gray-400 pt-16 pb-8">
         <div class="max-w-6xl mx-auto px-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 pb-12 border-b border-gray-800">
                 <div class="md:col-span-1 flex flex-col gap-5">
                     <a href="#" class="flex items-center gap-2">
-                        <span class="text-white font-heading font-bold text-xl tracking-tight">Si<span class="text-green-500">pokar</span></span>
+                        <img src="/images/logoSipokar.png" alt="Sipokar - Wisata Edukasi Mangrove" class="h-16 w-auto object-contain brightness-0 invert">
                     </a>
                     <p class="text-sm leading-relaxed text-gray-500">
                         Destinasi ekowisata mangrove terbaik di Surabaya. Alam, edukasi, dan produk lokal dalam satu tempat.
