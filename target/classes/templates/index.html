@@ -830,14 +830,6 @@
             <p class="text-gray-500 max-w-md mx-auto text-sm">Informasi lengkap untuk pengalaman wisata terbaik Anda</p>
         </div>
 
-<<<<<<< HEAD
-        <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 group-hover:shadow-md transition-all duration-300 overflow-hidden">
-    <img th:if="${f.foto != null}"
-         th:src="@{'/uploads/fasilitas/' + ${f.foto}}"
-         class="w-full h-full object-cover" alt="foto fasilitas">
-    <span th:unless="${f.foto != null}" class="text-2xl">✨</span>
-        </div>
-=======
         <!-- Info Cards with connecting line -->
         <section class="mb-20">
             <div class="relative">
@@ -899,10 +891,18 @@
 
         <section th:if="${fasilitas != null and not #lists.isEmpty(fasilitas)}" class="mb-20 reveal">
             <div class="bg-gradient-to-br from-gray-50 to-white rounded-3xl border border-gray-100 p-8 shadow-sm">
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <div th:each="f : ${fasilitas}" class="facility-card group bg-white rounded-2xl p-5 border border-gray-100 hover:border-green-300 text-center cursor-default">
-                        <div class="facility-icon w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-3 shadow-sm">
-                            <span class="text-xl">🚲</span>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div th:each="f : ${fasilitas}" class="facility-card group bg-white rounded-2xl p-6 border border-gray-100 hover:border-green-300 text-center cursor-default">
+                        <div class="facility-icon w-20 h-20 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-3 shadow-sm overflow-hidden">
+                            <img th:if="${f.foto != null and #strings.startsWith(f.foto, 'http')}"
+                                 th:src="${f.foto}"
+                                 class="w-full h-full object-cover" alt="ikon fasilitas">
+
+                            <img th:if="${f.foto != null and !#strings.startsWith(f.foto, 'http')}"
+                                 th:src="@{'/uploads/fasilitas/' + ${f.foto}}"
+                                 class="w-full h-full object-cover" alt="ikon fasilitas">
+
+                            <span th:if="${f.foto == null}" class="text-xl">🚲</span>
                         </div>
                         <span class="text-sm font-medium text-gray-700 group-hover:text-green-700 transition-colors" th:text="${f.nama}">Nama Fasilitas</span>
                     </div>
@@ -947,7 +947,6 @@
                         </svg>
                     </a>
                 </div>
->>>>>>> dd2b9b2fbb14eaa6e673748da4bb250017cbcc37
             </section>
 
             <!-- Saran & Masukan -->
