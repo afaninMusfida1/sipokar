@@ -151,11 +151,13 @@
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
     </style>
+<base target="_self">
+<base target="_self">
 </head>
 <body class="bg-gray-50 min-h-screen flex">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#0f3d2e] text-white min-h-screen flex flex-col hidden md:flex relative overflow-hidden">
+    <aside class="w-64 bg-[#0f3d2e] text-white h-screen flex flex-col fixed left-0 top-0 z-50 overflow-hidden">
         <!-- Decorative background -->
         <div class="absolute inset-0 bg-gradient-to-b from-[#14532d]/50 to-transparent pointer-events-none"></div>
         <div class="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full -mr-32 -mt-32"></div>
@@ -172,33 +174,36 @@
             
             <!-- Navigation -->
             <nav class="space-y-1 flex-1">
-                <a href="/umkm/dashboard" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group">
-                    <i class="fas fa-chart-line w-5 text-center group-hover:text-green-400 transition-colors"></i>
+                <a href="/umkm/dashboard" target="_self" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-600/20 text-white border border-amber-500/30 shadow-lg shadow-amber-900/20">
+                    <i class="fas fa-chart-line w-5 text-center text-amber-400"></i>
                     <span class="font-medium">Dashboard</span>
+                    <span class="ml-auto w-2 h-2 rounded-full bg-amber-400 badge-pulse"></span>
                 </a>
-                <a href="/umkm/keuangan" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group">
+                <a href="/umkm/keuangan" target="_self" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group">
                     <i class="fas fa-wallet w-5 text-center group-hover:text-green-400 transition-colors"></i>
                     <span class="font-medium">Catat Keuangan</span>
                 </a>
-                <a href="/umkm/produk" class="sidebar-item active flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-600/20 text-white border border-amber-500/30 shadow-lg shadow-amber-900/20">
-                    <i class="fas fa-box-open w-5 text-center text-amber-400"></i>
+                <a href="/umkm/produk" target="_self" class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group">
+                    <i class="fas fa-box-open w-5 text-center group-hover:text-green-400 transition-colors"></i>
                     <span class="font-medium">Kelola Produk</span>
-                    <span class="ml-auto w-2 h-2 rounded-full bg-amber-400 badge-pulse"></span>
                 </a>
             </nav>
         </div>
         
         <!-- Logout -->
         <div class="relative z-10 p-4">
-            <a href="/logout" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:text-red-200 transition-all duration-200 border border-red-500/20">
-                <i class="fas fa-sign-out-alt w-5 text-center"></i>
-                <span class="font-medium">Logout</span>
-            </a>
+            <form th:action="@{/logout}" method="post" class="m-0">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:text-red-200 transition-all duration-200 border border-red-500/20 cursor-pointer">
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                    <span class="font-medium">Logout</span>
+                </button>
+            </form>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
+    <main class="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full ml-64">
         
         <!-- Header Section -->
         <div class="mb-8 animate-slide-up">
@@ -308,7 +313,7 @@
                                 </div>
                             </div>
                             
-                            <a th:href="@{/umkm/edit-daftar}" class="inline-flex items-center gap-2 mt-5 gradient-blue text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+                            <a th:href="@{/umkm/edit-daftar}" target="_self" class="inline-flex items-center gap-2 mt-5 gradient-blue text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
                                 <i class="fas fa-pen-to-square"></i>
                                 Perbaiki & Upload Ulang Berkas
                             </a>
@@ -417,7 +422,7 @@
                     </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <a th:href="@{/umkm/keuangan}" class="group relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300">
+                        <a th:href="@{/umkm/keuangan}" target="_self" class="group relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300">
                             <div class="absolute top-0 right-0 w-24 h-24 bg-green-200/20 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-150"></div>
                             <div class="relative z-10">
                                 <div class="w-10 h-10 rounded-xl gradient-green flex items-center justify-center mb-3 shadow-lg shadow-green-500/20">
@@ -431,7 +436,7 @@
                             </div>
                         </a>
 
-                        <a th:href="@{/umkm/produk}" class="group relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-100 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300">
+                        <a th:href="@{/umkm/produk}" target="_self" class="group relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-100 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300">
                             <div class="absolute top-0 right-0 w-24 h-24 bg-purple-200/20 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-150"></div>
                             <div class="relative z-10">
                                 <div class="w-10 h-10 rounded-xl gradient-purple flex items-center justify-center mb-3 shadow-lg shadow-purple-500/20">
