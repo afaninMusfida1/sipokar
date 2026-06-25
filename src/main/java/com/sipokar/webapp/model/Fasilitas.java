@@ -24,4 +24,11 @@ public class Fasilitas {
 
     @Column(name = "foto")
     private String foto; 
+    
+    // Tambahan untuk menyesuaikan HTML
+    @Column(columnDefinition = "TEXT")
+    private String deskripsi;
+    
+    @Column(name = "info_tambahan")
+    private String infoTambahan;
 }

@@ -13,12 +13,42 @@
                 </div>
             </div>
 
-            <form id="tempatForm" th:action="@{/admin/reservasi/tempat}" th:object="${tempat}" method="post" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+           <form id="tempatForm"th:action="@{/admin/reservasi/tempat}"th:object="${tempat}"method="post"enctype="multipart/form-data"
+class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <input type="hidden" id="tempatIdField" th:field="*{id}" />
                 <input id="tempatNamaField" type="text" th:field="*{nama}" placeholder="Nama Tempat" required class="p-3.5 border border-gray-200 rounded-2xl text-sm w-full" />
                 <input id="tempatLokasiField" type="text" th:field="*{lokasi}" placeholder="Lokasi" class="p-3.5 border border-gray-200 rounded-2xl text-sm w-full" />
                 <input id="tempatKapasitasField" type="number" th:field="*{kapasitas}" placeholder="Kapasitas" min="1" class="p-3.5 border border-gray-200 rounded-2xl text-sm w-full" />
-                <input id="tempatFotoField" type="url" th:field="*{fotoUrl}" placeholder="URL Foto" class="p-3.5 border border-gray-200 rounded-2xl text-sm w-full lg:col-span-2" />
+                <div class="lg:col-span-2">
+                <label class="block text-sm font-medium text-gray-600 mb-2">
+                    Foto Tempat
+                </label>
+                <input 
+                id="tempatFotoField"
+                type="file"
+                name="fotoFile"
+                accept="image/*"
+                class="
+                w-full
+                p-3.5
+                border border-gray-200
+                rounded-2xl
+                text-sm
+                bg-white
+                cursor-pointer
+                hover:border-green-400
+                transition
+                " />
+                <img 
+                id="previewFoto"
+                class="hidden mt-4 w-32 h-32 object-cover rounded-2xl shadow"
+                />
+
+                <p class="text-xs text-gray-400 mt-2">
+                    Upload gambar JPG, PNG, atau WEBP
+                </p>
+
+                </div>
                 <textarea id="tempatDeskripsiField" th:field="*{deskripsi}" rows="2" placeholder="Deskripsi singkat" class="p-3.5 border border-gray-200 rounded-2xl text-sm w-full"></textarea>
                 <textarea id="tempatInfoField" th:field="*{infoTambahan}" rows="2" placeholder="Info tambahan" class="p-3.5 border border-gray-200 rounded-2xl text-sm w-full"></textarea>
                 <div class="flex flex-wrap gap-3 lg:col-span-3">
@@ -91,6 +121,71 @@
                 document.getElementById('cancelEditButton').classList.add('hidden');
             }
         </script>
+        <script>
+            document
+            .getElementById('tempatFotoField')
+            .addEventListener('change', function(e){
+
+                const file = e.target.files[0];
+
+                if(file){
+
+                    const preview =
+                    document.getElementById('previewFoto');
+
+                    preview.src =
+                    URL.createObjectURL(file);
+
+                    preview.classList.remove('hidden');
+                // Tambahkan fungsi untuk preview foto yang sudah ada saat edit
+function prepareEdit(card) {
+    const id = card.dataset.tempatId;
+    document.getElementById('tempatForm').action = '/admin/reservasi/tempat/' + id + '/update';
+    document.getElementById('tempatIdField').value = id;
+    document.getElementById('tempatNamaField').value = card.dataset.tempatNama || '';
+    document.getElementById('tempatLokasiField').value = card.dataset.tempatLokasi || '';
+    document.getElementById('tempatKapasitasField').value = card.dataset.tempatKapasitas || '';
+    document.getElementById('tempatDeskripsiField').value = card.dataset.tempatDeskripsi || '';
+    document.getElementById('tempatInfoField').value = card.dataset.tempatInfo || '';
+    
+    // Preview foto yang sudah ada
+    const fotoUrl = card.dataset.tempatFotoUrl;
+    if (fotoUrl) {
+        const preview = document.getElementById('previewFoto');
+        preview.src = fotoUrl;
+        preview.classList.remove('hidden');
+    } else {
+        document.getElementById('previewFoto').classList.add('hidden');
+    }
+    
+    document.getElementById('submitTempatButton').textContent = 'Simpan Perubahan';
+    document.getElementById('cancelEditButton').classList.remove('hidden');
+}
+
+function resetTempatForm() {
+    const form = document.getElementById('tempatForm');
+    form.action = '/admin/reservasi/tempat';
+    document.getElementById('tempatIdField').value = '';
+    document.getElementById('tempatNamaField').value = '';
+    document.getElementById('tempatLokasiField').value = '';
+    document.getElementById('tempatKapasitasField').value = '';
+    document.getElementById('tempatDeskripsiField').value = '';
+    document.getElementById('tempatInfoField').value = '';
+    document.getElementById('submitTempatButton').textContent = 'Tambah Tempat';
+    document.getElementById('cancelEditButton').classList.add('hidden');
+    
+    // Reset preview
+    document.getElementById('previewFoto').classList.add('hidden');
+    document.getElementById('previewFoto').src = '';
+}
+                }
+
+            });
+
+
+        </script>
+
+        
 
         <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
             <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">

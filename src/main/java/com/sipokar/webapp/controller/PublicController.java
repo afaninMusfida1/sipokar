@@ -35,12 +35,16 @@ public class PublicController {
 
         model.addAttribute("info", info);
         model.addAttribute("galeri", fotoGaleriRepository.findAllByOrderByIdDesc());
-        model.addAttribute("fasilitas", fasilitasRepository.findAll());
+        
+        // INI YANG PALING PENTING - Namanya harus 'daftarFasilitas'
+        model.addAttribute("daftarFasilitas", fasilitasRepository.findAll());
 
-        // 3. TAMBAHKAN DI SINI untuk mengambil data produk ke landing page (index.html)
         model.addAttribute("produk", produkService.ambilSemuaProduk());
 
         pageViewService.recordVisit();
+
+        // Print ke terminal buat ngecek data beneran ada atau nggak
+        System.out.println("JUMLAH FASILITAS DITEMUKAN: " + fasilitasRepository.findAll().size());
 
         return "index";
     }
@@ -57,11 +61,7 @@ public class PublicController {
 
     @GetMapping("/produk-umkm")
     public String halamanSemuaProduk(Model model) {
-        // Mengambil semua produk dari database untuk ditampilkan ke pengunjung umum
         model.addAttribute("daftarProduk", produkService.ambilSemuaProduk());
-        return "produk-umkm"; // Ini akan mengarah ke file templates/produk-umkm.html
+        return "produk-umkm"; 
     }
-
-    
-
 }
