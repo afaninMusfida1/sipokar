@@ -113,9 +113,30 @@
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(8px);
         }
+
+        /* ===== MARQUEE (DITAMBAHKAN — sebelumnya hilang sehingga teks tidak berjalan) ===== */
+        @keyframes marquee-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+        .marquee-track-left {
+            animation: marquee-left 30s linear infinite;
+        }
+        .marquee-track-right {
+            animation: marquee-right 30s linear infinite;
+        }
+        .marquee-container:hover .marquee-track-left,
+        .marquee-container:hover .marquee-track-right {
+            animation-play-state: paused;
+        }
         
         @media (prefers-reduced-motion: reduce) {
-            .product-card, .product-img, .float-1, .float-2, .float-3, .fade-in-up, .stagger-item {
+            .product-card, .product-img, .float-1, .float-2, .float-3, .fade-in-up, .stagger-item,
+            .marquee-track-left, .marquee-track-right {
                 animation: none !important;
                 transition: none !important;
             }
@@ -125,16 +146,14 @@
 <body class="bg-gray-50 text-gray-800 antialiased">
 
     <!-- Navbar -->
-    <nav class="glass sticky top-0 z-50 border-b border-gray-200/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav id="main-nav" class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 md:h-20">
-                <a href="/" class="flex items-center gap-3 no-underline group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-500/20 group-hover:shadow-brand-500/40 transition-all">
-                        <i class="fas fa-leaf text-white text-lg"></i>
-                    </div>
-                    <h1 class="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
-                        Si<span class="gradient-text">pokar</span>
-                    </h1>
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center gap-2.5 group">
+                        <img src="/images/logoSipokar.png" alt="Sipokar - Wisata Edukasi Mangrove" class="h-14 md:h-16 w-auto object-contain">
+                    </a>
+                </div>
                 </a>
                 <a href="/" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-700 transition-colors duration-200 no-underline bg-gray-100 hover:bg-brand-50 px-4 py-2 rounded-full">
                     <i class="fas fa-arrow-left text-xs"></i>
@@ -221,30 +240,6 @@
         </div>
     </section>
 
-    <!-- Filter & Sort -->
-    <section class="max-w-7xl mx-auto px-6 mb-8">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold text-gray-700" th:text="${#lists.size(daftarProduk)} + ' produk tersedia'">0 produk tersedia</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <select class="text-sm border border-gray-200 rounded-xl px-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all cursor-pointer">
-                    <option>Semua Kategori</option>
-                    <option>Makanan</option>
-                    <option>Minuman</option>
-                    <option>Kerajinan</option>
-                    <option>oleh-oleh</option>
-                </select>
-                <select class="text-sm border border-gray-200 rounded-xl px-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all cursor-pointer">
-                    <option>Terbaru</option>
-                    <option>Harga Terendah</option>
-                    <option>Harga Tertinggi</option>
-                    <option>Diskon</option>
-                </select>
-            </div>
-        </div>
-    </section>
-
     <!-- MAIN -->
     <main class="max-w-7xl mx-auto px-6 pb-20">
 
@@ -295,26 +290,17 @@
                     <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-1" th:text="${p.deskripsi}">Deskripsi produk...</p>
                 </div>
 
-                <!-- Price & Action -->
+                <!-- Price -->
                 <div class="px-5 pb-5 pt-3 border-t border-gray-100">
-                    <div class="flex items-end justify-between mb-3">
-                        <div>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Harga</p>
-                            <span th:if="${p.diskon != null and p.diskon > 0}" class="text-xs text-gray-400 line-through block mb-0.5">
-                                Rp [[${#numbers.formatInteger(p.harga, 0, 'POINT')}]]
-                            </span>
-                            <span class="text-xl font-bold text-brand-700">
-                                Rp [[${#numbers.formatInteger(p.harga - (p.harga * (p.diskon != null ? p.diskon : 0) / 100), 0, 'POINT')}]]
-                            </span>
-                        </div>
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Harga</p>
+                        <span th:if="${p.diskon != null and p.diskon > 0}" class="text-xs text-gray-400 line-through block mb-0.5">
+                            Rp [[${#numbers.formatInteger(p.harga, 0, 'POINT')}]]
+                        </span>
+                        <span class="text-xl font-bold text-brand-700">
+                            Rp [[${#numbers.formatInteger(p.harga - (p.harga * (p.diskon != null ? p.diskon : 0) / 100), 0, 'POINT')}]]
+                        </span>
                     </div>
-                    <!-- Tombol Hubungi Penjual (bukan Beli Sekarang) -->
-                    <a th:href="'https://wa.me/?text=Halo, saya tertarik dengan produk ' + ${p.nama} + ' dari Sipokar. Apakah masih tersedia?'"
-                       target="_blank"
-                       class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/20 flex items-center justify-center gap-2 group/btn">
-                        <i class="fab fa-whatsapp text-lg group-hover/btn:scale-110 transition-transform"></i>
-                        Hubungi Penjual
-                    </a>
                 </div>
             </div>
         </div>
@@ -379,36 +365,9 @@
                         </div>
                     </div>
                 </div>
-                
-                <a id="modalWhatsApp" href="#" target="_blank" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-4 rounded-2xl font-bold text-base transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/20 flex items-center justify-center gap-3">
-                    <i class="fab fa-whatsapp text-xl"></i>
-                    Hubungi Penjual via WhatsApp
-                </a>
-                <p class="text-center text-xs text-gray-400 mt-3">Anda akan diarahkan ke WhatsApp untuk melanjutkan pembelian</p>
             </div>
         </div>
     </div>
-
-    <!-- Newsletter Section -->
-    <section class="bg-brand-900 text-white py-16 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-0 left-0 w-96 h-96 bg-brand-500 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-            <div class="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-        </div>
-        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
-            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-bell text-2xl text-brand-300"></i>
-            </div>
-            <h2 class="text-3xl font-bold mb-4">Dapatkan Info Produk Terbaru</h2>
-            <p class="text-brand-200 mb-8 max-w-lg mx-auto">Berlangganan newsletter kami untuk mendapatkan informasi produk UMKM terbaru dan penawaran menarik.</p>
-            <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input type="email" placeholder="Masukkan email Anda" class="flex-1 px-5 py-3.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-brand-300 focus:outline-none focus:ring-2 focus:ring-white/30">
-                <button class="px-6 py-3.5 bg-white text-brand-900 rounded-xl font-bold hover:bg-brand-50 transition-all shadow-lg">
-                    Berlangganan
-                </button>
-            </div>
-        </div>
-    </section>
 
      <!-- ===== MARQUEE TEXT (UNCHANGED) ===== -->
     <div class="marquee-container bg-gray-900 py-3 overflow-hidden border-y border-gray-800">
@@ -459,13 +418,13 @@
         </div>
     </div>
 
-    <!-- ===== FOOTER (UNCHANGED) ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="bg-gray-950 text-gray-400 pt-16 pb-8">
         <div class="max-w-6xl mx-auto px-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 pb-12 border-b border-gray-800">
                 <div class="md:col-span-1 flex flex-col gap-5">
                     <a href="#" class="flex items-center gap-2">
-                        <span class="text-white font-heading font-bold text-xl tracking-tight">Si<span class="text-green-500">pokar</span></span>
+                        <img src="/images/logoSipokar.png" alt="Sipokar - Wisata Edukasi Mangrove" class="h-16 w-auto object-contain brightness-0 invert">
                     </a>
                     <p class="text-sm leading-relaxed text-gray-500">
                         Destinasi ekowisata mangrove terbaik di Surabaya. Alam, edukasi, dan produk lokal dalam satu tempat.
