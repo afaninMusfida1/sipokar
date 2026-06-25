@@ -1,13 +1,20 @@
 package com.sipokar.webapp.controller.admin;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.sipokar.webapp.model.FotoGaleri;
 import com.sipokar.webapp.repository.FotoGaleriRepository;
 import com.sipokar.webapp.service.CloudinaryService;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin/galeri")
@@ -30,7 +37,7 @@ public class AdminGaleriController {
             @ModelAttribute FotoGaleri foto,
             @RequestParam("gambar") MultipartFile gambar) {
 
-        String imageUrl = cloudinaryService.uploadFile(gambar);
+        String imageUrl = cloudinaryService.uploadFile(gambar, "sipokar-galeri");
 
         foto.setUrl(imageUrl);
 
